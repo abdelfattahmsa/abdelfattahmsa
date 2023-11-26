@@ -3,7 +3,7 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=abdelfattahmsa&label=Profile%20views&color=0e75b6&style=flat" alt="abdelfattahmsa" /> </p>
 
-<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=abdelfattahmsa" alt="abdelfattahmsa" /></a> </p>
+<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=abdelfattahmsa&theme=darkhub&no-frame=true" alt="abdelfattahmsa" /></a> </p>
 
 <p align="left"> <a href="https://twitter.com/abdelfattah_msa" target="blank"><img src="https://img.shields.io/twitter/follow/abdelfattah_msa?logo=twitter&style=for-the-badge" alt="abdelfattah_msa" /></a> </p>
 
