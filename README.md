@@ -102,9 +102,7 @@ Currently deepening my skills in Python, Flutter, data analysis, and AI — all 
 
 <div align="center">
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=abdelfattahmsa&show_icons=true&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&text_color=c9d1d9&icon_color=58a6ff)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=abdelfattahmsa&layout=compact&theme=dark&hide_border=true&bg_color=0d1117&title_color=58a6ff&text_color=c9d1d9)
+[![GitHub Streak](https://github-readme-stats-fast.vercel.app/api/streak?username=abdelfattahmsa&theme=tokyonight)](https://github.com/abdelfattahmsa/github-readme-stats-fast)
 
 </div>
 
