@@ -2,12 +2,14 @@
 
 # Abdelfattah M. Aboulfoutoh
 
-**Civil Engineer · Project Controls · Active Researcher · Web Developer · Founder**
+**Civil Engineer · Project Controls ·  Researcher · Web Developer · Founder**
 
 [![Location](https://img.shields.io/badge/📍_Cairo,_Egypt-0a0a0a?style=flat-square)](https://abdelfattah.site)
 [![Website](https://img.shields.io/badge/abdelfattah.site-111?style=flat-square&logo=safari&logoColor=white)](https://abdelfattah.site)
 [![ResearchGate](https://img.shields.io/badge/ResearchGate-00CCBB?style=flat-square&logo=researchgate&logoColor=white)](https://www.researchgate.net/profile/Abdelfattah-M)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com)
+[![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-0A66C2?logo=linkedin-white&logoColor=fff)](https://linkedin.com)
+[![Medium](https://img.shields.io/badge/Medium-%23000000.svg?logo=medium&logoColor=white)]([#](https://abdelfattahmsa.medium.com/))
+[![Behance](https://img.shields.io/badge/Behance-0054F7?logo=behance&logoColor=white)](https://www.behance.net/abdelfattahmsa)
 
 </div>
 
@@ -24,24 +26,12 @@ Currently deepening my skills in Python, Flutter, data analysis, and AI — all 
 ---
 
 ### 🚀 Active Projects
-
-| Project | Description | Status |
-|---|---|---|
-| 📄 **AI & BMS Integration for Project Management** | Authoring a systematic literature review and framework development paper on *AI and Building Measurement System Integration for Detailed Project Management in Construction* | ✍️ In Progress |
-| 🏢 **Kyberia Tech** | Building the holding company — brand, positioning, operations, and go-to-market strategy | 🔨 In Progress |
-| 🔬 **Kyberia Labs** | Developing the digital products and cybersecurity services arm | 🔨 In Progress |
-| 🎨 **Kyberia Studio** | Building the digital art, game design, and creative technology branch | 🔨 In Progress |
-
----
-
-### 🏗️ Kyberia Tech
-
-> *Building at the intersection of technology, creativity, and systems thinking.*
-
-| Subsidiary | Focus |
-|---|---|
-| **Kyberia Labs** | Digital products · Cybersecurity · Network solutions |
-| **Kyberia Studio** | Digital art · Game design · Creative technology |
+- Authoring a paper about the use of AI & BMS for Construction Project Management
+- Developing and growing [Kyberia Tech](https://kyberia.tech)
+- Developing [Kyberia Labs](https://labs.kyberia.tech)
+- Developing [Kyberia Studios](https://studios.kyberia.tech)
+- Expanding in **business & data analysis** through CFI modules (Power BI, Tableau, Python, Power Query)
+- Learning hands-on AI experimentation with Claude.
 
 ---
 
@@ -49,25 +39,12 @@ Currently deepening my skills in Python, Flutter, data analysis, and AI — all 
 
 **Web Development**
 
-![WordPress](https://img.shields.io/badge/WordPress-21759B?style=flat-square&logo=wordpress&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white)
-
-**Currently Learning**
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white)
-![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=flat-square&logo=powerbi&logoColor=black)
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=flat-square&logo=tableau&logoColor=white)
-![Power Query](https://img.shields.io/badge/Power_Query-217346?style=flat-square&logo=microsoft&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux_Terminal-FCC624?style=flat-square&logo=linux&logoColor=black)
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=flat-square&logo=powershell&logoColor=white)
-![Claude AI](https://img.shields.io/badge/Claude_AI-CC785C?style=flat-square&logo=anthropic&logoColor=white)
-
-> 📊 Expanding in **business & data analysis** through CFI modules (Power BI, Tableau, Python, Power Query) and hands-on AI experimentation with Claude.
+![WordPress](https://img.shields.io/badge/WordPress-%2321759B.svg?logo=wordpress&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000)
+![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-639?logo=css&logoColor=fff)
+![PHP](https://img.shields.io/badge/php-%23777BB4.svg?&logo=php&logoColor=white)
+![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)
 
 **Engineering & PM Tools**
 
@@ -75,12 +52,37 @@ Currently deepening my skills in Python, Flutter, data analysis, and AI — all 
 ![AutoCAD](https://img.shields.io/badge/AutoCAD-E51937?style=flat-square&logo=autodesk&logoColor=white)
 ![MS Project](https://img.shields.io/badge/MS_Project-217346?style=flat-square&logo=microsoft&logoColor=white)
 
+**Business Analytics & Data Analysis**
+
+![Power BI](https://custom-icon-badges.demolab.com/badge/Power%20BI-F1C912?logo=power-bi&logoColor=fff)
+![Tableau](https://custom-icon-badges.demolab.com/badge/Tableau-0176D3?logo=tableau&logoColor=fff)
+![Power Query](https://img.shields.io/badge/Power_Query-217346?style=flat-square&logo=microsoft&logoColor=white)
+
+**Design**
+
+![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white)
+
+**ERPs**
+
+![Oracle Cloud](https://custom-icon-badges.demolab.com/badge/Oracle%20Cloud-F80000?logo=oracle&logoColor=white)
+![Odoo](https://img.shields.io/badge/Odoo-714B67?logo=Odoo&logoColor=fff)
+
+**Currently Learning**
+
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=fff)
+![Dart](https://img.shields.io/badge/Dart-%230175C2.svg?logo=dart&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)
+![PowerShell](https://custom-icon-badges.demolab.com/badge/PowerShell-5391FE?logo=powershell-white&logoColor=fff)
+![Claude AI](https://img.shields.io/badge/Claude_AI-CC785C?style=flat-square&logo=anthropic&logoColor=white)
+![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-000?logo=githubcopilot&logoColor=fff)
+
 ---
 
 ### 📌 Highlights
 
 - 🔬 **Active Researcher** — IEEE published + paper currently in authoring
-- 📄 **IEEE Published** — *Comparison between Structural Systems for an Elevated Monorail*, Smart Cities Conference 4.0 (2023)
+- 📄 **IEEE Published** — [*Comparison between Structural Systems for an Elevated Monorail*](https://ieeexplore.ieee.org/document/10525776/), Smart Cities Conference 4.0 (2023)
 - 🌐 **Web Developer since 2014** — WordPress, Wix, custom-coded sites, LMS platforms
 - 🎓 **MSc Project Management**, Liverpool John Moores University (via UNICAF)
 - 📊 Studying **Business & Corporate Finance** through CFI certifications — growing toward commercial analyst & business consultant
