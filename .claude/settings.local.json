@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -lh /c/Users/abdel/Documents/GitHub/abdelfattahmsa/*.png /c/Users/abdel/Documents/GitHub/abdelfattahmsa/*.svg /c/Users/abdel/Documents/GitHub/abdelfattahmsa/*.ico)",
+      "WebFetch(domain:linkedin.com)",
+      "Bash(pip install:*)",
+      "Bash(python3 -c \":*)",
+      "Bash(python -c \":*)"
+    ]
+  }
+}
