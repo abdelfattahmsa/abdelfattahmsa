@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abdelfattah M. S. Aboulfoutoh </title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="logo.ico" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="stylelight.css" class="csslink">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <!--
+    Fontawesome
+  -->
+  <script src="https://kit.fontawesome.com/5d71a64d89.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+
+    <aside class="sidebar" data-sidebar>
+
+      <div class="sidebar-info">
+
+        <figure class="avatar-box">
+          <img src="my-avatar.png" alt="Abdelfattah Mohammed" width="80">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Abdelfattah Mohammed">Abdelfattah M.</h1>
+
+          <p class="title">Engineer & Designer</p>
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Contacts</span>
+
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+
+      </div>
+
+      <div class="sidebar-info_more">
+
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+
+              <a href="mailto:am@kyberia.tech" class="contact-link">Click Me</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Birthday</p>
+
+              <time datetime="1982-06-23">August 16, 1999</time>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Location</p>
+
+              <address> Cairo, Egypt</address>
+            </div>
+
+          </li>
+          
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+
+          <li class="social-item">
+            <a href="https://www.facebook.com/abdelfattah.msa" class="social-link">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://twitter.com/abdelfattah_msa" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://www.instagram.com/elabdo_m/" class="social-link">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://ipfs.io/ipfs/QmdVG869rLj7bQnw28rjcbKgvgY5wBX9DM1QUvfEDHJz57" class="social-link">
+              <ion-icon name="logo-bitcoin"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <button onclick="toggleTheme()"  class="social-link" ><ion-icon name="sunny-outline" id="modeToggle"></ion-icon></ion-icon></button>
+          </li>
+        </ul>
+
+      </div>
+
+    </aside>
+
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Projects</button>
+          </li>
+
+          <li class="navbar-item">
+            <a href="https://blog.abdelfattah.site" class="navbar-link" target="_blank">Blog</a>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Contact</button>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">Profile</h2>
+        </header>
+
+        <section class="about-text">
+          <h3 class="h3 service-title">Who am I...</h3>
+          <p style="text-align: justify;">
+            <b>Profile Summary</b> <br>
+            Engineer Abdelfattah M. is a highly motivated and detail-oriented Civil Engineering graduate from the German University in Cairo, where he earned his degree in 2022. His academic journey culminated in a distinguished bachelor’s project titled "Comparison between Structural Systems for an Elevated Monorail." This project not only demonstrated his technical acumen in structural systems, materials, and construction processes but also showcased his innovative approach to problem-solving. Abdelfattah developed a cutting-edge software tool that employs weak AI to assist decision-makers in selecting the most optimal structural systems and materials, considering critical factors such as time and cost. His exceptional work was recognized with an Excellent grade and presented at the Smart Cities Conference 4.0 in 2023, with the accompanying research paper published in the IEEE Smart Cities Journal.
+          </p>
+
+          <p style="text-align: justify;">
+            <b>Professional Development</b> <br>
+            Upon completing his military service, Abdelfattah pursued a Master of Science in Project Management at Liverpool John Moores University, with an expected graduation in 2026. His passion for emerging technologies, particularly in artificial intelligence and data analysis, drives his continuous learning and professional growth. Since his military service, he has gained valuable experience in project controls engineering roles across several firms, where he has further refined his skills in planning, cost management, and data analysis.
+            Abdelfattah has excelled in contract administration, which has significantly enhanced his ability to engage stakeholders effectively and produce comprehensive reports. His strong communication skills and analytical mindset make him a remarkable contributor to any project team.
+          </p>
+          <p style="text-align: justify;">
+            <b>Professional Aspirations</b> <br>
+            Currently, Abdelfattah is actively working towards achieving chartered status from the Royal Institute of Chartered Surveyors. He is also pursuing additional professional certifications from renowned universities and institutions worldwide, aiming to leverage these qualifications to empower his career trajectory and contribute meaningfully to the field of civil engineering.
+            With a commitment to excellence and a forward-thinking approach, Engineer Abdelfattah M. is poised to make significant contributions to the engineering sector, particularly in the integration of innovative technologies and sustainable practices.
+          </p>
+        </section>
+
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">How can I help you?</h3>
+
+          <ul class="service-list">
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <span class="material-symbols-outlined">
+web_traffic
+</span>              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Web Development & Design</h4>
+
+                <p class="service-item-text" style="text-align: justify;">
+                  A skilled web developer specializing in modern website development with innovative technologies. 
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <span class="material-symbols-outlined">
+monitoring
+</span>
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Project Controls</h4>
+                   
+                <p class="service-item-text" style="text-align: justify;">
+                   An experienced project controls engineer with extensive experience in scheduling and cost control. 
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <span class="material-symbols-outlined">
+group
+</span>
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Instructing</h4>
+
+                <p class="service-item-text" style="text-align: justify;">
+                  An intellectual instructor in various fields including information technologies, engineerng, design, and development. 
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <span class="material-symbols-outlined">
+dataset
+</span>
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Data Analytics & Visualization</h4>
+
+                <p class="service-item-text" style="text-align: justify;">
+                  An advanced user with experience in carrying out data analytics and visualization using a variety of technologies
+                </p>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials
+        -->
+
+        <section class="testimonials">
+
+          <h3 class="h3 testimonials-title">Words from the clients...</h3>
+
+          <ul class="testimonials-list has-scrollbar">
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="place-holder.png" alt="Daniel lewis" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Ahmed A. - Saudi Arabia</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p style="text-align: justify;">
+                    Abdelfattah is a talented dedicated website designer, He able to achieve what is requested on time with a premium
+                    quality. He also offer extra of what is requested from him. Abdelfattah also a fast responding in communication he is
+                    here whenever you need him..
+                    
+                    I'd be happy to work with him again in my next project.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="place-holder.png" alt="Jessica miller" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Stuart L. - Australia</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p style="text-align: justify;">
+                    Amazing work and easy to communicate with. He worked to my rules and did more than i asked too!
+                    Thank you
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="place-holder.png" alt="Emily evans" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Leonard G. - USA</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p style="text-align: justify;">
+                    He’s the BEST! He goes over and beyond to make sure you are satisfied! Don’t look any further! He’s the man for the
+                    job!!!! Appreciate all your hard work bro!!!
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="place-holder.png" alt="Henry william" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Joshua L.</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p style="text-align: justify;">
+                    Abdelfattah completed the work ahead of schedule and more than 100% complete. He added additional plugins I would need
+                    tin order to help run my website and business. I will continue to work with him in the future and I recommend his work
+                    if you need things done. Excellent all together, Highly recommended! I don't know, I can't say enough about him, best
+                    work that i've seen so far with anything i've done in the past. Anyways, you get the idea, HIRE HIM ALWAYS! He's worth
+                    every dollar plus more!
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials modal
+        -->
+
+        <div class="modal-container" data-modal-container>
+
+          <div class="overlay" data-overlay></div>
+
+          <section class="testimonials-modal">
+
+            <button class="modal-close-btn" data-modal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="place-holder.png" alt="Daniel lewis" width="80" data-modal-img>
+              </figure>
+
+              <img src="icon-quote.svg" alt="quote icon">
+            </div>
+
+            <div class="modal-content">
+
+              <h4 class="h3 modal-title" data-modal-title>Joshua L. - South Korea</h4>
+
+              <time datetime="2021-06-14">14 June, 2021</time>
+
+              <div data-modal-text>
+                <p style="text-align: justify;">
+                  Abdelfattah completed the work ahead of schedule and more than 100% complete. He added additional plugins I would need
+                  tin order to help run my website and business. I will continue to work with him in the future and I recommend his work
+                  if you need things done. Excellent all together, Highly recommended! I don't know, I can't say enough about him, best
+                  work that i've seen so far with anything i've done in the past. Anyways, you get the idea, HIRE HIM ALWAYS! He's worth
+                  every dollar plus more!
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+
+
+      </article>
+
+
+
+
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Liverpool John Moores University - Liverpool, United Kingdom</h4>
+
+              <span>2024 — 2026</span>
+
+              <p class="timeline-text">
+                Masters of Science (MS), Project Management.
+              </p>
+
+            </li>
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">German University in Cairo - Cairo, Egypt</h4>
+
+              <span>2017 — 2022</span>
+
+              <p class="timeline-text">
+                Bachelor of Science (BS), Civil Engineering.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Albashear International School - Cairo, Egypt</h4>
+
+              <span>2016 — 2017</span>
+
+              <p class="timeline-text">
+                Advanced Level (AL)
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">The English Academy - Kuwait, Kuwait</h4>
+
+              <span>2011 — 2016</span>
+
+              <p class="timeline-text">
+                International General Certificate of Secondary Education (IGCSE / OL)
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="build-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">PGESCO - Project Controls Engineer </h4>
+            
+              <span>Oct. 2024 — Present</span>
+            
+              <p class="timeline-text">
+                Working as a Project Controls Engineer part of the PGESCO team in New Cairo to construct the East Cairo Logistics Park.
+              </p>
+            
+            </li> 
+            
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">Kyberia Tech - Founder </h4>
+            
+              <span>Dec. 2023 — Present</span>
+            
+              <p class="timeline-text">
+                Working as a web developer, strategiest, project manager and marketer to set the bases of the Kyberia Tech Agency.
+              </p>
+            
+            </li>
+            
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">Freelancing - Developer & Designer </h4>
+            
+              <span>Sept. 2017 — Dec. 2024</span>
+            
+              <p class="timeline-text">
+                Working as a freelancer enabled me to tackle several global and local development projects. I was able to tackle more than 15 projects that can be seen in the projects section.
+              </p>
+            
+            </li>
+            
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">Rowad Modern Engineer - Project Controls Engineer </h4>
+            
+              <span>May 2024 — Oct. 2024</span>
+            
+              <p class="timeline-text">
+                Working as a Cost and Planning Engineer part of the RME team in New Damietta to construct the Damietta Container Terminal in Damietta Port.
+              </p>
+            
+            </li>
+            
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">New Horizons - IT Instructor</h4>
+            
+              <span>Oct. 2022 — Dec. 2022</span>
+            
+              <p class="timeline-text">
+                In this job I instructed 2 batches each having 20 trainees through the curriclium of the CompTIA A+ certification.
+              </p>
+            
+            </li>
+
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">Consolidated Contractors Company - Junior Site Engineer</h4>
+            
+              <span>Jul. 2022 — Oct. 2022</span>
+            
+              <p class="timeline-text">
+                The project I was assigned too was the Hyde Park Compound in the 5th Settlement area. I was assigned as a site
+                engineer where my responsibilities were:
+              <p class="timeline-text">• Stood in sites and execution basics</p>
+              <p class="timeline-text">• Used Total Stations</p>
+              <p class="timeline-text">• Received and checked Carpenter Framework</p>
+              <p class="timeline-text">• Project Management training</p>
+              <p class="timeline-text">• Safety Training</p>
+              <p class="timeline-text">• Design and workshop drawings Training</p>
+              </p>
+            
+            </li>
+
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">Hassan Allam - Civil Engineering Intern</h4>
+            
+              <span>Jan. 2021 — Mar. 2021</span>
+            
+              <p class="timeline-text">
+                The project I was assigned too was the Hyde Park Compound in the 5th Settlement area. I was assigned as a site engineer where my responsibilities were:
+              <p class="timeline-text">• Workshop drawing</p>
+              <p class="timeline-text">• Design of structural elements</p>
+              <p class="timeline-text">• Quantity surveying and take off</p>
+              <p class="timeline-text">• Scheduling basics</p>
+              <p class="timeline-text">• As-built Drawings</p>
+              <p class="timeline-text">• ROI submissions</p>
+              <p class="timeline-text">• Site visits</p>
+              <p class="timeline-text">• Work Submission too consultant</p>
+              </p>
+            
+            </li>
+
+            <li class="timeline-item">
+            
+              <h4 class="h4 timeline-item-title">Hassan Allam - Traniee</h4>
+            
+              <span>Jun. 2019 — Jul. 2019</span>
+            
+              <p class="timeline-text">
+                The project I was assigned too was the Hyde Park Compound in the 5th Settlement area. I was assigned as a site engineer where my responsibilities were:
+              <p class="timeline-text">• Stood in sites and execution basics</p>
+              <p class="timeline-text">• Used Total Stations</p>
+              <p class="timeline-text">• Received and checked Carpenter Framework</p>
+              <p class="timeline-text">• Project Management training</p>
+              <p class="timeline-text">• Safety Training</p>
+              <p class="timeline-text">• Design and workshop drawings Training</p>
+              </p>
+            
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Resilience& Egypt - research Intern</h4>
+
+              <span>Jun. 2019 — Jul. 2019</span>
+
+              <p class="timeline-text">
+                Responsibilities:
+                  <p class="timeline-text">• Conduct Researches about certain market related topics for insights and info-graphs</p>
+                  <p class="timeline-text">• Creating professional insights for the Resilience& platform</p>
+                  <p class="timeline-text">• Creating professional presentations about certain topics relating to the business and research field.</p>
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Megamatics.co - Co-Founder</h4>
+
+              <span>Jan. 2018 — Jan. 2020</span>
+
+              <p class="timeline-text">
+                Responsibilities:
+                  <p class="timeline-text">• As the founding and managing partner I have the responsibility of tasking assignment, time management and cost
+                  management.</p>
+                  <p class="timeline-text">• Financial Management</p>
+                  <p class="timeline-text">• Business research and development</p>
+                  <p class="timeline-text">• Project initiation and follow up</p>
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">IG Academy - UX Manager</h4>
+
+              <span>Sept. 2016 — Jan. 2018</span>
+
+              <p class="timeline-text">
+                Growth path:
+                  <p class="timeline-text">• User Experience Manager</p>
+                  <p class="timeline-text">• Head Academia</p>
+                  <p class="timeline-text">• Academia Member</p>
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="language">
+        
+          <h3 class="h3 language-title">Languages</h3>
+        
+          <ul class="language-list">
+        
+            <li class="language-item">
+        
+              <div class="language-icon-box">
+                <img src="ar.png" alt="Arabic - Egypt" width="30">
+              </div>
+        
+              <div class="language-content-box">
+                <h4 class="h4 language-item-title">Arabic - Mothertongue</h4>
+              </div>
+        
+            </li>
+        
+            <li class="language-item">
+        
+              <div class="language-icon-box">
+                <img src="en.png" alt="English - UK" width="30">
+              </div>
+        
+              <div class="language-content-box">
+                <h4 class="h4 language-item-title">English - Fluent</h4>
+              </div>
+        
+            </li>
+        
+            <li class="language-item">
+        
+              <div class="language-icon-box">
+                <img src="ger.png" alt="German - Germany" width="30">
+              </div>
+        
+              <div class="language-content-box">
+                <h4 class="h4 language-item-title">German - Elementary</h4>
+              </div>
+        
+            </li>
+        
+            <li class="language-item">
+        
+              <div class="language-icon-box">
+                <img src="es.png" alt="Spanish - Spain" width="30">
+              </div>
+        
+              <div class="language-content-box">
+                <h4 class="h4 language-item-title">Spanish - Elementary</h4>
+              </div>
+        
+            </li>
+        
+          </ul>
+        
+        </section>
+
+
+        
+      </article>
+
+
+
+
+
+      <!--
+              - #PORTFOLIO
+            -->
+      
+      <article class="portfolio" data-page="projects">
+      
+        <header>
+          <h2 class="h2 article-title">Projects</h2>
+        </header>
+      
+        <section class="projects">
+      
+          <ul class="filter-list">
+      
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+      
+            <li class="filter-item">
+              <button data-filter-btn>Web Development</button>
+            </li>
+      
+            <!-- <li class="filter-item">
+              <button data-filter-btn>Graphic Design</button>
+            </li>
+      
+            <li class="filter-item">
+              <button data-filter-btn>Programming</button>
+            </li> -->
+      
+          </ul>
+      
+          <div class="filter-select-box">
+      
+            <button class="filter-select" data-select>
+      
+              <div class="select-value" data-selecct-value>Select category</div>
+      
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+      
+            </button>
+      
+            <ul class="select-list">
+      
+              <li class="select-item">
+                <button data-select-item>All</button>
+              </li>
+      
+              <li class="select-item">
+                <button data-select-item>Web Development</button>
+              </li>
+      
+              <!-- <li class="select-item">
+                <button data-select-item>Graphic Design</button>
+              </li>
+      
+              <li class="select-item">
+                <button data-select-item>Programming</button>
+              </li> -->
+      
+            </ul>
+      
+          </div>
+      
+       
+
+          <ul class="project-list">
+            <!-- Pioneers ME -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://pioneersme.com" target="_blank">
+      
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div> -->
+      
+                  <img src="project-1.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+      
+                <h3 class="project-title" data-projects-title >Pioneers Middle East</h3>
+      
+                <p class="project-category" data-projects-text>Web Development</p>
+      
+              </a>
+            </li>
+            <!-- Al-Nasr Modern -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://alnasrmodern.com" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                                <ion-icon name="eye-outline"></ion-icon>
+                              </div> -->
+            
+                  <img src="project-2.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                
+                  <h3 class="project-title" data-projects-title>Al-Nasr Modern</h3>
+                
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- Hana Makhlouf -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://hanamakhlouf.me" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                                <ion-icon name="eye-outline"></ion-icon>
+                              </div> -->
+            
+                  <img src="project-3.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>Hana Makhlouf</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- Ghoz Designs -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://ghozdesigns.com" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                                <ion-icon name="eye-outline"></ion-icon>
+                              </div> -->
+            
+                  <img src="project-4.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>Ghoz Designs Store</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- Peak Pulse Arena -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://peakpulse.net" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                                <ion-icon name="eye-outline"></ion-icon>
+                              </div> -->
+            
+                  <img src="project-5.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>Peak Pulse Arena</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- German Mediators -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://german-mediators.de" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                                <ion-icon name="eye-outline"></ion-icon>
+                              </div> -->
+            
+                  <img src="project-6.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>German Mediators GMBH</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- Swim Eagles Team -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://swimeagles.com" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                                            <ion-icon name="eye-outline"></ion-icon>
+                                          </div> -->
+            
+                  <img src="project-7.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>Swim Eagles Team</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- O Wahab Films -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://owahabfilms.com" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                   <ion-icon name="eye-outline"></ion-icon>
+                   </div> -->
+            
+                  <img src="project-8.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>O Wahab Films</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+            <!-- PY Partners Training -->
+            <li class="project-item  active" data-filter-item data-category="web development" data-projects-item>
+              <a href="https://pyptraining.online" target="_blank">
+            
+                <figure class="project-img">
+                  <!-- <div class="project-item-icon-box">
+                               <ion-icon name="eye-outline"></ion-icon>
+                               </div> -->
+            
+                  <img src="project-9.png" alt="finance" loading="lazy" data-projects-image>
+                </figure>
+            
+                <h3 class="project-title" data-projects-title>PY Partners Training</h3>
+            
+                <p class="project-category" data-projects-text>Web Development</p>
+            
+              </a>
+            </li>
+      
+          </ul>
+      
+        </section>
+
+        <!--
+                  - projects modal
+                -->
+        
+        <!-- <div class="modal-container" data-projmodal-container>
+        
+          <div class="overlay" data-projoverlay></div>
+        
+          <section class="testimonials-modal">
+        
+            <button class="modal-close-btn" data-projmodal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+        
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="project-1.jpg" alt="Daniel lewis" width="80" data-projmodal-img>
+              </figure>
+        
+              <img src="icon-quote.svg" alt="quote icon">
+            </div>
+        
+            <div class="modal-content">
+        
+              <h4 class="h3 modal-title" data-projmodal-title>Finance</h4>
+        
+              <time datetime="2021-06-14">14 June, 2021</time>
+        
+              <div data-projmodal-text>
+                <p>
+                  Abdelfattah completed the work ahead of schedule and more than 100% complete. He added additional plugins I
+                  would need
+                  tin order to help run my website and business. I will continue to work with him in the future and I recommend
+                  his work
+                  if you need things done. Excellent all together, Highly recommended! I don't know, I can't say enough about
+                  him, best
+                  work that i've seen so far with anything i've done in the past. Anyways, you get the idea, HIRE HIM ALWAYS!
+                  He's worth
+                  every dollar plus more!
+                </p>
+              </div>
+        
+            </div>
+        
+          </section>
+        
+        </div> -->
+      
+      </article>
+      <!--
+        - #CONTACT
+      -->
+
+      <article class="contact" data-page="contact">
+
+        <header>
+          <h2 class="h2 article-title">When you talk<br>I listen ;)</h2>
+        </header>
+
+        <section class="mapbox" data-mapbox>
+          <figure>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13818.115078811143!2d31.29457853788113!3d30.021684489143187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583f294f468fe3%3A0x416549e0c2bc0c17!2sMokattam!5e0!3m2!1sen!2seg!4v1670362661804!5m2!1sen!2seg"
+              width="400" height="300" loading="lazy"></iframe>
+          </figure>
+        </section>
+
+        <section class="contact-form">
+
+          <h3 class="h3 form-title">Drop me a line!</h3>
+
+          <form action="#" class="form" data-form>
+
+            <div class="input-wrapper">
+              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
+
+              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+            </div>
+
+            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+
+            <button class="form-btn" type="submit" disabled data-form-btn>
+              <ion-icon name="paper-plane"></ion-icon>
+              <span>Send Message</span>
+            </button>
+
+          </form>
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!--
+    - custom js link
+  -->
+  <script> 
+    function toggleTheme() { 
+        var theme = document.getElementsByClassName('csslink')[0]; 
+
+        if (theme.getAttribute('href') == 'stylelight.css') { 
+            theme.setAttribute('href', 'style.css'); 
+        } else { 
+            theme.setAttribute('href', 'stylelight.css'); 
+        } 
+
+        var themeIcon = document.getElementById('modeToggle');
+        if(theme.getAttribute('href') == "stylelight.css") {
+          themeIcon.setAttribute('name' , "sunny-outline");
+        } else {
+          themeIcon.setAttribute('name' , "moon-outline");
+        }
+    } 
+</script>
+  <script src="script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
