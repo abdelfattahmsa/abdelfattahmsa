@@ -28,8 +28,8 @@ const i18n = {
 
     // Hero
     'hero.tag': 'Available for Opportunities',
-    'hero.name': 'Abdelfattah M. S.<br>Aboulfoutoh',
-    'hero.desc': 'Project Controls Engineer at PGESCO with 1.5+ years of mega-project experience across Egypt. Civil Engineering graduate from the German University in Cairo, currently completing an MSc in Project Management at Liverpool John Moores University. Founder of Kyberia Tech — a creative technology studio.',
+    'hero.name': 'Abdelfattah M.',
+    'hero.desc': 'Civil Engineer with 3.5+ years of professional experience since BSc graduation, currently working in Project Controls at PGESCO on mega-projects across Egypt. Founder of Kyberia Tech and Peridot Holding Establishment.',
     'hero.cta': 'Get in Touch',
     'hero.cta2': 'View Work',
     'hero.scroll': 'Scroll',
@@ -43,7 +43,7 @@ const i18n = {
     'about.p3': 'Beyond engineering, I founded Kyberia Tech — a creative technology studio spanning web development, digital products, and future cybersecurity services. With 10+ years of web development experience since 2014, I bridge the gap between engineering discipline and creative technology.',
     'about.stat1': 'Years in Dev',
     'about.stat2': 'Projects',
-    'about.stat3': 'Years in PC',
+    'about.stat3': 'Years in Civil Engineering',
 
     // Services
     'service.pc': 'Project Controls',
@@ -137,6 +137,7 @@ const i18n = {
     'blog.title': 'Blog',
     'blog.subtitle': 'Thoughts on engineering, technology, and building in the MENA region.',
     'blog.readmore': 'Read more →',
+    'blog.openpage': 'Open Full Blog Page',
 
     // Time Capsule
     'capsule.label': 'Time Capsule',
@@ -150,6 +151,7 @@ const i18n = {
     'capsule.view': 'View Archive',
     'capsule.v1.title': 'First Portfolio — Simple Landing Page',
     'capsule.v1.desc': 'Initial personal site built during university. Basic layout showcasing education and early freelancing work.',
+    'capsule.openpage': 'Open Full Versions Timeline',
 
     // Contact
     'contact.label': "Let's Connect",
@@ -176,7 +178,7 @@ const i18n = {
       'MSc Project Management · LJMU',
       'Founder @ Kyberia Tech',
       'IEEE Published Researcher',
-      'Web Developer Since 2014'
+      'Civil Engineer Since 2022'
     ]
   },
 
@@ -199,8 +201,8 @@ const i18n = {
 
     // Hero
     'hero.tag': 'متاح للفرص الجديدة',
-    'hero.name': 'عبدالفتاح محمد صبحي<br>أبوالفتوح',
-    'hero.desc': 'مهندس التحكم في المشاريع في بجيسكو مع أكثر من ١.٥ عام من الخبرة في المشاريع الكبرى عبر مصر. خريج هندسة مدنية من الجامعة الألمانية بالقاهرة، حاليًا أكمل ماجستير إدارة المشاريع في جامعة ليفربول جون موريس. مؤسس Kyberia Tech — استوديو تكنولوجيا إبداعية.',
+    'hero.name': 'عبدالفتاح م.',
+    'hero.desc': 'مهندس مدني بخبرة مهنية تتجاوز ٣.٥ سنة منذ التخرج من البكالوريوس، وأعمل حاليًا في التحكم بالمشاريع في بجيسكو على مشاريع كبرى في مصر. مؤسس Kyberia Tech وPeridot Holding Establishment.',
     'hero.cta': 'تواصل معي',
     'hero.cta2': 'عرض الأعمال',
     'hero.scroll': 'انزل',
@@ -214,7 +216,7 @@ const i18n = {
     'about.p3': 'بجانب الهندسة، أسست Kyberia Tech — استوديو تكنولوجيا إبداعية يشمل تطوير الويب والمنتجات الرقمية وخدمات الأمن السيبراني المستقبلية. مع أكثر من ١٠ سنوات من الخبرة في تطوير الويب منذ ٢٠١٤، أربط بين الانضباط الهندسي والتكنولوجيا الإبداعية.',
     'about.stat1': 'سنوات تطوير',
     'about.stat2': 'مشاريع',
-    'about.stat3': 'سنوات PC',
+    'about.stat3': 'سنوات في الهندسة المدنية',
 
     // Services
     'service.pc': 'التحكم في المشاريع',
@@ -308,6 +310,7 @@ const i18n = {
     'blog.title': 'المدونة',
     'blog.subtitle': 'أفكار حول الهندسة والتكنولوجيا والبناء في منطقة الشرق الأوسط وشمال أفريقيا.',
     'blog.readmore': 'اقرأ المزيد ←',
+    'blog.openpage': 'فتح صفحة المدونة الكاملة',
 
     // Time Capsule
     'capsule.label': 'كبسولة الزمن',
@@ -321,6 +324,7 @@ const i18n = {
     'capsule.view': 'عرض الأرشيف',
     'capsule.v1.title': 'أول محفظة — صفحة هبوط بسيطة',
     'capsule.v1.desc': 'أول موقع شخصي تم بناؤه أثناء الجامعة. تخطيط بسيط يعرض التعليم وأعمال العمل الحر المبكرة.',
+    'capsule.openpage': 'فتح الخط الزمني الكامل للإصدارات',
 
     // Contact
     'contact.label': 'تواصل معي',
@@ -347,7 +351,7 @@ const i18n = {
       'ماجستير إدارة المشاريع · LJMU',
       'مؤسس Kyberia Tech',
       'باحث منشور في IEEE',
-      'مطور ويب منذ ٢٠١٤'
+      'مهندس مدني منذ ٢٠٢٢'
     ]
   }
 };
@@ -814,12 +818,29 @@ function initFooter() {
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
-      const target = document.querySelector(link.getAttribute('href'));
+      const href = link.getAttribute('href');
+      const target = href ? document.querySelector(href) : null;
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth' });
       }
     });
+  });
+}
+
+// ==========================================
+// BACK TO TOP
+// ==========================================
+function initBackToTop() {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('show', window.scrollY > 400);
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
 
@@ -838,5 +859,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initFooter();
   initSmoothScroll();
+  initBackToTop();
   startTyping();
 });
