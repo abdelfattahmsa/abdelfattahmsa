@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="admin-token" content="__TOKEN__">
+<title>Site admin</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/admin.css">
+<script src="/admin.js" defer></script>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <h1>Site admin</h1>
+    <p class="muted">Edits the files in <code>src/content</code>. Local only.</p>
+    <nav id="collections" aria-label="Collections"></nav>
+    <div class="side__foot">
+      <button class="btn" id="btn-build" type="button">Check build</button>
+      <button class="btn btn--primary" id="btn-publish" type="button">Publish…</button>
+    </div>
+  </aside>
+  <main class="main">
+    <section id="list-view">
+      <header class="bar">
+        <h2 id="list-title"></h2>
+        <input id="filter" type="search" placeholder="Filter…" aria-label="Filter items">
+        <button class="btn btn--primary" id="btn-new" type="button">New</button>
+      </header>
+      <ul id="items" class="items"></ul>
+    </section>
+    <section id="edit-view" hidden>
+      <header class="bar">
+        <button class="btn" id="btn-back" type="button">← Back</button>
+        <h2 id="edit-title"></h2>
+        <div class="spacer"></div>
+        <div class="tabs" id="lang-tabs" role="tablist" aria-label="Language"></div>
+      </header>
+      <form id="form" class="form" autocomplete="off"></form>
+      <div class="actions">
+        <button class="btn btn--primary" id="btn-save" type="button">Save</button>
+        <button class="btn" id="btn-preview" type="button">Preview body</button>
+        <button class="btn btn--danger" id="btn-delete" type="button">Delete…</button>
+        <span id="save-status" class="muted" role="status" aria-live="polite"></span>
+      </div>
+      <div id="preview" class="preview" hidden></div>
+    </section>
+  </main>
+</div>
+<dialog id="dlg">
+  <form method="dialog" class="dlg__box" id="dlg-form">
+    <h3 id="dlg-title"></h3>
+    <div id="dlg-body"></div>
+    <div class="actions"><button class="btn" value="cancel" type="submit">Close</button><button class="btn btn--primary" id="dlg-ok" value="ok" type="submit">OK</button></div>
+  </form>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
