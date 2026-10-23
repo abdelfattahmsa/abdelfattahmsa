@@ -12,6 +12,7 @@ const STROKE = {
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   external: '<path d="M7 17L17 7M8.5 7H17v8.5"/>',
   download: '<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   close: '<path d="M6 6l12 12M18 6L6 18"/>',
   chevron: '<path d="M6 9l6 6 6-6"/>',
   grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',

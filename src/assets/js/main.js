@@ -85,6 +85,25 @@
     });
   })();
 
+  /* ------------------------------------------------------------ phone menu (hamburger) */
+  (function () {
+    var btn = $('#nav-toggle');
+    var panel = $('#nav-panel');
+    if (!btn || !panel) return;
+    function set(open) {
+      panel.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function (e) { e.stopPropagation(); set(!panel.classList.contains('is-open')); });
+    doc.addEventListener('click', function (e) {
+      if (panel.classList.contains('is-open') && !panel.contains(e.target)) set(false);
+    });
+    doc.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel.classList.contains('is-open')) { set(false); btn.focus(); }
+    });
+    window.matchMedia('(min-width:821px)').addEventListener('change', function () { set(false); });
+  })();
+
   /* ------------------------------------------------------------ search */
   var indexPromise = null;
   function loadIndex() {

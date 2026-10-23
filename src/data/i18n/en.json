@@ -5,6 +5,7 @@
  "menu.hub": "Knowledge Hub",
  "menu.resources": "Resources",
  "menu.contact": "Contact",
+ "a11y.nav": "Open main menu",
  "a11y.menu": "Main menu",
  "a11y.hub": "Open knowledge hub menu",
  "a11y.hub.close": "Close knowledge hub menu",
