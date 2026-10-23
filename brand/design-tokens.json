@@ -2,24 +2,93 @@
   "$description": "Design tokens for the Abdelfattah M. site and brand. Source of truth for the site is src/assets/css/main.css.",
   "color": {
     "accent": "#ffcc00",
-    "dark": { "bg": "#000000", "surface": "#0b0b0b", "surface2": "#161616", "text": "#ffffff", "muted": "#a6a6a6", "line": "#252525", "lineStrong": "#4d4d4d" },
-    "light": { "bg": "#ffffff", "surface": "#f7f7f7", "surface2": "#ececec", "text": "#000000", "muted": "#595959", "line": "#e1e1e1", "lineStrong": "#a8a8a8" },
-    "ventures": { "kyberiaTech": "#ff2f92", "kyberiaLabs": "#159e97", "kyberiaStudio": "#6636d9", "peridot": "#7eb731" }
+    "dark": {
+      "bg": "#000000",
+      "surface": "#0b0b0b",
+      "surface2": "#161616",
+      "text": "#ffffff",
+      "muted": "#a6a6a6",
+      "line": "#252525",
+      "lineStrong": "#4d4d4d"
+    },
+    "light": {
+      "bg": "#ffffff",
+      "surface": "#f7f7f7",
+      "surface2": "#ececec",
+      "text": "#000000",
+      "muted": "#595959",
+      "line": "#e1e1e1",
+      "lineStrong": "#a8a8a8"
+    },
+    "ventures": {
+      "kyberiaTech": "#ff2f92",
+      "kyberiaLabs": "#159e97",
+      "kyberiaStudio": "#6636d9",
+      "peridot": "#7eb731"
+    }
   },
   "font": {
-    "text": { "family": "Tajawal", "weights": [400, 500, 700], "license": "SIL OFL 1.1", "selfHosted": true },
-    "display": { "family": "Heming", "status": "file not yet added; falls back to Tajawal", "note": "licence and Awwwards attribution unverified" }
+    "text": {
+      "family": "Tajawal",
+      "weights": [
+        400,
+        500,
+        700
+      ],
+      "license": "SIL OFL 1.1",
+      "selfHosted": true
+    },
+    "display": {
+      "family": "Heming",
+      "status": "file not yet added; falls back to Tajawal",
+      "note": "licence and Awwwards attribution unverified"
+    }
   },
-  "radius": { "circle": "50%", "pill": "999px", "card": "32px", "field": "24px" },
-  "size": { "touchTarget": "44px", "circleButton": "44px", "circleSmall": "36px", "circleLarge": "60px", "search": "58px", "button": "48px" },
-  "icon": { "grid": 24, "stroke": 1.75, "cap": "round", "join": "round" },
-  "motion": { "fast": "150-180ms", "drawer": "300ms", "ease": "cubic-bezier(.2,.7,.2,1)", "reducedMotion": "respected" },
+  "radius": {
+    "circle": "50%",
+    "pill": "999px",
+    "card": "32px",
+    "field": "24px"
+  },
+  "size": {
+    "touchTarget": "44px",
+    "circleButton": "44px",
+    "circleSmall": "36px",
+    "circleLarge": "60px",
+    "search": "58px",
+    "button": "48px"
+  },
+  "icon": {
+    "grid": 24,
+    "stroke": 1.75,
+    "cap": "round",
+    "join": "round"
+  },
+  "motion": {
+    "fast": "150-180ms",
+    "drawer": "300ms",
+    "ease": "cubic-bezier(.2,.7,.2,1)",
+    "reducedMotion": "respected"
+  },
   "logo": {
-    "markGrid": { "width": 118, "height": 60 },
-    "clearSpaceUnits": 24,
-    "minSizePx": 12,
-    "minSizePrintMm": 8,
-    "wordmark": { "text": "ABDELFATTAH", "tracking": "0.16em", "interim": "Tajawal Bold outlines" }
+    "type": "brush-pen signature monogram AM. + stacked name ABDELFATTAH ABOULFOUTOH",
+    "pen": {
+      "angle": -28,
+      "lean": "11deg"
+    },
+    "clearSpace": "25% of signature height",
+    "minSizePx": {
+      "regular": 24,
+      "boldMaster": 16
+    },
+    "nameLine": {
+      "font": "Tajawal Medium outlines (interim)",
+      "tracking": "0.36em",
+      "case": "caps"
+    }
   },
-  "breakpoints": { "nav-collapse": "820px", "mobile": "480px" }
+  "breakpoints": {
+    "nav-collapse": "820px",
+    "mobile": "480px"
+  }
 }

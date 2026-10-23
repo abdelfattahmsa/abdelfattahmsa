@@ -34,27 +34,28 @@ Derived from the first reference image (a grid of black-and-white geometric logo
 - **Heavy, blocky weight**; modular, grid-built; quiet and confident.
 - Wordmarks are bold grotesque sans-serif, often tracked-out capitals.
 
-The second reference image (a handwritten *mf.* monogram above a widely tracked capital name) informed the **tracked capital name line** in the lockup. A handwritten signature variant has **not** been designed yet (see §8).
+The **second reference image** (a handwritten *mf.* monogram above a widely tracked capital name) is the model for the **current logo**: a brush-pen signature monogram with the name stacked underneath. (An earlier geometric "Am" monogram was rejected and removed.)
 
 UI language for the website, which the brand should also use: **circular frames for buttons and icons**, very simple 1.75-stroke line icons, pill-shaped text buttons, generous space, no decoration.
 
 ## 3. The logo as it exists now
 
-**Concept.** `A` is a peak with an arch opening (a truss / tunnel: engineering). `m` is two adjoining arches (a bridge: connecting physical and digital). Together they read **"Am"**. Because both letterforms share the arch, the pair feels like one system.
+**Concept.** A brush-pen signature monogram in capitals, **AM.**, with a rising flourish and a full stop, and the full name **ABDELFATTAH ABOULFOUTOH** set underneath in widely tracked capitals. It should feel personal, confident and fast, the opposite of corporate, which suits a personal brand.
 
-**Construction** (grid: 118 × 60 units): `A` 48 wide with a 12-unit flat apex and a 20-unit semicircular opening; gap 10; `m` 60 wide, stems 12, outer arches r = 18, inner arches r = 6. Strictly filled shapes, no strokes. Source of truth: `brand/build-logo.mjs`, which regenerates every file.
+**Construction.** Hand-placed pen centre-lines, swept with a flat nib held at −28° (so down-strokes are thick and up-strokes thin), a brush swell on the flourish, an 11° lean, then converted to one clean filled outline (no strokes, no effects). Source of truth: `build-signature.mjs` + `pen.mjs`, which regenerate every file. It is a *drawing*: refine it by editing the point lists, or redraw it by hand in a vector tool if you can improve on it.
 
 **Files in `logo/`**
 
 | File | Use |
 |---|---|
-| `am-mark.svg`, `am-mark-white.svg` | Primary monogram, black / white |
-| `am-lockup-horizontal.svg` (+ `-white`) | Monogram + **ABDELFATTAH** wordmark (header, letterhead, email) |
-| `am-lockup-stacked.svg` (+ `-white`) | Same, stacked (covers, slides, posters) |
-| `am-badge.svg`, `am-badge-white.svg` | Solid circle with the monogram knocked out (true transparency): avatars, stamps, stickers |
-| `am-favicon.svg` | Yellow disc + black **small-size master** (heavier stems, wider openings) for ≤ 32 px |
-| `png/` | Exports: marks 1024, badges 1024, lockups, favicons 16/32/48/180/192/512, OG image 1200×630 |
-| `tests.html`, `png/logo-test-sheet.png` | The test sheet (see below) |
+| `am-signature.svg`, `am-signature-white.svg` | The signature alone, black / white |
+| `am-lockup.svg`, `am-lockup-white.svg` | Signature with the name stacked beneath (headers, letterhead, email, slides) |
+| `am-badge.svg`, `am-badge-white.svg` | Solid circle with the signature knocked out (true transparency): avatars, stamps |
+| `am-favicon.svg` | Yellow disc + black **bold master** ("AM", no flourish or full stop) for ≤ 32 px |
+| `png/` | Exports: signatures and lockups 2000 px, badges 1024, favicons 16/32/48/180/192/512, OG image 1200×630 |
+| `tests.html`, `png/logo-test-sheet.png` | The test sheet |
+
+The website header uses the **bold** weight at ~30 px tall; the regular weight is for large display use.
 
 **Testing results (honest).**
 
@@ -62,13 +63,14 @@ UI language for the website, which the brand should also use: **circular frames 
 |---|---|
 | Single-colour (black, white, on yellow, on grey, on a busy gradient) | Pass |
 | Reversal / knock-out badge on imagery | Pass |
-| Squint / blur (silhouette stays a distinct peak + double arch) | Pass |
+| Squint / blur (silhouette stays a leaning "AM" with a rising tail) | Pass |
 | Greyscale and 1-bit threshold | Pass |
-| Icon masks (circle, squircle, square: 72% safe area) | Pass |
-| Scalability: A's opening clearly open from **12 px** tall; marginal at 10 px; blurs at 8 px | Pass ≥ 12 px |
-| 16 px: mark passes at 16 px *tall* (≈ 31 px wide) | Pass |
-| **16×16 square favicon at 1×**: ≈ 7 px tall mark, A's opening nearly closes; crisp at 32 px (2×) | **Marginal** |
-| Unintended readings | Reads "Am"; none found |
+| Icon masks (circle, squircle, square) | Pass |
+| Small sizes, regular signature: clear from **24 px** tall; at 16 px the hairline flourish goes grey but the letters still read | Pass ≥ 24 px |
+| Favicon (bold master): reads as "AM" at 16 px, crisp at 32 px | Pass |
+| Unintended readings | Reads "AM." | 
+
+**Known weak spots:** the flourish is a hairline and fades under 24 px; a hand pixel-hinted 16×16 favicon would be crisper; the geometry is generated, so a human type/lettering designer may improve stroke rhythm and the join between the A and the M.
 
 ## 4. Typography
 
@@ -77,7 +79,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | All text (UI, body, Arabic and Latin) | **Tajawal** (400 / 500 / 700) | Open Font License, self-hosted. Supports Arabic and Latin. |
 | Display / headings / name | **Heming** | **Not yet in the project.** Reported as a free monospaced sans-serif by Ádám Görzsöny, variable weight. The "by Awwwards" attribution could not be verified and no official download or licence text was found, so confirm the licence before using it. It is expected to be **Latin-only**, so Arabic display text falls back to **Tajawal Bold**. |
 
-The wordmark in the current lockups is **Tajawal Bold outlines, +16% tracking, capitals**. It is an interim stand-in. **Redraw the wordmark in Heming once the file is obtained**, and design an **Arabic wordmark / lockup** (عبدالفتاح) that balances with the monogram.
+The name line in the current lockups is **Tajawal Medium outlines, capitals, +36% tracking**. It is an interim stand-in. **Redraw it in Heming once the file is obtained**, and design an **Arabic lockup** (عبدالفتاح أبو الفتوح) that balances with the signature; an Arabic signature in the same brush spirit (or a calligraphic treatment) is welcome.
 
 ## 5. Colour
 
@@ -106,25 +108,25 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 7. Deliverables requested
 
-**A. Brand identity document + guidelines** (PDF and/or HTML), covering: brand story and positioning · voice and vocabulary (EN + AR) · logo anatomy, clear space (current: 24 units on all sides), minimum sizes (12 px screen / 8 mm print), lockups, colour and one-colour rules, misuse (don'ts) · Arabic lockup rules · typography (Tajawal + Heming) with scale · colour system and accessibility pairs · iconography · layout and UI language (circular frames) · motion · imagery and diagram style (black/white, geometric, high-contrast) · how personal brand relates to Kyberia and Peridot (never mix colours; ventures appear grey until hovered) · templates guidance · dos and don'ts.
+**A. Brand identity document + guidelines** (PDF and/or HTML), covering: brand story and positioning · voice and vocabulary (EN + AR) · logo anatomy, clear space (current: ¼ of the signature's height on all sides), minimum sizes (regular signature 24 px screen / 12 mm print; bold master and favicon below that), lockups, colour and one-colour rules, misuse (don'ts) · Arabic lockup rules · typography (Tajawal + Heming) with scale · colour system and accessibility pairs · iconography · layout and UI language (circular frames) · motion · imagery and diagram style (black/white, geometric, high-contrast) · how personal brand relates to Kyberia and Peridot (never mix colours; ventures appear grey until hovered) · templates guidance · dos and don'ts.
 
 **B. Assets**
 
-1. Final logo suite (SVG + PNG): mark, horizontal and stacked lockups in **English and Arabic**, badge, one-colour, reversed; outlined text (no font dependencies).
-2. Favicon / app icon set including a **hand pixel-hinted 16×16 and 32×32** (current auto-scaled 16 px is marginal), `apple-touch-icon` 180, Android 192/512, maskable variants.
+1. Final logo suite (SVG + PNG): signature, lockup in **English and Arabic**, badge, one-colour, reversed; outlined text (no font dependencies). Offer a horizontal lockup variant if one is useful.
+2. Favicon / app icon set including a **hand pixel-hinted 16×16 and 32×32** (the current bold master is legible at 16 px but a hinted version would be crisper), `apple-touch-icon` 180, Android 192/512, maskable variants.
 3. Social: avatars (LinkedIn, GitHub, X, Instagram, Behance, Medium, ResearchGate), banners (LinkedIn 1584×396, X 1500×500), GitHub social preview 1280×640, **Open Graph 1200×630** (a basic one exists), email signature.
 4. Stationery: business card (85×55), letterhead, CV header block, cover-letter header, slide master (16:9) with title / section / content layouts, Notion page cover + icon set.
 5. Download-thumbnail system: a consistent cover style for free downloads (Claude skills / prompts, Notion templates, spreadsheet templates, website templates, CV and cover-letter templates), 4:3, black/white, category glyphs in the circular-frame style.
-6. A simple geometric pattern / texture built from the `A` peak and `m` arches for backgrounds.
+6. A simple pattern / texture built from the signature's strokes (flourish, A apex, M peaks) for backgrounds.
 
 ## 8. Open items and risks (please address or flag)
 
-1. **Heming**: obtain, confirm licence, then redraw the wordmark. Latin-only expected, so design the Arabic counterpart.
-2. **Signature variant**: an optional hand-drawn signature monogram for personal documents (inspired by the second reference). Not yet designed; decide whether it is worth having beside the geometric mark.
-3. **16×16 favicon** needs hand pixel-hinting.
-4. **Venture marks** are placeholders; Kyberia Tech's colour (pink vs green) is inconsistent across sources.
-5. **Relationship to the geometric references**: the logo borrows the *language* (geometry, negative space, weight) of the first reference, not any specific mark. Please run a quick distinctiveness check against similar "Am" / "AM" monograms before finalising.
-6. The wordmark reads "ABDELFATTAH" only. Decide whether "M." or the full name should appear in formal lockups.
+1. **Heming**: obtain, confirm licence, then redraw the name line. Latin-only expected, so design the Arabic counterpart.
+2. **Stroke quality**: the signature is generated from point lists. Please review rhythm, the A/M join, the cross-stroke and the flourish, and refine or redraw as needed.
+3. **Name choice**: the lockup uses first + family name (ABDELFATTAH ABOULFOUTOH). Decide whether formal use should include the middle initial "M." or a two-line / split layout like the reference.
+4. **Hinted favicon** (16×16, 32×32) and a **bolder small-size master** for 16–24 px use.
+5. **Venture marks** are placeholders; Kyberia Tech's colour (pink vs green) is inconsistent across sources.
+6. **Distinctiveness**: run a quick check against similar "AM" signature marks before finalising.
 
 ## 9. Constraints
 
@@ -132,4 +134,4 @@ Black and white first; yellow minimal; no gradients, drop shadows, 3D or glossy 
 
 ---
 
-*Package contents:* `CLAUDE-DESIGN-BRIEF.md` (this file), `design-tokens.json`, `logo/` (SVG, PNG, tests), `build-logo.mjs` (regenerates all logo files), `reference/README.md`.
+*Package contents:* `CLAUDE-DESIGN-BRIEF.md` (this file), `design-tokens.json`, `logo/` (SVG, PNG, tests), `build-signature.mjs` + `pen.mjs` (regenerate all logo files), `reference/README.md`.

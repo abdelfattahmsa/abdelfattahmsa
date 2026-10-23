@@ -1,104 +1,95 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>AM logo — test sheet</title>
+<html lang="en"><head><meta charset="utf-8"><title>AM signature logo — test sheet</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 *{box-sizing:border-box;margin:0}
 body{font:15px/1.5 "Tajawal",system-ui,sans-serif;background:#f2f2f2;color:#000;padding:32px;max-width:1280px;margin-inline:auto}
 h1{font-size:28px;margin-bottom:4px}h2{font-size:15px;letter-spacing:.08em;text-transform:uppercase;margin:36px 0 4px}
-p.n{color:#555;margin-bottom:14px;max-width:80ch}
+p.n{color:#555;margin-bottom:14px;max-width:84ch}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch}
 .tile{display:grid;place-items:center;gap:8px;padding:22px;border-radius:20px;background:#fff;min-width:150px;text-align:center}
 .tile small{font-size:11px;color:#666}
 .dark{background:#000;color:#fff}.dark small{color:#aaa}.yellow{background:#ffcc00}.grey{background:#7a7a7a}.photo{background:linear-gradient(135deg,#2b5876,#c9a14a 55%,#7a2e2e)}
 img{display:block}.pix{image-rendering:pixelated}
-.blur img{filter:blur(2.6px)}.gray img{filter:grayscale(1) contrast(1.1)}.thr img{filter:grayscale(1) contrast(1000%)}
-.warn{display:inline-block;background:#b26a00;color:#fff;border-radius:999px;padding:0 10px;font-size:11px;font-weight:700;margin-inline-start:6px;vertical-align:middle}
+.blur img{filter:blur(2.4px)}.gray img{filter:grayscale(1) contrast(1.1)}.thr img{filter:grayscale(1) contrast(1000%)}
 .pass{display:inline-block;background:#0a7d32;color:#fff;border-radius:999px;padding:0 10px;font-size:11px;font-weight:700;margin-inline-start:6px;vertical-align:middle}
-.tab{display:flex;align-items:center;gap:8px;background:#dfe1e5;border-radius:12px 12px 0 0;padding:8px 14px;font:12px system-ui;width:230px}
-.tab.d{background:#35363a;color:#fff}
-.mask{width:96px;height:96px;display:grid;place-items:center;background:#fff;overflow:hidden}
-.mask img{width:72px}
+.warn{display:inline-block;background:#b26a00;color:#fff;border-radius:999px;padding:0 10px;font-size:11px;font-weight:700;margin-inline-start:6px;vertical-align:middle}
+.tab{display:flex;align-items:center;gap:8px;background:#dfe1e5;border-radius:12px 12px 0 0;padding:8px 14px;font:12px system-ui;width:250px}.tab.d{background:#35363a;color:#fff}
+.mask{width:96px;height:96px;display:grid;place-items:center;overflow:hidden}.mask img{width:76px}
 .circle{border-radius:50%}.squircle{border-radius:22%}
-table{border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;width:100%}td,th{padding:8px 14px;text-align:left;border-bottom:1px solid #eee;font-size:14px}th{background:#fafafa}
-.ok{color:#0a7d32;font-weight:700}
+table{border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;width:100%}td,th{padding:8px 14px;text-align:left;border-bottom:1px solid #eee;font-size:14px;vertical-align:top}th{background:#fafafa}
+.ok{color:#0a7d32;font-weight:700}.mid{color:#b26a00;font-weight:700}
 </style></head><body>
-<h1>AM monogram · test sheet</h1>
-<p class="n">Concept: <b>A</b> is a peak with an arch opening (truss / tunnel). <b>m</b> is two adjoining arches (bridge). Built from straight lines and true semicircles only; no strokes, gradients, or effects.</p>
+<h1>AM signature · test sheet</h1>
+<p class="n">A brush-pen signature monogram in capitals, <b>AM.</b>, with the full name set underneath in widely tracked capitals. Drawn from hand-placed pen strokes (a flat nib held at a fixed angle, so down-strokes are thick and up-strokes thin) and converted to one clean filled outline. One colour, no effects. Regenerate with <code>node brand/build-signature.mjs</code>.</p>
 
 <h2>1 · Single-colour test <span class="pass">PASS</span></h2>
-<p class="n">The logo is one flat shape in one colour; nothing depends on a second colour, outline, shadow or gradient.</p>
+<p class="n">One flat shape in one colour. Nothing depends on a second colour, outline, shadow or gradient.</p>
 <div class="row">
- <div class="tile"><img src="am-lockup-horizontal.svg" width="300" alt="black on white"><small>black on white</small></div>
- <div class="tile dark"><img src="am-lockup-horizontal-white.svg" width="300" alt="white on black"><small>white on black</small></div>
- <div class="tile yellow"><img src="am-lockup-horizontal.svg" width="300" alt="black on yellow"><small>black on #ffcc00</small></div>
- <div class="tile grey"><img src="am-lockup-horizontal-white.svg" width="300" alt="white on grey"><small>white on mid-grey</small></div>
- <div class="tile photo"><img src="am-lockup-horizontal-white.svg" width="300" alt="white on busy gradient"><small>white on busy background</small></div>
+ <div class="tile"><img src="am-lockup.svg" width="330" alt=""><small>black on white</small></div>
+ <div class="tile dark"><img src="am-lockup-white.svg" width="330" alt=""><small>white on black</small></div>
+ <div class="tile yellow"><img src="am-lockup.svg" width="330" alt=""><small>black on #ffcc00</small></div>
+ <div class="tile grey"><img src="am-lockup-white.svg" width="330" alt=""><small>white on mid-grey</small></div>
+ <div class="tile photo"><img src="am-lockup-white.svg" width="330" alt=""><small>white on a busy background</small></div>
 </div>
 
-<h2>2 · 16 px test <span class="pass">PASS: mark</span> <span class="warn">MARGINAL: 16×16 favicon at 1×</span></h2>
-<p class="n">Left: actual size. Right: the same pixels enlarged 8× (no smoothing). The monogram passes at 16 px <i>tall</i> (≈31 px wide). A square 16×16 favicon can only be ≈14 px wide, so the mark is ≈7 px tall: letters read as "AM" but the A's arch opening nearly closes. It is crisp at 32 px (2× / retina), which is what most screens use. Recommendation: have a hand pixel-hinted 16×16 favicon made (see brief).</p>
+<h2>2 · Small sizes <span class="pass">PASS ≥ 24 px tall</span> <span class="warn">16 px: signature goes faint</span> <span class="pass">favicon 16 px</span></h2>
+<p class="n">Left: actual size. The hairline flourish of the regular signature turns grey below about 24 px tall, though the letters still read. For anything smaller use the bold master (favicon and site header use it): it reads as "AM" at 16 px and is crisp at 32 px.</p>
 <div class="row">
- <div class="tile"><div style="display:flex;gap:18px;align-items:end"><img src="am-mark.svg" height="16" alt=""><img src="am-favicon.svg" width="16" height="16" alt=""><img src="am-favicon.svg" width="32" height="32" alt=""></div><small>mark @16px · favicon @16 · favicon @32</small></div>
+ <div class="tile"><div style="display:flex;gap:22px;align-items:end"><img src="am-signature.svg" height="16" alt=""><img src="am-signature.svg" height="24" alt=""><img src="am-signature.svg" height="32" alt=""><img src="am-signature.svg" height="48" alt=""></div><small>signature @ 16 · 24 · 32 · 48 px tall</small></div>
+ <div class="tile"><div style="display:flex;gap:18px;align-items:end"><img src="am-favicon.svg" width="16" height="16" alt=""><img src="am-favicon.svg" width="32" height="32" alt=""></div><small>favicon @16 · @32</small></div>
  <div class="tile"><img class="pix" src="png/am-favicon-16.png" width="128" height="128" alt=""><small>favicon 16 px ×8</small></div>
  <div class="tile"><img class="pix" src="png/am-favicon-32.png" width="256" height="256" alt=""><small>favicon 32 px ×8</small></div>
- <div class="tile dark"><img src="am-mark-white.svg" height="16" alt=""><small>mark @16px, reversed</small></div>
 </div>
 
-<h2>3 · Scalability ladder <span class="pass">PASS ≥ 12 px</span> <span class="warn">10 px floor</span></h2>
-<p class="n">Mark at 10, 12, 14, 16, 20, 28, 48, 96 px tall. Verified on real pixels: the A's arch opening is clearly open from 12 px; at 10 px it is marginal; at 8 px the shapes blur together (still reads "Am" but do not use).</p>
-<div class="row"><div class="tile" style="padding:22px 28px"><div style="display:flex;gap:22px;align-items:end">
-<img src="am-mark.svg" height="10" alt=""><img src="am-mark.svg" height="12" alt=""><img src="am-mark.svg" height="14" alt=""><img src="am-mark.svg" height="16" alt=""><img src="am-mark.svg" height="20" alt=""><img src="am-mark.svg" height="28" alt=""><img src="am-mark.svg" height="48" alt=""><img src="am-mark.svg" height="96" alt=""></div></div></div>
-
-<h2>4 · Squint / blur test <span class="pass">PASS</span></h2>
-<p class="n">Blurred heavily: the silhouette must still read as a distinct, balanced pair of shapes (a peak and a double arch).</p>
+<h2>3 · Squint / blur test <span class="pass">PASS</span></h2>
+<p class="n">Heavily blurred, the silhouette stays a distinctive leaning "AM" with a rising tail.</p>
 <div class="row">
- <div class="tile blur"><img src="am-mark.svg" width="260" alt=""><small>blur 2.6px</small></div>
- <div class="tile blur dark"><img src="am-mark-white.svg" width="260" alt=""><small>blur, reversed</small></div>
+ <div class="tile blur"><img src="am-signature.svg" width="300" alt=""><small>blur</small></div>
+ <div class="tile blur dark"><img src="am-signature-white.svg" width="300" alt=""><small>blur, reversed</small></div>
  <div class="tile blur"><img src="am-badge.svg" width="150" alt=""><small>badge, blurred</small></div>
 </div>
 
-<h2>5 · Greyscale and 1-bit threshold <span class="pass">PASS</span></h2>
+<h2>4 · Greyscale and 1-bit threshold <span class="pass">PASS</span></h2>
 <div class="row">
- <div class="tile gray"><img src="am-favicon.svg" width="150" alt=""><small>yellow favicon → greyscale (mark stays high-contrast)</small></div>
+ <div class="tile gray"><img src="am-favicon.svg" width="150" alt=""><small>yellow favicon in greyscale (still high contrast)</small></div>
  <div class="tile thr"><img src="am-favicon.svg" width="150" alt=""><small>1-bit threshold</small></div>
- <div class="tile thr"><img src="am-lockup-stacked.svg" width="190" alt=""><small>stacked, 1-bit</small></div>
+ <div class="tile thr"><img src="am-lockup.svg" width="300" alt=""><small>lockup, 1-bit</small></div>
 </div>
 
-<h2>6 · Reversal and badge <span class="pass">PASS</span></h2>
+<h2>5 · Reversal and badge <span class="pass">PASS</span></h2>
 <div class="row">
  <div class="tile"><img src="am-badge.svg" width="150" alt=""><small>badge: knock-out (true transparency)</small></div>
  <div class="tile dark"><img src="am-badge-white.svg" width="150" alt=""><small>badge reversed</small></div>
  <div class="tile photo"><img src="am-badge-white.svg" width="150" alt=""><small>badge over imagery</small></div>
  <div class="tile"><img src="am-favicon.svg" width="150" alt=""><small>favicon / app icon (yellow)</small></div>
- <div class="tile"><img src="am-lockup-stacked.svg" width="220" alt=""><small>stacked lockup</small></div>
 </div>
 
-<h2>7 · Icon masks (safe area) <span class="pass">PASS</span></h2>
-<p class="n">The mark sits inside a 72% safe area, so circular, squircle and square platform crops never touch it.</p>
+<h2>6 · Icon masks <span class="pass">PASS</span></h2>
+<p class="n">The signature sits inside a safe area, so circle, squircle and square crops never touch it.</p>
 <div class="row">
- <div class="tile"><div class="mask circle" style="background:#ffcc00"><img src="am-mark.svg" alt=""></div><small>circle crop</small></div>
- <div class="tile"><div class="mask squircle" style="background:#ffcc00"><img src="am-mark.svg" alt=""></div><small>iOS squircle</small></div>
- <div class="tile"><div class="mask" style="background:#ffcc00"><img src="am-mark.svg" alt=""></div><small>square</small></div>
- <div class="tile dark"><div class="mask circle" style="background:#111"><img src="am-mark-white.svg" alt=""></div><small>dark circle</small></div>
+ <div class="tile"><div class="mask circle" style="background:#ffcc00"><img src="am-signature.svg" alt=""></div><small>circle</small></div>
+ <div class="tile"><div class="mask squircle" style="background:#ffcc00"><img src="am-signature.svg" alt=""></div><small>squircle</small></div>
+ <div class="tile"><div class="mask" style="background:#ffcc00"><img src="am-signature.svg" alt=""></div><small>square</small></div>
+ <div class="tile dark"><div class="mask circle" style="background:#111"><img src="am-signature-white.svg" alt=""></div><small>dark circle</small></div>
 </div>
 
-<h2>8 · In context <span class="pass">PASS</span></h2>
+<h2>7 · In context <span class="pass">PASS</span></h2>
 <div class="row">
  <div class="tile" style="padding:0;background:none"><div class="tab"><img src="am-favicon.svg" width="16" height="16" alt="">Abdelfattah M. — Engineer. System Builder.</div></div>
  <div class="tile" style="padding:0;background:none"><div class="tab d"><img src="am-favicon.svg" width="16" height="16" alt="">Knowledge Hub · Abdelfattah M.</div></div>
- <div class="tile dark" style="min-width:340px;grid-auto-flow:column;justify-content:space-between;padding:14px 22px"><img src="am-mark-white.svg" height="22" alt=""><small>Home · About · Knowledge Hub</small></div>
- <div class="tile" style="min-width:340px"><img src="am-lockup-horizontal.svg" width="240" alt=""><small>business-card / letterhead lockup</small></div>
+ <div class="tile" style="min-width:360px"><img src="am-lockup.svg" width="300" alt=""><small>letterhead / business card</small></div>
 </div>
 
-<h2>9 · Construction rules</h2>
+<h2>8 · Rules</h2>
 <table>
-<tr><th>Rule</th><th>Value</th><th>Result</th></tr>
-<tr><td>Grid</td><td>Mark = 118 × 60 units. A: 48 wide, apex 12 flat. m: 60 wide, stems 12, arches r = 18 / 6.</td><td class="ok">Defined</td></tr>
-<tr><td>Smallest feature (embroidery, stamp, emboss)</td><td>Narrowest gap = 12 units = 20% of height</td><td class="ok">≥ 6% rule met</td></tr>
-<tr><td>Clear space</td><td>1× the m's stem width ×2 = 24 units (40% of mark height) on all sides</td><td class="ok">Defined</td></tr>
-<tr><td>Minimum size</td><td>Mark 12 px tall on screen (10 px absolute floor) · 8 mm in print. For square slots under ~32 px use the small-size master (favicon).</td><td class="ok">Verified in tests 2 and 3</td></tr>
-<tr><td>Colour</td><td>Black or white only. Yellow #ffcc00 appears only behind the favicon / app icon.</td><td class="ok">One colour</td></tr>
-<tr><td>Wordmark</td><td>ABDELFATTAH, caps, +16% tracking. Interim: Tajawal Bold outlines → replace with Heming when licensed.</td><td class="ok">Interim</td></tr>
-<tr><td>Unintended readings</td><td>Reads "Am". No accidental shapes at any size tested.</td><td class="ok">Checked</td></tr>
+<tr><th>Rule</th><th>Value</th><th>Status</th></tr>
+<tr><td>Construction</td><td>Hand-placed pen centre-lines, flat nib at −28°, brush swell on the flourish, 11° lean. Source: <code>brand/build-signature.mjs</code>.</td><td class="ok">Defined</td></tr>
+<tr><td>Lockup</td><td>Signature, then the full name in tracked capitals (+36%), centred under the letters. Name line ≈ 1.1× the signature's width.</td><td class="ok">Defined</td></tr>
+<tr><td>Clear space</td><td>¼ of the signature's height on all sides.</td><td class="ok">Defined</td></tr>
+<tr><td>Minimum size</td><td>Regular signature 24 px tall (screen) · 12 mm (print). Below that use the bold master; favicon from 16 px.</td><td class="ok">Verified on pixels</td></tr>
+<tr><td>Colour</td><td>Black or white only. Yellow #ffcc00 only behind the favicon / app icon, or as one small rule in social cards.</td><td class="ok">One colour</td></tr>
+<tr><td>Name typeface</td><td>Tajawal Medium outlines, capitals. Interim until Heming is available.</td><td class="mid">Interim</td></tr>
+<tr><td>Known weak spots</td><td>Hairline flourish is faint under 24 px · a hand pixel-hinted 16×16 favicon would be crisper · Arabic lockup not yet designed.</td><td class="mid">Open</td></tr>
 </table>
 </body></html>
