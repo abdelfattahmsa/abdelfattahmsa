@@ -113,6 +113,7 @@ export function build() {
       faviconSvg: '/assets/icons/favicon.svg',
       favicon32: '/assets/icons/favicon-32.png',
       appleIcon: '/assets/icons/apple-touch-icon.png',
+      displayFont: satoshi.length ? `/assets/fonts/${satoshi[0]}` : null,
     },
   };
   const { pages, T, L, u } = createTemplates(ctx);
