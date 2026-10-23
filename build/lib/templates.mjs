@@ -98,17 +98,26 @@ export function createTemplates(ctx) {
         return `<li><a href="${u(lang, href)}"${active ? ' aria-current="page"' : ''}>${esc(T(lang, 'menu.' + k))}</a></li>`;
       })
       .join('');
+    const cvBtn = ctx.cv ? `<a class="btn btn--sm btn--cv" href="${esc(ctx.cv.href)}" download aria-label="${esc(T(lang, 'a11y.cv'))}">${icon('i-download')}<span class="btn__label">${esc(T(lang, 'cv.download'))}</span></a>` : '';
+    const langBtn = `<a class="circle circle--text" href="${u(otherLang, switchPath)}" hreflang="${otherLang}" lang="${otherLang}" aria-label="${esc(T(lang, 'a11y.lang'))}">${esc(T(lang, 'lang.switch') === 'English' ? 'EN' : 'ع')}</a>`;
+    const themeBtn = `<button type="button" class="circle" data-theme-toggle aria-label="${esc(T(lang, 'a11y.theme'))}">${icon('i-sun', 'theme-sun')}${icon('i-moon', 'theme-moon')}</button>`;
     return `<header class="topbar">
   <div class="topbar__start">
     <button type="button" class="circle" id="hub-toggle" aria-controls="hub-drawer" aria-expanded="false" aria-label="${esc(T(lang, 'a11y.hub'))}">${icon('i-hub', 'flip')}</button>
     <a class="brandlink" href="${u(lang, '/')}" aria-label="${esc(T(lang, 'a11y.home'))}">${icon('logo', 'brandlink__mark')}</a>
   </div>
-  <nav class="topnav" aria-label="${esc(T(lang, 'a11y.menu'))}"><ul>${nav}</ul></nav>
+  <nav class="topnav" id="nav-panel" aria-label="${esc(T(lang, 'a11y.menu'))}"><ul>${nav}</ul>
+    <div class="topnav__tools">
+      ${cvBtn}
+      ${langBtn}
+      ${themeBtn}
+    </div>
+  </nav>
   <div class="topbar__end">
-    ${ctx.cv ? `<a class="btn btn--sm btn--cv" href="${esc(ctx.cv.href)}" download aria-label="${esc(T(lang, 'a11y.cv'))}">${icon('i-download')}<span class="btn__label">${esc(T(lang, 'cv.download'))}</span></a>` : ''}
+    <span class="tools-wide">${cvBtn}</span>
     ${isHome ? '' : `<button type="button" class="circle" data-search-open aria-label="${esc(T(lang, 'search.label'))}">${icon('i-search')}</button>`}
-    <a class="circle circle--text" href="${u(otherLang, switchPath)}" hreflang="${otherLang}" lang="${otherLang}" aria-label="${esc(T(lang, 'a11y.lang'))}">${esc(T(lang, 'lang.switch') === 'English' ? 'EN' : 'ع')}</a>
-    <button type="button" class="circle" data-theme-toggle aria-label="${esc(T(lang, 'a11y.theme'))}">${icon('i-sun', 'theme-sun')}${icon('i-moon', 'theme-moon')}</button>
+    <span class="tools-wide">${langBtn}${themeBtn}</span>
+    <button type="button" class="circle burger" id="nav-toggle" aria-controls="nav-panel" aria-expanded="false" aria-label="${esc(T(lang, 'a11y.nav'))}">${icon('i-menu', 'burger__open')}${icon('i-close', 'burger__close')}</button>
   </div>
 </header>`;
   }
