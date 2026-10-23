@@ -42,7 +42,7 @@ UI language for the website, which the brand should also use: **circular frames 
 
 **Concept.** The owner's name, **Abdelfattah** over **Aboulfoutoh**, stacked on two lines, set in the website's display font. Plain, confident, no ornament. An **AM** badge and favicon use the same typeface.
 
-**Construction.** Two lines of text converted to outlines: bold, −1.2% tracking, leading = 1.2× cap height, left-aligned. Source of truth: `build-logo.mjs`, which regenerates every file. It currently uses **Tajawal Bold** (bundled). When the Satoshi files are added to `brand/fonts/` it switches to **Satoshi Bold** automatically.
+**Construction.** Two lines of text converted to outlines: bold, −1.2% tracking, leading = 1.2× cap height, left-aligned. Source of truth: `build-logo.mjs`, which regenerates every file. It is drawn in **Satoshi Bold** (outlined, so the logo files contain no font). The font itself is not part of this package and must not be shared.
 
 **Files in `logo/`**
 
@@ -64,14 +64,14 @@ UI language for the website, which the brand should also use: **circular frames 
 | Small sizes: wordmark clear from **26 px** tall (site header: 34 px, 26 px on phones); crowded below ~22 px | Pass ≥ 26 px |
 | Favicon: crisp at 32 px; at 16×16 (1×) the "AM" is soft but recognisable | **Marginal at 16 px** |
 
-**Known weak spots:** typeface is interim until Satoshi is added; no Arabic version; the 16×16 favicon would benefit from hand pixel-hinting.
+**Known weak spots:** no Arabic version; the 16×16 favicon would benefit from hand pixel-hinting.
 
 ## 4. Typography
 
 | Role | Font | Notes |
 |---|---|---|
 | All text (UI, body, Arabic and Latin) | **Tajawal** (400 / 500 / 700) | Open Font License, self-hosted. Supports Arabic and Latin. |
-| Display / headings / name / logo | **Satoshi** | Free from fontshare.com (Indian Type Foundry licence). **Files not yet added**, so headings and the logo currently use Tajawal. Satoshi is Latin-only, so Arabic display text stays **Tajawal Bold**. |
+| Display / headings / name / logo | **Satoshi** | Free from fontshare.com (Indian Type Foundry licence). Used on the live site for headings and the name, and for the logo. Satoshi is Latin-only, so Arabic display text stays **Tajawal Bold**. |
 
 Related brand (for context only): the **Kyberia** guidelines use Spline Sans (display), Satoshi (reading), Spline Sans Mono (labels) and IBM Plex Sans Arabic. The personal brand deliberately differs: black and white, Tajawal + Satoshi.
 
@@ -102,7 +102,7 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 7. Deliverables requested
 
-**A. Brand identity document + guidelines** (PDF and/or HTML), covering: brand story and positioning · voice and vocabulary (EN + AR) · logo anatomy, clear space (current: one cap-height on all sides), minimum sizes (wordmark 26 px on screen; AM badge below that), lockups, colour and one-colour rules, misuse (don'ts) · Arabic lockup rules · typography (Tajawal + Heming) with scale · colour system and accessibility pairs · iconography · layout and UI language (circular frames) · motion · imagery and diagram style (black/white, geometric, high-contrast) · how personal brand relates to Kyberia and Peridot (never mix colours; ventures appear grey until hovered) · templates guidance · dos and don'ts.
+**A. Brand identity document + guidelines** (PDF and/or HTML), covering: brand story and positioning · voice and vocabulary (EN + AR) · logo anatomy, clear space (current: one cap-height on all sides), minimum sizes (wordmark 26 px on screen; AM badge below that), lockups, colour and one-colour rules, misuse (don'ts) · Arabic lockup rules · typography (Tajawal + Satoshi) with scale · colour system and accessibility pairs · iconography · layout and UI language (circular frames) · motion · imagery and diagram style (black/white, geometric, high-contrast) · how personal brand relates to Kyberia and Peridot (never mix colours; ventures appear grey until hovered) · templates guidance · dos and don'ts.
 
 **B. Assets**
 
@@ -115,7 +115,7 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 8. Open items and risks (please address or flag)
 
-1. **Satoshi**: add the files, then regenerate the wordmark (`node brand/build-logo.mjs`). Design an **Arabic** lockup (عبدالفتاح أبو الفتوح) to sit beside it.
+1. Design an **Arabic** lockup (عبدالفتاح أبو الفتوح) to sit beside it.
 2. **Hinted favicon** (16×16, 32×32): the auto-scaled "AM" is soft at 16 px.
 3. **Peridot Holding** has no logo yet (text only on the site).
 4. **Distinctiveness**: a plain typographic logo is easy to execute and easy to confuse. Consider one ownable detail (a custom letterform, a cut, a signature alternate) without losing the plain character.

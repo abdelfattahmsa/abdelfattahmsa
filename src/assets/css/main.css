@@ -106,7 +106,7 @@ h3{font-size:1.2rem}
 .topbar__start,.topbar__end{display:flex;align-items:center;gap:10px}
 .topbar__end{justify-self:end}
 .brandlink{display:inline-flex;align-items:center;padding:8px 10px;border-radius:999px}
-.brandlink__mark{inline-size:auto;block-size:34px;aspect-ratio:518/142}
+.brandlink__mark{inline-size:auto;block-size:34px;aspect-ratio:554/163}
 .topnav ul{display:flex;gap:clamp(4px,1.6vw,18px);align-items:center}
 .topnav a{position:relative;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:500;color:var(--muted);transition:color .15s}
 .topnav a:hover,.topnav a[aria-current="page"]{color:var(--text)}

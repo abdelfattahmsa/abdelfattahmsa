@@ -8,7 +8,8 @@
     "build": "node build/build.mjs",
     "dev": "node build/dev.mjs",
     "admin": "node admin/server.mjs",
-    "check": "node build/check.mjs"
+    "check": "node build/check.mjs",
+    "fonts:pack": "node build/font-pack.mjs"
   },
   "engines": {
     "node": ">=20"

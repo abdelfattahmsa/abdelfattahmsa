@@ -24,6 +24,17 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Satoshi font (optional; kept out of the public repo, see SITE.md)
+        env:
+          PART1: ${{ secrets.SATOSHI_WOFF2_B64_1 }}
+          PART2: ${{ secrets.SATOSHI_WOFF2_B64_2 }}
+        run: |
+          if [ -n "$PART1" ]; then
+            printf '%s%s' "$PART1" "$PART2" | base64 -d > src/assets/fonts/Satoshi-Variable.woff2
+            echo "Satoshi installed for this build"
+          else
+            echo "No Satoshi secrets set; the site will use Tajawal for headings"
+          fi
       - run: npm run build
       - run: npm run check
       - uses: actions/configure-pages@v5
