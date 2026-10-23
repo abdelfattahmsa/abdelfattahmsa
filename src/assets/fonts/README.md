@@ -1,6 +1,9 @@
 # Fonts
 
-- **Tajawal** (400/500/700, Latin + Arabic): already here, SIL Open Font License (`TAJAWAL-OFL-LICENSE.txt`).
-- **Heming** (display): **add the file here to enable it.** Save a WOFF2 named like `Heming-Variable.woff2` (any filename starting with `Heming` and ending in `.woff2` is picked up). The build then adds the `@font-face` and switches headings and the name to Heming automatically. No other change needed.
+- **Tajawal** (400/500/700, Latin + Arabic): already here, SIL Open Font License (`TAJAWAL-OFL-LICENSE.txt`). Used for all text.
+- **Satoshi** (display: headings, your name, big numbers): **add the files here to switch it on.**
+  1. Download it free from fontshare.com (Satoshi → Download family).
+  2. Copy the `.woff2` files from the zip into this folder (`Satoshi-Variable.woff2`, or `Satoshi-Regular.woff2` / `Satoshi-Medium.woff2` / `Satoshi-Bold.woff2`). Keep the licence text next to them.
+  3. Copy `Satoshi-Bold.otf` (or `.ttf`) into `brand/fonts/`, then run `node brand/build-logo.mjs` so the logo is redrawn in Satoshi too.
 
-Before adding it: check the licence that ships with the font. The only listing found describes it as free for personal and commercial use, but that is a third-party blurb. Keep the licence text next to the font file. If you only have TTF/OTF, convert to WOFF2 first (e.g. `npx woff2_compress` or fonttools). Heming is expected to be Latin-only, so Arabic headings continue to use Tajawal Bold.
+The build detects any file starting with `Satoshi` and ending in `.woff2`, adds the `@font-face`, and puts Satoshi first for headings. Satoshi has no Arabic, so Arabic headings keep using Tajawal Bold.

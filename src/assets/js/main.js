@@ -192,6 +192,17 @@
     var inOverlay = !!box.closest('[data-search-overlay]');
     return { box: box, overlay: inOverlay, api: initSearch(box, inOverlay ? { onEscape: closeOverlay } : null) };
   });
+  // suggestion chips under the home search: fill the box and run it
+  $$('[data-suggest]').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var hero = searchBoxes.filter(function (b) { return !b.overlay; })[0];
+      if (!hero) return;
+      var input = $('input', hero.box);
+      input.value = chip.dataset.suggest;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+    });
+  });
   var overlay = $('[data-search-overlay]');
   var opener = null;
   function openOverlay() {

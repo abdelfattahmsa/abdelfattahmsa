@@ -38,7 +38,7 @@ const MARKS = {
   gem: '<path d="M24 4l15 9v22l-15 9-15-9V13z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M24 15l7 4.5v9L24 33l-7-4.5v-9z" fill="currentColor"/>',
 };
 
-export function buildSprite(root, markPath) {
+export function buildSprite(root, markPath, kyberia = {}) {
   const sym = [];
   for (const [id, body] of Object.entries(STROKE)) {
     sym.push(`<symbol id="i-${id}" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${body}</g></symbol>`);
@@ -52,6 +52,12 @@ export function buildSprite(root, markPath) {
     } else if (d) sym.push(`<symbol id="s-${id}" viewBox="0 0 24 24"><path fill="currentColor" d="${d}"/></symbol>`);
   }
   for (const [id, body] of Object.entries(MARKS)) sym.push(`<symbol id="m-${id}" viewBox="0 0 48 48">${body}</symbol>`);
+  // the real Kyberia lockups (extracted from the brand guidelines), as three recolourable parts per arm
+  for (const [arm, v] of Object.entries(kyberia)) {
+    sym.push(`<g id="k-${arm}-mark" fill="currentColor">${v.mark.map((d) => `<path d="${d}"/>`).join('')}</g>`);
+    sym.push(`<g id="k-${arm}-word" fill="currentColor"><path d="${v.word}"/></g>`);
+    sym.push(`<g id="k-${arm}-suffix" fill="currentColor"><path d="${v.suffix}"/></g>`);
+  }
   sym.push(`<symbol id="logo" viewBox="0 0 ${markPath.w} ${markPath.h}"><path fill="currentColor" d="${markPath.d}"/></symbol>`);
   return `<svg xmlns="http://www.w3.org/2000/svg">${sym.join('')}</svg>`;
 }

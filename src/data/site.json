@@ -1,91 +1,259 @@
 {
   "url": "https://abdelfattah.site",
-  "name": { "en": "Abdelfattah M. Aboulfoutoh", "ar": "عبدالفتاح محمد سمير أبو الفتوح" },
-  "short": { "en": "Abdelfattah M.", "ar": "عبدالفتاح م." },
-  "tagline": { "en": "Engineer. System Builder. Product Architect.", "ar": "مهندس. بنّاء أنظمة. مهندس منتجات." },
+  "name": {
+    "en": "Abdelfattah M. Aboulfoutoh",
+    "ar": "عبدالفتاح محمد سمير أبو الفتوح"
+  },
+  "short": {
+    "en": "Abdelfattah M.",
+    "ar": "عبدالفتاح م."
+  },
+  "tagline": {
+    "en": "Engineer. System Builder. Product Architect.",
+    "ar": "مهندس. بنّاء أنظمة. مهندس منتجات."
+  },
   "intro": {
     "en": "Bridging physical infrastructure with digital solutions: designing structured, scalable systems for life, work, and technology.",
     "ar": "أربط البنية التحتية المادية بالحلول الرقمية: أصمم أنظمة منظّمة وقابلة للتوسع للحياة والعمل والتقنية."
   },
   "contact": {
-    "formEndpoint": "",
-    "inbox": ["Abdelfattah.aboulfoutoh", "outlook.com"],
-    "location": { "en": "Cairo, Egypt", "ar": "القاهرة، مصر" }
+    "formEndpoint": "https://formspree.io/f/mzeebegw",
+    "inbox": [
+      "Abdelfattah.aboulfoutoh",
+      "outlook.com"
+    ],
+    "location": {
+      "en": "Cairo, Egypt",
+      "ar": "القاهرة، مصر"
+    }
   },
   "socials": [
-    { "id": "linkedin", "label": "LinkedIn", "url": "https://linkedin.com/in/abdelfattahmsa" },
-    { "id": "github", "label": "GitHub", "url": "https://github.com/abdelfattahmsa" },
-    { "id": "x", "label": "X", "url": "https://twitter.com/abdelfattah_msa" },
-    { "id": "instagram", "label": "Instagram", "url": "https://instagram.com/elabdo_m" },
-    { "id": "behance", "label": "Behance", "url": "https://behance.net/abdelfattahmsa" },
-    { "id": "medium", "label": "Medium", "url": "https://abdelfattahmsa.medium.com" },
-    { "id": "researchgate", "label": "ResearchGate", "url": "https://www.researchgate.net/profile/Abdelfattah_Ms_Aboalfoutoh" }
+    {
+      "id": "linkedin",
+      "label": "LinkedIn",
+      "url": "https://linkedin.com/in/abdelfattahmsa"
+    },
+    {
+      "id": "github",
+      "label": "GitHub",
+      "url": "https://github.com/abdelfattahmsa"
+    },
+    {
+      "id": "x",
+      "label": "X",
+      "url": "https://twitter.com/abdelfattah_msa"
+    },
+    {
+      "id": "instagram",
+      "label": "Instagram",
+      "url": "https://instagram.com/elabdo_m"
+    },
+    {
+      "id": "behance",
+      "label": "Behance",
+      "url": "https://behance.net/abdelfattahmsa"
+    },
+    {
+      "id": "medium",
+      "label": "Medium",
+      "url": "https://abdelfattahmsa.medium.com"
+    },
+    {
+      "id": "researchgate",
+      "label": "ResearchGate",
+      "url": "https://www.researchgate.net/profile/Abdelfattah_Ms_Aboalfoutoh"
+    }
   ],
-  "menu": ["home", "about", "hub", "resources", "contact"],
+  "menu": [
+    "home",
+    "about",
+    "hub",
+    "resources",
+    "contact"
+  ],
   "wikis": [
     {
       "id": "engineering",
-      "title": { "en": "Engineering Wiki", "ar": "ويكي الهندسة" },
-      "blurb": { "en": "Civil engineering, project controls and construction practice.", "ar": "الهندسة المدنية والتحكم في المشاريع وممارسات التشييد." }
+      "title": {
+        "en": "Engineering Wiki",
+        "ar": "ويكي الهندسة"
+      },
+      "blurb": {
+        "en": "Civil engineering, project controls and construction practice.",
+        "ar": "الهندسة المدنية والتحكم في المشاريع وممارسات التشييد."
+      }
     },
     {
       "id": "developer",
-      "title": { "en": "Developer Wiki", "ar": "ويكي المطوّر" },
-      "blurb": { "en": "Web, apps, tooling and AI-assisted build workflows.", "ar": "الويب والتطبيقات والأدوات وسير عمل البناء بمساعدة الذكاء الاصطناعي." }
+      "title": {
+        "en": "Developer Wiki",
+        "ar": "ويكي المطوّر"
+      },
+      "blurb": {
+        "en": "Web, apps, tooling and AI-assisted build workflows.",
+        "ar": "الويب والتطبيقات والأدوات وسير عمل البناء بمساعدة الذكاء الاصطناعي."
+      }
     },
     {
       "id": "design",
-      "title": { "en": "Design Wiki", "ar": "ويكي التصميم" },
-      "blurb": { "en": "An open guide to design techniques, by designers, for designers.", "ar": "دليل مفتوح لتقنيات التصميم، من المصممين وللمصممين." }
+      "title": {
+        "en": "Design Wiki",
+        "ar": "ويكي التصميم"
+      },
+      "blurb": {
+        "en": "An open guide to design techniques, by designers, for designers.",
+        "ar": "دليل مفتوح لتقنيات التصميم، من المصممين وللمصممين."
+      }
     }
   ],
-  "projects": [
+  "resourceCategories": [
+    {
+      "id": "claude",
+      "label": {
+        "en": "Claude",
+        "ar": "كلود"
+      }
+    },
+    {
+      "id": "notion",
+      "label": {
+        "en": "Notion",
+        "ar": "نوشن"
+      }
+    },
+    {
+      "id": "spreadsheets",
+      "label": {
+        "en": "Spreadsheets",
+        "ar": "جداول البيانات"
+      }
+    },
+    {
+      "id": "web",
+      "label": {
+        "en": "Website templates",
+        "ar": "قوالب المواقع"
+      }
+    },
+    {
+      "id": "career",
+      "label": {
+        "en": "CV & cover letters",
+        "ar": "السيرة الذاتية وخطابات التقديم"
+      }
+    },
+    {
+      "id": "other",
+      "label": {
+        "en": "Other",
+        "ar": "أخرى"
+      }
+    }
+  ],
+  "resourceTypes": [
+    {
+      "id": "skill",
+      "label": {
+        "en": "Skill",
+        "ar": "مهارة"
+      }
+    },
+    {
+      "id": "prompt",
+      "label": {
+        "en": "Prompt",
+        "ar": "موجِّه"
+      }
+    },
+    {
+      "id": "template",
+      "label": {
+        "en": "Template",
+        "ar": "قالب"
+      }
+    },
+    {
+      "id": "tool",
+      "label": {
+        "en": "Tool",
+        "ar": "أداة"
+      }
+    },
+    {
+      "id": "guide",
+      "label": {
+        "en": "Guide",
+        "ar": "دليل"
+      }
+    }
+  ],
+  "cv": {
+    "file": "/downloads/Abdelfattah-Aboulfoutoh-CV.pdf"
+  },
+  "suggestions": {
+    "en": [
+      "Civil engineering",
+      "Project management",
+      "Web design",
+      "Web development",
+      "Self development"
+    ],
+    "ar": [
+      "الهندسة المدنية",
+      "إدارة المشاريع",
+      "تصميم الويب",
+      "تطوير الويب",
+      "التطوير الذاتي"
+    ]
+  },
+  "ventures": [
     {
       "id": "tech",
-      "name": "Kyberia Tech",
+      "name": "kyberia/tech",
       "url": "https://kyberia.tech",
       "color": "#FF2F92",
-      "mark": "asterisk",
-      "blurb": { "en": "Creative and technology studio: branding, web and digital products.", "ar": "استوديو إبداعي وتقني: الهوية البصرية والويب والمنتجات الرقمية." }
+      "colorText": "#BD005F",
+      "kyberia": true,
+      "blurb": {
+        "en": "The agency front door. Brands, websites and apps for clients.",
+        "ar": "واجهة الوكالة. هويات ومواقع وتطبيقات للعملاء."
+      }
     },
     {
       "id": "labs",
-      "name": "Kyberia Labs",
+      "name": "kyberia/labs",
       "url": "https://labs.kyberia.tech",
-      "color": "#159E97",
-      "mark": "asterisk-ring",
-      "blurb": { "en": "Product development and R&D: apps, SaaS and experiments.", "ar": "تطوير المنتجات والبحث: تطبيقات وبرمجيات كخدمة وتجارب." }
+      "color": "#2D6BFF",
+      "colorText": "#1F4FD6",
+      "kyberia": true,
+      "blurb": {
+        "en": "R&D and products: Monk, Nomad, Mizan and Matica Engine.",
+        "ar": "البحث والمنتجات: Monk وNomad وMizan وMatica Engine."
+      }
     },
     {
-      "id": "studio",
-      "name": "Kyberia Studio",
-      "url": "https://studios.kyberia.tech",
-      "color": "#6636D9",
-      "mark": "asterisk-square",
-      "blurb": { "en": "Design arm: identity, graphic design and UI/UX.", "ar": "ذراع التصميم: الهوية والتصميم الجرافيكي وتجربة المستخدم." }
+      "id": "studios",
+      "name": "kyberia/studios",
+      "url": "https://studio.kyberia.tech",
+      "color": "#FF7A1A",
+      "colorText": "#A84700",
+      "kyberia": true,
+      "blurb": {
+        "en": "Creative services and original IP: branding, motion and worlds of our own.",
+        "ar": "خدمات إبداعية وملكية فكرية أصلية: هوية وحركة وعوالم خاصة بنا."
+      }
     },
     {
       "id": "peridot",
       "name": "Peridot Holding",
       "url": "https://peridot-holdings.com",
       "color": "#7EB731",
-      "mark": "gem",
-      "blurb": { "en": "The holding that structures long-term ventures and partnerships.", "ar": "الشركة القابضة التي تنظّم المشاريع والشراكات طويلة الأجل." }
+      "colorText": "#517320",
+      "kyberia": false,
+      "blurb": {
+        "en": "The holding that structures long-term ventures and partnerships.",
+        "ar": "الشركة القابضة التي تنظّم المشاريع والشراكات طويلة الأجل."
+      }
     }
-  ],
-  "resourceCategories": [
-    { "id": "claude", "label": { "en": "Claude", "ar": "كلود" } },
-    { "id": "notion", "label": { "en": "Notion", "ar": "نوشن" } },
-    { "id": "spreadsheets", "label": { "en": "Spreadsheets", "ar": "جداول البيانات" } },
-    { "id": "web", "label": { "en": "Website templates", "ar": "قوالب المواقع" } },
-    { "id": "career", "label": { "en": "CV & cover letters", "ar": "السيرة الذاتية وخطابات التقديم" } },
-    { "id": "other", "label": { "en": "Other", "ar": "أخرى" } }
-  ],
-  "resourceTypes": [
-    { "id": "skill", "label": { "en": "Skill", "ar": "مهارة" } },
-    { "id": "prompt", "label": { "en": "Prompt", "ar": "موجِّه" } },
-    { "id": "template", "label": { "en": "Template", "ar": "قالب" } },
-    { "id": "tool", "label": { "en": "Tool", "ar": "أداة" } },
-    { "id": "guide", "label": { "en": "Guide", "ar": "دليل" } }
   ]
 }

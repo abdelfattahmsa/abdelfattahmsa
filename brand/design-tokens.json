@@ -22,8 +22,8 @@
     },
     "ventures": {
       "kyberiaTech": "#ff2f92",
-      "kyberiaLabs": "#159e97",
-      "kyberiaStudio": "#6636d9",
+      "kyberiaLabs": "#2d6bff",
+      "kyberiaStudios": "#ff7a1a",
       "peridot": "#7eb731"
     }
   },
@@ -39,9 +39,9 @@
       "selfHosted": true
     },
     "display": {
-      "family": "Heming",
-      "status": "file not yet added; falls back to Tajawal",
-      "note": "licence and Awwwards attribution unverified"
+      "family": "Satoshi",
+      "status": "files not yet added; falls back to Tajawal",
+      "license": "ITF Free Font License (fontshare.com)"
     }
   },
   "radius": {
@@ -71,21 +71,14 @@
     "reducedMotion": "respected"
   },
   "logo": {
-    "type": "brush-pen signature monogram AM. + stacked name ABDELFATTAH ABOULFOUTOH",
-    "pen": {
-      "angle": -28,
-      "lean": "11deg"
-    },
-    "clearSpace": "25% of signature height",
+    "type": "stacked name wordmark (Abdelfattah / Aboulfoutoh) + AM badge",
+    "font": "Tajawal Bold now, Satoshi Bold when available",
+    "clearSpace": "1 cap-height",
     "minSizePx": {
-      "regular": 24,
-      "boldMaster": 16
+      "wordmark": 26,
+      "badge": 16
     },
-    "nameLine": {
-      "font": "Tajawal Medium outlines (interim)",
-      "tracking": "0.36em",
-      "case": "caps"
-    }
+    "leading": "1.2x cap height"
   },
   "breakpoints": {
     "nav-collapse": "820px",

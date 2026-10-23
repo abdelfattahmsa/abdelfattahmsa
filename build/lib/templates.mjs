@@ -105,6 +105,7 @@ export function createTemplates(ctx) {
   </div>
   <nav class="topnav" aria-label="${esc(T(lang, 'a11y.menu'))}"><ul>${nav}</ul></nav>
   <div class="topbar__end">
+    ${ctx.cv ? `<a class="btn btn--sm btn--cv" href="${esc(ctx.cv.href)}" download aria-label="${esc(T(lang, 'a11y.cv'))}">${icon('i-download')}<span class="btn__label">${esc(T(lang, 'cv.download'))}</span></a>` : ''}
     ${isHome ? '' : `<button type="button" class="circle" data-search-open aria-label="${esc(T(lang, 'search.label'))}">${icon('i-search')}</button>`}
     <a class="circle circle--text" href="${u(otherLang, switchPath)}" hreflang="${otherLang}" lang="${otherLang}" aria-label="${esc(T(lang, 'a11y.lang'))}">${esc(T(lang, 'lang.switch') === 'English' ? 'EN' : 'ع')}</a>
     <button type="button" class="circle" data-theme-toggle aria-label="${esc(T(lang, 'a11y.theme'))}">${icon('i-sun', 'theme-sun')}${icon('i-moon', 'theme-moon')}</button>
@@ -252,23 +253,18 @@ ${icon(external ? 'i-external' : 'i-arrow', 'card__go' + (external ? '' : ' flip
   const pages = {};
 
   pages.home = (lang) => {
-    const ventures = site.projects
-      .map(
-        (p) =>
-          `<li><a class="venture ${brandClass(p.id)}" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(p.name)}">${icon('m-' + p.mark, 'venture__mark')}<span class="venture__name">${esc(p.name)}</span></a></li>`
-      )
+    const chips = site.suggestions[lang]
+      .map((t) => `<li><button type="button" class="chip" data-suggest="${esc(t)}">${esc(t)}</button></li>`)
       .join('');
     const main = `<main id="main" class="home">
   <section class="home__hero" aria-labelledby="home-name">
+    <a class="status" href="${u(lang, '/contact/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
     <p class="home__intro">${esc(L(site.intro, lang))}</p>
-    ${searchBox(lang, 'h')}
     ${socials(lang, 'socials--home')}
-  </section>
-  <section class="ventures" aria-labelledby="ventures-h">
-    <div class="ventures__head"><h2 id="ventures-h" class="eyebrow">${esc(T(lang, 'projects.strip'))}</h2><a class="textlink" href="${u(lang, '/projects/')}">${esc(T(lang, 'projects.all'))}${icon('i-arrow', 'flip')}</a></div>
-    <ul class="ventures__list">${ventures}</ul>
+    ${searchBox(lang, 'h')}
+    <ul class="suggest" aria-label="${esc(T(lang, 'home.try'))}">${chips}</ul>
   </section>
   ${footer(lang)}
 </main>`;
@@ -285,9 +281,29 @@ ${icon(external ? 'i-external' : 'i-arrow', 'card__go' + (external ? '' : ' flip
   };
 
   pages.about = (lang) => {
-    const p = ctx.content.pages.about;
-    const v = pick(p, lang);
-    const inner = `${pageHead(lang, v.data.title, v.data.summary)}${v.untranslated ? `<p class="notice" role="note">${esc(T(lang, 'hub.untranslated'))}</p>` : ''}<div class="prose prose--page">${v.html}</div>${socials(lang, 'socials--page')}`;
+    const v = pick(ctx.content.pages.about, lang);
+    const cred = ctx.content.pages['about-credentials'] ? pick(ctx.content.pages['about-credentials'], lang) : null;
+    const timeline = ctx.content.career
+      .map((e, i) => {
+        const c = pick(e, lang).data;
+        return `<li class="tl${i === 0 ? ' tl--now' : ''}"><span class="tl__dot" aria-hidden="true"></span><div class="tl__body"><p class="tl__period">${esc(c.period)}</p><h3 class="tl__role">${esc(c.title)}</h3><p class="tl__org">${esc(c.org)}</p><p class="tl__line">${esc(c.summary)}</p></div></li>`;
+      })
+      .join('');
+    const ventures = site.ventures
+      .map((x) => {
+        const k = ctx.kyberia[x.id];
+        const logo = k
+          ? `<svg class="venture__logo" viewBox="0 0 ${k.w} ${k.h}" dir="ltr" aria-hidden="true" focusable="false"><use class="k-mark" href="${assets.sprite}#k-${x.id}-mark"/><use class="k-word" href="${assets.sprite}#k-${x.id}-word"/><use class="k-suffix" href="${assets.sprite}#k-${x.id}-suffix"/></svg><span class="visually-hidden">${esc(x.name)}</span>`
+          : `<span class="venture__text" dir="ltr">${esc(x.name)}</span>`;
+        return `<li><a class="venture ${brandClass(x.id)}" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><span class="venture__top">${logo}${icon('i-external', 'venture__go')}</span><span class="venture__blurb">${esc(L(x.blurb, lang))}</span></a></li>`;
+      })
+      .join('');
+    const inner = `${pageHead(lang, v.data.title, v.data.summary)}${v.untranslated ? `<p class="notice" role="note">${esc(T(lang, 'hub.untranslated'))}</p>` : ''}
+<div class="prose prose--page">${v.html}</div>
+<section id="timeline" aria-labelledby="tl-h"><h2 id="tl-h">${esc(T(lang, 'about.timeline'))}</h2><p class="lead">${esc(T(lang, 'about.timeline.lead'))}</p><ol class="timeline">${timeline}</ol></section>
+<section id="ventures" aria-labelledby="vn-h"><h2 id="vn-h">${esc(T(lang, 'about.ventures'))}</h2><p class="lead">${esc(T(lang, 'about.ventures.lead'))}</p><ul class="ventures">${ventures}</ul></section>
+${cred ? `<section id="credentials"><div class="prose prose--page">${cred.html}</div></section>` : ''}
+${socials(lang, 'socials--page')}`;
     return [{ path: '/about/', html: layout({ lang, path: '/about/', title: v.data.title, description: v.data.summary, main: withFooter(wrap(inner, 'page--narrow'), lang) }) }];
   };
 
@@ -511,20 +527,6 @@ ${
       }
     }
     return out;
-  };
-
-  pages.projects = (lang) => {
-    const cards = site.projects
-      .map(
-        (p) =>
-          `<li><a class="project ${brandClass(p.id)}" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">
-<span class="project__mark">${icon('m-' + p.mark)}</span>
-<span class="project__body"><strong>${esc(p.name)}</strong><span>${esc(L(p.blurb, lang))}</span></span>
-<span class="project__visit">${esc(T(lang, 'projects.visit'))}${icon('i-external')}</span></a></li>`
-      )
-      .join('');
-    const inner = `${pageHead(lang, T(lang, 'projects.title'), T(lang, 'projects.lead'))}<ul class="projects">${cards}</ul>`;
-    return [{ path: '/projects/', html: layout({ lang, path: '/projects/', title: T(lang, 'projects.title'), description: T(lang, 'projects.lead'), main: withFooter(wrap(inner), lang) }) }];
   };
 
   pages.contact = (lang) => {
