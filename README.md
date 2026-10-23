@@ -7,7 +7,7 @@
 [![Location](https://img.shields.io/badge/📍_Cairo,_Egypt-0a0a0a?style=flat-square)](https://abdelfattah.site)
 [![Website](https://img.shields.io/badge/abdelfattah.site-111?style=flat-square&logo=safari&logoColor=white)](https://abdelfattah.site)
 [![ResearchGate](https://img.shields.io/badge/ResearchGate-00CCBB?style=flat-square&logo=researchgate&logoColor=white)](https://www.researchgate.net/profile/Abdelfattah-M)
-[![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-0A66C2?logo=linkedin-white&logoColor=fff)](https://linkedin.com)
+[![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-0A66C2?logo=linkedin-white&logoColor=fff)](https://linkedin.com/in/abdelfattahmsa)
 [![Medium](https://img.shields.io/badge/Medium-%23000000.svg?logo=medium&logoColor=white)]([#](https://abdelfattahmsa.medium.com/))
 [![Behance](https://img.shields.io/badge/Behance-0054F7?logo=behance&logoColor=white)](https://www.behance.net/abdelfattahmsa)
 
@@ -17,7 +17,7 @@
 
 ### About Me
 
-I'm a Civil Engineer turned multi-disciplinary builder — bridging the physical world of infrastructure with the digital one. By day I work as a **Project Controls Engineer at PGESCO** in Cairo. Outside of that, I'm the founder of **[Kyberia Tech](https://kyberia.tech)**, a creative-tech holding company, and a freelance web developer with over a decade of hands-on experience.
+I'm a Civil Engineer turned multi-disciplinary builder — bridging the physical world of infrastructure with the digital one. By day I work as a **Project Controls Engineer** in Cairo. Outside of that, I'm the founder of **[Kyberia Tech](https://kyberia.tech)**, a creative-tech holding company, and a freelance web developer with over a decade of hands-on experience.
 
 I hold a **BSc in Civil Engineering** from the German University in Cairo and an **MSc in Project Management** from Liverpool John Moores University. I'm an active researcher with published IEEE work — my first paper on structural systems for elevated monorail infrastructure includes a weak-AI decision-support tool I built as part of the research, with more research currently in progress.
 
@@ -86,7 +86,7 @@ Currently deepening my skills in Python, Flutter, data analysis, and AI — all 
 - 🌐 **Web Developer since 2014** — WordPress, Wix, custom-coded sites, LMS platforms
 - 🎓 **MSc Project Management**, Liverpool John Moores University (via UNICAF)
 - 📊 Studying **Business & Corporate Finance** through CFI certifications — growing toward commercial analyst & business consultant
-- 🏢 **Project Controls Engineer**, PGESCO · Cairo, Egypt
+- 🏢 **Project Controls Engineer** · Cairo, Egypt
 
 ---
 
@@ -140,5 +140,7 @@ Currently deepening my skills in Python, Flutter, data analysis, and AI — all 
 *"Engineering the built world. Building the digital one."*
 
 **[abdelfattah.site](https://abdelfattah.site)** · **[kyberia.tech](https://kyberia.tech)**
+
+<sub>The source of abdelfattah.site lives in this repository. See [SITE.md](SITE.md).</sub>
 
 </div>
