@@ -47,11 +47,6 @@
  "hub.untranslated": "هذه الصفحة غير مترجمة بعد. يُعرض الإصدار الإنجليزي.",
  "about.title": "نبذة عني",
  "about.lead": "مهندس مدني ومهندس تحكم مشاريع وباحث ومطوّر ويب ومؤسس.",
- "projects.title": "المشاريع",
- "projects.lead": "المشاريع التي أبنيها وأديرها.",
- "projects.strip": "المشاريع",
- "projects.all": "كل المشاريع",
- "projects.visit": "زيارة",
  "res.title": "الموارد",
  "res.lead": "أدوات وقوالب وأدلة مجانية، مع ملاحظات من خلف الكواليس لما أبنيه.",
  "res.downloads": "تحميلات مجانية",
@@ -102,5 +97,15 @@
  "lang.name": "العربية",
  "lang.switch": "English",
  "code": "ع",
- "hub.overview": "نظرة عامة"
+ "hub.overview": "نظرة عامة",
+ "status.open": "منفتح على التعاون",
+ "cv.download": "تحميل السيرة الذاتية",
+ "a11y.cv": "تحميل سيرتي الذاتية (PDF)",
+ "home.try": "جرّب",
+ "about.timeline": "المسار المهني",
+ "about.timeline.lead": "أين عملت وماذا فعلت، من الأحدث إلى الأقدم.",
+ "about.ventures": "المشاريع",
+ "about.ventures.lead": "المشاريع التي أبنيها وأديرها.",
+ "about.credentials": "التعليم والشهادات",
+ "tl.present": "حتى الآن"
 }

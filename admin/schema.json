@@ -6,18 +6,74 @@
       "dir": "src/content/downloads",
       "bilingual": true,
       "fields": [
-        { "name": "title", "type": "text", "required": true },
-        { "name": "summary", "type": "textarea", "hint": "One or two sentences shown on the card." },
-        { "name": "category", "type": "select", "source": "resourceCategories", "shared": true, "required": true },
-        { "name": "type", "type": "select", "source": "resourceTypes", "shared": true },
-        { "name": "format", "type": "text", "shared": true, "hint": "e.g. XLSX, ZIP, Notion, Markdown. Auto-detected from an uploaded file if left empty." },
-        { "name": "version", "type": "text", "shared": true },
-        { "name": "date", "type": "date", "shared": true },
-        { "name": "file", "type": "file", "shared": true, "dir": "src/downloads", "urlPrefix": "/downloads/", "hint": "Upload the file people will download. Or use the link below for something hosted elsewhere (Notion, GitHub, Drive)." },
-        { "name": "url", "type": "text", "shared": true, "hint": "External link, used when there is no uploaded file." },
-        { "name": "tags", "type": "tags" },
-        { "name": "featured", "type": "bool", "shared": true },
-        { "name": "draft", "type": "bool", "shared": true, "hint": "Draft items are hidden from the published site." }
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "textarea",
+          "hint": "One or two sentences shown on the card."
+        },
+        {
+          "name": "category",
+          "type": "select",
+          "source": "resourceCategories",
+          "shared": true,
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "select",
+          "source": "resourceTypes",
+          "shared": true
+        },
+        {
+          "name": "format",
+          "type": "text",
+          "shared": true,
+          "hint": "e.g. XLSX, ZIP, Notion, Markdown. Auto-detected from an uploaded file if left empty."
+        },
+        {
+          "name": "version",
+          "type": "text",
+          "shared": true
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "shared": true
+        },
+        {
+          "name": "file",
+          "type": "file",
+          "shared": true,
+          "dir": "src/downloads",
+          "urlPrefix": "/downloads/",
+          "hint": "Upload the file people will download. Or use the link below for something hosted elsewhere (Notion, GitHub, Drive)."
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "shared": true,
+          "hint": "External link, used when there is no uploaded file."
+        },
+        {
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "name": "featured",
+          "type": "bool",
+          "shared": true
+        },
+        {
+          "name": "draft",
+          "type": "bool",
+          "shared": true,
+          "hint": "Draft items are hidden from the published site."
+        }
       ]
     },
     "guides": {
@@ -25,11 +81,29 @@
       "dir": "src/content/guides",
       "bilingual": true,
       "fields": [
-        { "name": "title", "type": "text", "required": true },
-        { "name": "summary", "type": "textarea" },
-        { "name": "date", "type": "date", "shared": true },
-        { "name": "tags", "type": "tags" },
-        { "name": "draft", "type": "bool", "shared": true }
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "textarea"
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "shared": true
+        },
+        {
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "name": "draft",
+          "type": "bool",
+          "shared": true
+        }
       ]
     },
     "journey": {
@@ -37,11 +111,29 @@
       "dir": "src/content/journey",
       "bilingual": true,
       "fields": [
-        { "name": "title", "type": "text", "required": true },
-        { "name": "summary", "type": "textarea" },
-        { "name": "date", "type": "date", "shared": true },
-        { "name": "tags", "type": "tags" },
-        { "name": "draft", "type": "bool", "shared": true }
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "textarea"
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "shared": true
+        },
+        {
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "name": "draft",
+          "type": "bool",
+          "shared": true
+        }
       ]
     },
     "research": {
@@ -49,34 +141,138 @@
       "dir": "src/content/research",
       "bilingual": true,
       "fields": [
-        { "name": "title", "type": "text", "required": true },
-        { "name": "summary", "type": "textarea" },
-        { "name": "date", "type": "date", "shared": true },
-        { "name": "tags", "type": "tags" },
-        { "name": "links", "type": "links", "shared": true, "hint": "One per line: Label | https://…" },
-        { "name": "draft", "type": "bool", "shared": true }
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "textarea"
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "shared": true
+        },
+        {
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "name": "links",
+          "type": "links",
+          "shared": true,
+          "hint": "One per line: Label | https://\u2026"
+        },
+        {
+          "name": "draft",
+          "type": "bool",
+          "shared": true
+        }
       ]
     },
-    "wiki-engineering": { "label": "Engineering Wiki", "dir": "src/content/wiki/engineering", "bilingual": true, "fields": "wiki" },
-    "wiki-developer": { "label": "Developer Wiki", "dir": "src/content/wiki/developer", "bilingual": true, "fields": "wiki" },
-    "wiki-design": { "label": "Design Wiki", "dir": "src/content/wiki/design", "bilingual": true, "fields": "wiki" },
+    "career": {
+      "label": "Career timeline (About)",
+      "dir": "src/content/career",
+      "bilingual": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true,
+          "hint": "Your role, e.g. Project Control Engineer."
+        },
+        {
+          "name": "org",
+          "type": "text",
+          "hint": "Employer or client."
+        },
+        {
+          "name": "period",
+          "type": "text",
+          "hint": "Shown as written, e.g. Aug 2026 \u2013 1 Nov 2026."
+        },
+        {
+          "name": "start",
+          "type": "date",
+          "shared": true,
+          "hint": "Start date. Used only for ordering, newest first."
+        },
+        {
+          "name": "summary",
+          "type": "textarea",
+          "hint": "One line describing the job."
+        }
+      ]
+    },
+    "wiki-engineering": {
+      "label": "Engineering Wiki",
+      "dir": "src/content/wiki/engineering",
+      "bilingual": true,
+      "fields": "wiki"
+    },
+    "wiki-developer": {
+      "label": "Developer Wiki",
+      "dir": "src/content/wiki/developer",
+      "bilingual": true,
+      "fields": "wiki"
+    },
+    "wiki-design": {
+      "label": "Design Wiki",
+      "dir": "src/content/wiki/design",
+      "bilingual": true,
+      "fields": "wiki"
+    },
     "pages": {
       "label": "Pages (About)",
       "dir": "src/content/pages",
       "bilingual": true,
       "fields": [
-        { "name": "title", "type": "text", "required": true },
-        { "name": "summary", "type": "textarea" }
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "textarea"
+        }
       ]
     }
   },
   "fieldSets": {
     "wiki": [
-      { "name": "title", "type": "text", "hint": "Not needed for the wiki landing page (_index)." },
-      { "name": "summary", "type": "textarea" },
-      { "name": "order", "type": "number", "shared": true, "hint": "Position in the side menu. Lower comes first." },
-      { "name": "status", "type": "select", "shared": true, "options": ["draft", "published"], "hint": "'draft' shows a Draft badge." },
-      { "name": "updated", "type": "date", "shared": true }
+      {
+        "name": "title",
+        "type": "text",
+        "hint": "Not needed for the wiki landing page (_index)."
+      },
+      {
+        "name": "summary",
+        "type": "textarea"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "shared": true,
+        "hint": "Position in the side menu. Lower comes first."
+      },
+      {
+        "name": "status",
+        "type": "select",
+        "shared": true,
+        "options": [
+          "draft",
+          "published"
+        ],
+        "hint": "'draft' shows a Draft badge."
+      },
+      {
+        "name": "updated",
+        "type": "date",
+        "shared": true
+      }
     ]
   }
 }

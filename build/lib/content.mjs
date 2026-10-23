@@ -43,7 +43,7 @@ export function loadCollection(dir, { drafts = false } = {}) {
     const d = en.data;
     if (d.draft === true && !drafts) continue;
     entry.data = d;
-    entry.date = dateOf(d.date) || dateOf(d.updated);
+    entry.date = dateOf(d.date) || dateOf(d.start) || dateOf(d.updated);
     entry.order = typeof d.order === 'number' ? d.order : 999;
     items.push(entry);
   }
@@ -90,6 +90,7 @@ export function loadAll(root, { drafts = false } = {}) {
     journey: loadCollection(path.join(c, 'journey'), { drafts }).sort((a, b) => (b.date || 0) - (a.date || 0)),
     guides: loadCollection(path.join(c, 'guides'), { drafts }).sort((a, b) => (b.date || 0) - (a.date || 0)),
     downloads,
+    career: loadCollection(path.join(c, 'career'), { drafts }).sort((a, b) => (b.date || 0) - (a.date || 0)),
     pages: Object.fromEntries(loadCollection(path.join(c, 'pages'), { drafts }).map((p) => [p.slug, p])),
   };
 }

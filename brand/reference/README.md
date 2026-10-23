@@ -1,6 +1,7 @@
-# Reference images (not committed)
+# Reference material (not committed)
 
-Attach these two images yourself when you give the package to Claude Design. They are not stored in the repository: the first is a collage of other organisations' logos, which should not be redistributed.
+Attach these yourself when you give the package to Claude Design:
 
-1. **Geometric logo grid** (black-and-white marks: Mondo, Museum, M Stand, Wallpaper*, kavo, blank., arch. …). Source of the design language: pure black/white, basic geometry, negative space, heavy weight.
-2. **"mf. MARGO FRANK" monogram** (handwritten monogram above a widely tracked capital name). Informed the tracked-capitals name line; a handwritten signature variant for AM is still an open item.
+1. **Geometric logo grid**: a collage of other organisations' logos (not redistributed here). Source of the plain, bold, black-and-white design language.
+2. **"mf. MARGO FRANK" monogram**: handwritten monogram over a tracked capital name (tried and set aside; see the brief).
+3. **Kyberia-Brand-Guidelines.pdf**: the Kyberia family's own brand system (colours, marks, lockups, voice). The three Kyberia lockups shown on the site were extracted from it as vectors.

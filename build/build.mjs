@@ -32,13 +32,22 @@ export function build() {
 
   // ---- CSS: base + brand colours + optional Heming @font-face ------------------------------
   const fontDir = path.join(src, 'assets/fonts');
-  const heming = fs.existsSync(fontDir) ? fs.readdirSync(fontDir).find((f) => /^heming.*\.woff2$/i.test(f)) : null;
+  // Display font: Satoshi, if its WOFF2 files are in src/assets/fonts/ (download free from fontshare.com).
+  // Variable file (Satoshi-Variable.woff2) or static files (Satoshi-Regular/Medium/Bold.woff2) both work.
+  const satoshi = fs.existsSync(fontDir) ? fs.readdirSync(fontDir).filter((f) => /^satoshi.*\.woff2$/i.test(f) && !/italic/i.test(f)) : [];
   let css = fs.readFileSync(path.join(src, 'assets/css/main.css'), 'utf8');
   css += '\n/* ---- generated: brand colours ---- */\n';
-  for (const p of site.projects) css += `.brand-${p.id}{--brand:${p.color}}\n`;
-  if (heming) {
-    css += `\n/* ---- generated: Heming display font ---- */\n@font-face{font-family:"Heming";src:url("/assets/fonts/${heming}") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}\n`;
-    css += `:root{--ff-display:"Heming","Tajawal",system-ui,sans-serif}\n`;
+  for (const v of site.ventures) css += `.brand-${v.id}{--brand:${v.color};--brand-text:${v.colorText}}\n`;
+  if (satoshi.length) {
+    css += '\n/* ---- generated: Satoshi display font ---- */\n';
+    const W = { light: 300, regular: 400, medium: 500, bold: 700, black: 900 };
+    for (const file of satoshi) {
+      const variable = /variable/i.test(file);
+      const key = Object.keys(W).find((k) => new RegExp(k, 'i').test(file));
+      const weight = variable ? '300 900' : W[key || 'regular'];
+      css += `@font-face{font-family:"Satoshi";src:url("/assets/fonts/${file}") format("woff2");font-weight:${weight};font-style:normal;font-display:swap}\n`;
+    }
+    css += ':root{--ff-display:"Satoshi","Tajawal",system-ui,sans-serif}\n';
   }
   const cssName = `main.${hash(css)}.css`;
   writeFile(path.join(dist, 'assets', cssName), css);
@@ -50,7 +59,8 @@ export function build() {
 
   // ---- icon sprite -------------------------------------------------------------------------
   const markPath = readJSON(path.join(root, 'build/lib/mark-path.json'));
-  const sprite = buildSprite(root, markPath);
+  const kyberia = readJSON(path.join(src, 'data/kyberia.json'));
+  const sprite = buildSprite(root, markPath, kyberia);
   const spriteName = `icons.${hash(sprite)}.svg`;
   writeFile(path.join(dist, 'assets', spriteName), sprite);
 
@@ -61,6 +71,17 @@ export function build() {
     const to = path.join(dist, rel);
     ensureDir(path.dirname(to));
     fs.copyFileSync(path.join(src, rel), to);
+  }
+
+  // ---- CV button: only appears once the PDF exists, so there is never a dead link ----
+  let cv = null;
+  if (site.cv?.file) {
+    const rel = site.cv.file.replace(/^\//, '');
+    if (fs.existsSync(path.join(src, rel))) {
+      ensureDir(path.dirname(path.join(dist, rel)));
+      fs.copyFileSync(path.join(src, rel), path.join(dist, rel));
+      cv = { href: site.cv.file };
+    } else console.warn(`! CV not found at src/${rel}: the Download CV button is hidden until you add it`);
   }
 
   // ---- CSP ---------------------------------------------------------------------------------
@@ -80,6 +101,8 @@ export function build() {
     site,
     i18n,
     content,
+    kyberia,
+    cv,
     csp,
     wikiIcons: { engineering: 'layers', developer: 'code', design: 'pencil' },
     assets: {
@@ -98,7 +121,7 @@ export function build() {
   const urls = [];
   const searchIndex = { en: [], ar: [] };
   for (const lang of ['en', 'ar']) {
-    for (const key of ['home', 'about', 'hub', 'resources', 'projects', 'contact']) {
+    for (const key of ['home', 'about', 'hub', 'resources', 'contact']) {
       for (const page of pages[key](lang)) {
         const file = path.join(dist, u(lang, page.path), 'index.html');
         writeFile(file, page.html);
@@ -131,6 +154,7 @@ export function build() {
     for (const p of content.guides) add('guide', `/resources/guides/${p.slug}/`, pick(p, lang), pick(p, lang).data.tags);
     for (const p of content.downloads) add('download', `/resources/downloads/${p.slug}/`, pick(p, lang), pick(p, lang).data.tags);
     add('page', '/about/', pick(content.pages.about, lang));
+    for (const e of content.career) add('page', '/about/#timeline', { ...pick(e, lang), data: { ...pick(e, lang).data, title: `${pick(e, lang).data.title}, ${pick(e, lang).data.org}`, summary: pick(e, lang).data.summary } }, []);
     const labels = Object.fromEntries(['wiki', 'research', 'journey', 'guide', 'download', 'page'].map((k) => [k, T(lang, 'type.' + k)]));
     writeFile(path.join(dist, u(lang, '/search-index.json').replace(/^\//, '')), JSON.stringify({ l: labels, i: idx }));
   }
@@ -148,7 +172,7 @@ export function build() {
   if (fs.existsSync(path.join(root, 'CNAME'))) fs.copyFileSync(path.join(root, 'CNAME'), path.join(dist, 'CNAME'));
 
   const pageCount = urls.length;
-  console.log(`built ${pageCount} pages (${drafts ? 'with' : 'without'} drafts)${heming ? ' · Heming font: ' + heming : ' · Heming font: not found, using Tajawal'} in ${Date.now() - t0}ms`);
+  console.log(`built ${pageCount} pages (${drafts ? 'with' : 'without'} drafts)${satoshi.length ? ' · Satoshi: ' + satoshi.length + ' file(s)' : ' · Satoshi: not found, using Tajawal'} in ${Date.now() - t0}ms`);
   return { dist, pageCount };
 }
 

@@ -47,11 +47,6 @@
  "hub.untranslated": "This page is not translated yet. Showing the English version.",
  "about.title": "About",
  "about.lead": "Civil engineer, project controls engineer, researcher, web developer and founder.",
- "projects.title": "Projects",
- "projects.lead": "The ventures I build and run.",
- "projects.strip": "Ventures",
- "projects.all": "All projects",
- "projects.visit": "Visit",
  "res.title": "Resources",
  "res.lead": "Free tools, templates and guides, plus behind-the-scenes notes from things I build.",
  "res.downloads": "Free downloads",
@@ -102,5 +97,15 @@
  "lang.name": "English",
  "lang.switch": "العربية",
  "code": "EN",
- "hub.overview": "Overview"
+ "hub.overview": "Overview",
+ "status.open": "Open for collaboration",
+ "cv.download": "Download CV",
+ "a11y.cv": "Download my CV (PDF)",
+ "home.try": "Try",
+ "about.timeline": "Career timeline",
+ "about.timeline.lead": "Where I've worked and what I did, newest first.",
+ "about.ventures": "Ventures",
+ "about.ventures.lead": "The ventures I build and run.",
+ "about.credentials": "Education and credentials",
+ "tl.present": "Present"
 }
