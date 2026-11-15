@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Abdelfattah Aboulfoutoh"><title>Abdelfattah Aboulfoutoh</title><circle cx="32" cy="32" r="32" fill="#ffcc00"/><path fill="#000000" fill-rule="evenodd" d="M11.58 44.47L13.59 38.7L22.91 38.7L24.92 44.47L29.53 44.47L20.52 19.53L16.05 19.53L7.04 44.47ZM17.72 26.97C17.96 26.28 18.16 25.53 18.27 25.06C18.33 25.57 18.57 26.32 18.78 26.97L21.64 35.02L14.89 35.02ZM36.56 44.47L36.56 35.53C36.56 32.43 36.52 30.07 36.28 28.57L42.59 44.47L46.62 44.47L52.97 28.54C52.73 30.31 52.73 31.78 52.73 36.79L52.73 44.47L56.96 44.47L56.96 19.53L52.66 19.53L44.61 39.39L36.56 19.53L32.32 19.53L32.32 44.47Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Abdelfattah Aboulfoutoh"><title>Abdelfattah Aboulfoutoh</title><circle cx="32" cy="32" r="32" fill="#ffcc00"/>
+<g transform="translate(32 33) scale(.34) translate(-120 -112)">
+  <path d="M64 100C64 58 88 40 120 40C152 40 176 58 176 100V124C176 160 152 184 120 184C88 184 64 160 64 124Z" fill="#ffffff"/>
+  <path d="M62 104C54 56 86 30 124 32C160 34 186 58 178 106C174 84 160 72 138 68C118 76 84 74 62 104Z" fill="#000000"/>
+  <path d="M63 112L64 124C64 160 88 184 120 184C152 184 176 160 176 124L177 112C176 130 162 142 146 144C138 136 128 137 120 141C112 137 102 136 94 144C78 142 64 130 63 112ZM101 153C108 151 113 152 120 152C127 152 132 151 139 153C139 160 131 163 120 163C109 163 101 160 101 153Z" fill="#000000" fill-rule="evenodd"/>
+  <ellipse cx="98" cy="108" rx="9" ry="9" fill="#000000"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="#000000"/>
+</g></svg>

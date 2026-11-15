@@ -59,6 +59,9 @@ export function buildSprite(root, markPath, kyberia = {}) {
     sym.push(`<g id="k-${arm}-word" fill="currentColor"><path d="${v.word}"/></g>`);
     sym.push(`<g id="k-${arm}-suffix" fill="currentColor"><path d="${v.suffix}"/></g>`);
   }
+  // the mascot (head for the header, bust for pages), pre-drawn by brand/build-mascot.mjs
+  const mascot = JSON.parse(fs.readFileSync(path.join(root, 'build/lib/mascot.json'), 'utf8'));
+  for (const [id, a] of Object.entries(mascot)) sym.push(`<symbol id="mascot-${id}" viewBox="${a.vb}">${a.inner}</symbol>`);
   sym.push(`<symbol id="logo" viewBox="0 0 ${markPath.w} ${markPath.h}"><path fill="currentColor" d="${markPath.d}"/></symbol>`);
   return `<svg xmlns="http://www.w3.org/2000/svg">${sym.join('')}</svg>`;
 }
