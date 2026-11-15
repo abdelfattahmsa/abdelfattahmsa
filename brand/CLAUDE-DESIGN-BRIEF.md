@@ -2,7 +2,7 @@
 
 **Goal:** turn the starter identity in this package into a complete **brand identity document + brand guidelines + production assets** for the personal brand of Abdelfattah M. Aboulfoutoh.
 
-**How to use this package:** attach this file, the `logo/` folder (SVGs + PNGs + `tests.html` / `png/logo-test-sheet.png`), `design-tokens.json`, and the two reference images (see `reference/README.md`). Everything below is a starting point to build on, not a finished system. Where this brief says *open*, make a recommendation and flag it.
+**How to use this package:** attach this file, the `mascot/` folder (SVGs + PNGs + `tests.html`), the `logo/` folder (name wordmark), `design-tokens.json`, and the two reference images (see `reference/README.md`). Everything below is a starting point to build on, not a finished system. Where this brief says *open*, make a recommendation and flag it.
 
 ---
 
@@ -38,33 +38,37 @@ The **second reference image** (a handwritten *mf.* monogram above a tracked cap
 
 UI language for the website, which the brand should also use: **circular frames for buttons and icons**, very simple 1.75-stroke line icons, pill-shaped text buttons, generous space, no decoration.
 
-## 3. The logo as it exists now
+## 3. The brand as it exists now: a mascot of the owner
 
-**Concept.** The owner's name, **Abdelfattah** over **Aboulfoutoh**, stacked on two lines, set in the website's display font. Plain, confident, no ornament. An **AM** badge and favicon use the same typeface.
+**Concept.** A flat, sticker-style portrait of Abdelfattah, drawn from a photo and a sticker reference the owner supplied: short dark hair, thick brows, calm eyes, a **short beard joined to the mustache**, dark suit, a **yellow tie** as the only colour. Thick black outline, white "sticker" edge. The mascot is the primary mark; the stacked name (**Abdelfattah** over **Aboulfoutoh**, Satoshi Bold, outlined) sits beside it as the lockup. The earlier "AM" badge in `logo/` is kept only as a secondary monogram.
 
-**Construction.** Two lines of text converted to outlines: bold, −1.2% tracking, leading = 1.2× cap height, left-aligned. Source of truth: `build-logo.mjs`, which regenerates every file. It is drawn in **Satoshi Bold** (outlined, so the logo files contain no font). The font itself is not part of this package and must not be shared.
+**Source of truth.** `brand/mascot-art.mjs` (all shapes, one 240-unit grid) and `brand/build-mascot.mjs` (regenerates every file: `npm run brand`). The expression is *calm*; other poses and expressions are open (see section 8).
 
-**Files in `logo/`**
+**Files in `mascot/`**
 
 | File | Use |
 |---|---|
-| `am-wordmark.svg`, `am-wordmark-white.svg` | The stacked name, black / white (site header, letterhead, email, slides) |
-| `am-badge.svg`, `am-badge-white.svg` | Solid circle with **AM** knocked out (true transparency): avatars, stamps |
-| `am-favicon.svg` | Yellow disc + black **AM** for ≤ 32 px |
-| `png/` | Exports: wordmark 2000 px, badges 1024, favicons 16/32/48/180/192/512, OG image 1200×630 |
-| `tests.html`, `png/logo-test-sheet.png` | The test sheet |
+| `am-mascot.svg`, `am-mascot-mono.svg` | Full bust with white sticker edge (page art, 404, OG); mono = tie in black |
+| `am-mascot-head.svg` | Head only with sticker edge: **site header mark**, small uses |
+| `am-avatar.svg` | Head and shoulders on a yellow disc: social avatars |
+| `am-icon.svg` | Simplified head on a yellow disc (no ears, brows, nose, mouth): favicon and app icon |
+| `am-lockup.svg`, `am-lockup-white.svg` | Head + stacked name, horizontal lockup (black ink / white ink) |
+| `png/` | Exports: bust, head, avatar 1024; lockups 2000; icons 16/32/48/180/192/512; OG 1200x630 |
+| `tests.html`, `png/mascot-test-sheet.png` | Test sheet |
+| `exploration/` | The first six directions and the photo-based round, for context |
 
 **Testing results (honest).**
 
 | Test | Result |
 |---|---|
-| Single-colour (black, white, on yellow, on grey, on a busy gradient) | Pass |
-| Reversal / knock-out badge | Pass |
-| Squint / blur and 1-bit threshold | Pass |
-| Small sizes: wordmark clear from **26 px** tall (site header: 34 px, 26 px on phones); crowded below ~22 px | Pass ≥ 26 px |
-| Favicon: crisp at 32 px; at 16×16 (1×) the "AM" is soft but recognisable | **Marginal at 16 px** |
+| Single colour (black on white, white on black, on yellow, on grey) | Pass |
+| Reversal on black (white sticker edge carries the shape) | Pass |
+| Squint / blur and 1-bit threshold | Pass: beard, hair and face still read |
+| Header size (46 px tall) | Pass |
+| 32 px | Pass for the simplified icon |
+| 16 px favicon | **Marginal**: reads as yellow disc, dark hair, white face, dark beard; no detail |
 
-**Known weak spots:** no Arabic version; the 16×16 favicon would benefit from hand pixel-hinting.
+**Known weak spots:** the white sticker edge disappears on white backgrounds (the black outline still carries the shape); no Arabic lockup yet; the 16 px icon is not hand-hinted; only one expression exists.
 
 ## 4. Typography
 
@@ -115,15 +119,16 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 8. Open items and risks (please address or flag)
 
-1. Design an **Arabic** lockup (عبدالفتاح أبو الفتوح) to sit beside it.
-2. **Hinted favicon** (16×16, 32×32): the auto-scaled "AM" is soft at 16 px.
-3. **Peridot Holding** has no logo yet (text only on the site).
-4. **Distinctiveness**: a plain typographic logo is easy to execute and easy to confuse. Consider one ownable detail (a custom letterform, a cut, a signature alternate) without losing the plain character.
-5. **Name choice**: the lockup uses first + family name; decide whether formal use includes the middle initial "M.".
+1. **Poses and expressions**: only the calm bust exists. Design a small set (smile, thinking, building, searching, wave) for the site, social and the download thumbnails, keeping the flat sticker style and the yellow-tie-only rule.
+2. **Arabic lockup**: design عبدالفتاح أبو الفتوح to sit beside the mascot.
+3. **Hinted favicon** (16x16, 32x32) for the simplified icon.
+4. **Peridot Holding** has no logo yet (text only on the site).
+5. **Likeness approval**: the owner should confirm details (beard length, hair, glasses variant) before the mascot is used on print.
+6. **Sticker edge on white**: decide whether to add a thin grey edge for white backgrounds.
 
 ## 9. Constraints
 
-Black and white first; yellow minimal; no gradients, drop shadows, 3D or glossy effects; no stock-photo styling; Arabic is a first-class language (RTL, Tajawal); everything must work in one colour and at small sizes; keep it **very simple**.
+Black and white first; yellow minimal (the tie is the one yellow detail on the mascot); no gradients, drop shadows, 3D or glossy effects; no stock-photo styling; Arabic is a first-class language (RTL, Tajawal); everything must work in one colour and at small sizes; keep it **very simple**.
 
 ---
 
