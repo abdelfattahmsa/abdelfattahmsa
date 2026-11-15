@@ -13,6 +13,8 @@ export function createTemplates(ctx) {
   const dir = (lang) => (lang === 'ar' ? 'rtl' : 'ltr');
   const abs = (lang, p) => site.url + u(lang, p);
 
+  // the mascot has a light-background variant (thin grey edge); CSS shows the one that fits the theme
+  const mascotIcon = (id, cls = '') => `${icon('mascot-' + id, cls + ' for-dark')}${icon('mascot-' + id + 'Light', cls + ' for-light')}`;
   const icon = (id, cls = '') =>
     `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="${assets.sprite}#${id}"/></svg>`;
 
@@ -104,7 +106,7 @@ export function createTemplates(ctx) {
     return `<header class="topbar">
   <div class="topbar__start">
     <button type="button" class="circle" id="hub-toggle" aria-controls="hub-drawer" aria-expanded="false" aria-label="${esc(T(lang, 'a11y.hub'))}">${icon('i-hub', 'flip')}</button>
-    <a class="brandlink" href="${u(lang, '/')}" aria-label="${esc(T(lang, 'a11y.home'))}">${icon('mascot-head', 'brandlink__face')}${icon('logo', 'brandlink__mark')}</a>
+    <a class="brandlink" href="${u(lang, '/')}" aria-label="${esc(T(lang, 'a11y.home'))}">${mascotIcon('head', 'brandlink__face')}${icon('logo', 'brandlink__mark')}</a>
   </div>
   <nav class="topnav" id="nav-panel" aria-label="${esc(T(lang, 'a11y.menu'))}"><ul>${nav}</ul>
     <div class="topnav__tools">
@@ -160,6 +162,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <meta property="og:image" content="${site.url}${assets.og}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${assets.faviconSvg}" type="image/svg+xml">
+<link rel="icon" href="${assets.favicon16}" sizes="16x16" type="image/png">
 <link rel="icon" href="${assets.favicon32}" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="${assets.appleIcon}">
 <link rel="preload" href="/assets/fonts/tajawal-${lang === 'ar' ? 'arabic' : 'latin'}-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -268,7 +271,7 @@ ${icon(external ? 'i-external' : 'i-arrow', 'card__go' + (external ? '' : ' flip
       .join('');
     const main = `<main id="main" class="home">
   <section class="home__hero" aria-labelledby="home-name">
-    ${icon('mascot-bust', 'home__mascot')}
+    ${mascotIcon('bust', 'home__mascot')}
     <a class="status" href="${u(lang, '/contact/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
@@ -309,7 +312,7 @@ ${icon(external ? 'i-external' : 'i-arrow', 'card__go' + (external ? '' : ' flip
         return `<li><a class="venture ${brandClass(x.id)}" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><span class="venture__top">${logo}${icon('i-external', 'venture__go')}</span><span class="venture__blurb">${esc(L(x.blurb, lang))}</span></a></li>`;
       })
       .join('');
-    const inner = `${pageHead(lang, v.data.title, v.data.summary, icon('mascot-bust', 'pagehead__mascot'))}${v.untranslated ? `<p class="notice" role="note">${esc(T(lang, 'hub.untranslated'))}</p>` : ''}
+    const inner = `${pageHead(lang, v.data.title, v.data.summary, mascotIcon('bust', 'pagehead__mascot'))}${v.untranslated ? `<p class="notice" role="note">${esc(T(lang, 'hub.untranslated'))}</p>` : ''}
 <div class="prose prose--page">${v.html}</div>
 <section id="timeline" aria-labelledby="tl-h"><h2 id="tl-h">${esc(T(lang, 'about.timeline'))}</h2><p class="lead">${esc(T(lang, 'about.timeline.lead'))}</p><ol class="timeline">${timeline}</ol></section>
 <section id="ventures" aria-labelledby="vn-h"><h2 id="vn-h">${esc(T(lang, 'about.ventures'))}</h2><p class="lead">${esc(T(lang, 'about.ventures.lead'))}</p><ul class="ventures">${ventures}</ul></section>
@@ -566,7 +569,7 @@ ${socials(lang, 'socials--page')}
   };
 
   pages.notFound = (lang) => {
-    const inner = `<div class="notfound">${icon('mascot-bust', 'notfound__mascot')}<h1>${esc(T(lang, '404.title'))}</h1><p class="lead">${esc(T(lang, '404.lead'))}</p><a class="btn btn--primary" href="${u(lang, '/')}">${esc(T(lang, '404.home'))}</a></div>`;
+    const inner = `<div class="notfound">${mascotIcon('bust', 'notfound__mascot')}<h1>${esc(T(lang, '404.title'))}</h1><p class="lead">${esc(T(lang, '404.lead'))}</p><a class="btn btn--primary" href="${u(lang, '/')}">${esc(T(lang, '404.home'))}</a></div>`;
     return [{ path: '/404/', html: layout({ lang, path: '/404/', title: T(lang, '404.title'), main: withFooter(wrap(inner, 'page--narrow'), lang), noindex: true, switchPath: '/' }) }];
   };
 
