@@ -51,14 +51,23 @@ UI language for the website, which the brand should also use: **circular frames 
 | `am-mascot.svg`, `am-mascot-mono.svg` | Full bust with white sticker edge (page art, 404, OG); mono = tie in black |
 | `am-mascot-head.svg` | Head only with sticker edge: **site header mark**, small uses |
 | `am-avatar.svg` | Head and shoulders on a yellow disc: social avatars |
+| `am-icon-maskable.svg` | Android **maskable** icon: full-bleed yellow, head inside the 80% safe zone (192/512 PNG; used by the site manifest) |
+| `png/favicon.ico` | **.ico bundle**: 16 and 32 hand-hinted, 48 vector (served at `/favicon.ico`) |
 | `am-icon.svg` | Simplified head on a yellow disc (no ears, brows, nose, mouth): favicon and app icon. The **16 and 32 px PNGs are hand-hinted pixel drawings** (`mascot-pixel.mjs`), not scaled vectors |
 | `am-lockup.svg`, `am-lockup-white.svg` | Head + stacked name, horizontal lockup (black ink / white ink) |
 | `am-lockup-ar.svg`, `am-lockup-ar-white.svg` | **Arabic lockup**: name on the left (عبدالفتاح over أبو الفتوح, Tajawal Bold, shaped with HarfBuzz), head on the right |
 | `am-mascot-light.svg`, `am-mascot-head-light.svg` | **For white / light backgrounds**: same art with a thin grey ring outside the white sticker edge (the site uses these in the light theme) |
 | `png/` | Exports: bust, head, avatar 1024; lockups 2000; icons 16/32/48/180/192/512; OG 1200x630 |
 | `tests.html`, `png/mascot-test-sheet.png` | Test sheet |
-| `poses/` | **Sixteen poses** on one shared canvas, in three groups: *core* (calm, smile, wave, thinking, builder, searching, building, thumbs-up, idea, glasses), *design* (sketching with a pencil, colour palette, drawing a vector curve on a tablet) and *research* (reading, data chart, notes clipboard). SVG + 1024 px PNG each, `poses.html` contact sheet, `poses.json` names and uses. **Brand library only, not used on the website** |
+| `poses/` | **Twenty poses** on one shared canvas, in five groups: *core* (calm, smile, wave, thinking, builder, searching, building, thumbs-up, idea, glasses), *design* (sketching with a pencil, colour palette, drawing a vector curve on a tablet), *research* (reading, data chart, notes clipboard), *engineering* (blueprint, schedule) and *developer* (coding, launch). SVG + 1024 px PNG each, `poses.html` contact sheet, `poses.json` names and uses. **Brand library only, not used on the website** |
 | `exploration/` | The first six directions and the photo-based round, for context |
+
+**Print and downloads**
+
+| Folder | Contents |
+|---|---|
+| `print/` | `am-mascot-print.svg` and `am-mascot-head-print.svg` (**one colour**, black on white, no sticker edge, no yellow); **business card** front (black, white lockup, yellow rule) and back (white, one-colour mascot, tagline, email, site, city), 85 x 55 mm with 3 mm bleed and a 5 mm safe margin; **A4 letterhead** (lockup, hairline with a yellow start, footer). SVG with outlined text + 300 dpi PNG previews. Contact line uses email, site and city only (no phone) |
+| `covers/` | **Download-thumbnail system**: 1200 x 900 (4:3), black, a circular glyph frame with one yellow dot, the category name in Satoshi Bold, a matching pose at the bottom right. One cover per resource category (Claude, Notion, Spreadsheets, Website templates, CV and cover letters, Other) plus a blank "Your title here" template. Brand library only |
 
 **Testing results (honest).**
 
@@ -122,13 +131,12 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 8. Open items and risks (please address or flag)
 
-Done: owner approved the likeness; Arabic lockup; hand-hinted 16/32 px favicon; light-background variants; sixteen poses including design and research props.
+Done: owner approved the likeness; Arabic lockup; hand-hinted 16/32 px favicon; light-background variants; maskable Android icons, .ico and web manifest; twenty poses (design, research, engineering, developer props); one-colour print mascot, business card and letterhead; download-thumbnail covers.
 
 1. **Poses**: sixteen exist, with white shirt cuffs and simple hands. Still to do: a download-thumbnail system, engineering and developer props beyond the hard hat and laptop, and hand-polish of the hands. Keep the flat sticker style; props may use yellow, the default mascot keeps the tie as its only yellow.
 2. **Arabic**: the lockup exists; design Arabic-context poses and check the lockup beside Arabic body copy.
-3. **App icons**: maskable variants for Android and an `.ico` bundle.
 4. **Peridot Holding**: stays text only by decision.
-5. **Print**: confirm the mascot at print sizes (business card, letterhead) and add a one-colour print version.
+5. **Print**: files exist; send a physical proof before ordering (check the yellow against a Pantone Yellow-style swatch and the thin outlines at 85 x 55 mm).
 
 ## 9. Constraints
 

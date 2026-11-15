@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 // Simple stroke icons (24 grid, 1.75 stroke, round caps) + brand glyphs from simple-icons.
-const STROKE = {
+export const STROKE = {
   search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   hub: '<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M9.5 4v16"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/>',

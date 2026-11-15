@@ -33,6 +33,7 @@ function hand(x, y, kind = 'fist', r = 15) {
   const base = `<circle cx="${x}" cy="${y}" r="${r}" fill="${PAPER}"/>`;
   if (kind === 'open') return `<g ${line}>${base}<path d="M${x - 9} ${y - r + 2}v-12M${x - 3} ${y - r}v-15M${x + 3} ${y - r}v-15M${x + 9} ${y - r + 2}v-12" fill="none" stroke-width="5"/></g>`;
   if (kind === 'fist') return `<g ${line}>${base}<path d="M${x - 6} ${y - 3}h12M${x - 6} ${y + 4}h12" fill="none" stroke-width="3.5"/></g>`;
+  if (kind === 'hold') return `<g ${line}>${base}<path d="M${x - 6} ${y - 8}v5M${x} ${y - 9}v6M${x + 6} ${y - 8}v5" fill="none" stroke-width="3"/></g>`;
   return `<g ${line}>${base}</g>`;
 }
 const R_SHOULDER = [204, 218];
@@ -41,7 +42,7 @@ const L_SHOULDER = [38, 224];
 // ---- props held in front of the chest: drawn on the suit, no extra sticker edge needed
 const page = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${PAPER}"/>`;
 const bar = (x, y, w, h, c = INK) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="none"/>`;
-const hands2 = (y = 246) => hand(64, y, 'grip', 13) + hand(176, y, 'grip', 13);
+const hands2 = (y = 246) => hand(64, y, 'hold', 13) + hand(176, y, 'hold', 13);
 
 const poses = [
   // ---- the core ten (refined)
@@ -142,6 +143,41 @@ const poses = [
       edge: '',
       ink: `<g ${line}>${page(70, 186, 100, 76)}<rect x="104" y="180" width="32" height="14" rx="5" fill="${YELLOW}" stroke-width="4"/><path d="M84 214l5 5 9-10M84 236l5 5 9-10" fill="none" stroke-width="4"/><path d="M106 214h50M106 236h50" fill="none" stroke="${GREY}" stroke-width="4"/></g>${hands2(252)}`,
     }),
+  },
+
+  // ---- engineering
+  {
+    name: 'blueprint', group: 'Engineering', title: 'Blueprint', note: 'Reading the drawings. Civil and construction wiki, design reviews.', face: { eyes: 'up', brows: 'raised' },
+    build: () => ({
+      edge: '',
+      ink: `<g ${line}>${page(56, 186, 128, 74)}<path d="M72 208h58v34H72z" fill="none" stroke-width="3.5"/><path d="M100 208v34M72 224h28M130 218h26v24h-26" fill="none" stroke-width="3"/><path d="M138 242a10 10 0 0 1-10-10" fill="none" stroke="${GREY}" stroke-width="2.5"/><path d="M72 250h84M72 246v8M156 246v8" fill="none" stroke="${GREY}" stroke-width="2.5"/><rect x="160" y="196" width="12" height="12" rx="3" fill="${YELLOW}" stroke-width="3"/></g>${hands2(254)}`,
+    }),
+  },
+  {
+    name: 'schedule', group: 'Engineering', title: 'Schedule', note: 'Planning the programme. Project-controls wiki, baselines, critical path.', face: { mouth: 'smile' },
+    build: () => ({
+      edge: '',
+      ink: `<g ${line}>${page(56, 186, 128, 74)}<path d="M70 200V250" fill="none" stroke="${GREY}" stroke-width="3"/></g>${bar(76, 202, 40, 8)}${bar(92, 216, 46, 8, YELLOW)}${bar(124, 230, 34, 8, YELLOW)}${bar(100, 244, 28, 8)}<path d="M138 224h4v6M116 210h4v6" fill="none" stroke="${INK}" stroke-width="2.5"/>${hands2(256)}`,
+    }),
+  },
+
+  // ---- developer
+  {
+    name: 'code', group: 'Developer', title: 'Coding', note: 'Writing code. Developer wiki, tooling and automation guides.', face: { mouth: 'smile' },
+    build: () => ({
+      edge: '',
+      ink: `<g ${line}>${page(60, 190, 120, 70)}<path d="M96 212l-14 14 14 14M144 212l14 14-14 14" fill="none" stroke-width="6"/><path d="M126 208l-12 36" fill="none" stroke="${YELLOW}" stroke-width="6"/></g>${hands2(250)}`,
+    }),
+  },
+  {
+    name: 'launch', group: 'Developer', title: 'Launch', note: 'Shipped. Releases, new tools, "it is live" announcements.', face: { mouth: 'smile', eyes: 'happy', brows: 'raised' },
+    build: () => {
+      const rocket = `<path d="M0 -40C14 -22 14 6 8 24H-8C-14 6 -14 -22 0 -40Z"/><path d="M-8 12L-20 28L-8 24ZM8 12L20 28L8 24Z"/>`;
+      return {
+        edge: `<g transform="translate(222 34) rotate(35)" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round">${rocket}<path d="M-5 26L0 46L5 26Z"/></g>`,
+        ink: `<g transform="translate(222 34) rotate(35)" ${line}><path d="M-8 12L-20 28L-8 24ZM8 12L20 28L8 24Z" fill="${YELLOW}" stroke-width="4"/><path d="M0 -40C14 -22 14 6 8 24H-8C-14 6 -14 -22 0 -40Z" fill="${PAPER}" stroke-width="4"/><circle cx="0" cy="-12" r="6" fill="${YELLOW}" stroke-width="3.5"/><path d="M-5 26L0 46L5 26Z" fill="${YELLOW}" stroke-width="3.5"/></g>`,
+      };
+    },
   },
 ];
 

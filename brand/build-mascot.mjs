@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { art, svgDoc, YELLOW } from './mascot-art.mjs';
+import { art, maskable, svgDoc, YELLOW } from './mascot-art.mjs';
 import { png as pixelPng, HEAD16, HEAD32 } from './mascot-pixel.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,6 +21,7 @@ write('am-mascot-mono.svg', svgDoc(art.bustMono, TITLE));
 write('am-mascot-head.svg', svgDoc(art.head, TITLE));
 write('am-avatar.svg', svgDoc(art.avatar, TITLE));
 write('am-icon.svg', svgDoc(art.icon, TITLE));
+write('am-icon-maskable.svg', svgDoc(maskable, TITLE));
 write('am-mascot-light.svg', svgDoc(art.bustLight, TITLE));
 write('am-mascot-head-light.svg', svgDoc(art.headLight, TITLE));
 
@@ -68,6 +69,7 @@ await raster('am-lockup-ar-white-2000.png', 'am-lockup-ar-white.svg', 2000);
 await raster('am-mascot-light-1024.png', 'am-mascot-light.svg', 1024);
 await raster('am-mascot-head-light-1024.png', 'am-mascot-head-light.svg', 1024);
 for (const px of [48, 180, 192, 512]) await raster(`am-icon-${px}.png`, 'am-icon.svg', px);
+for (const px of [192, 512]) await raster(`am-icon-maskable-${px}.png`, 'am-icon-maskable.svg', px);
 // 16 and 32 are hand-hinted pixel drawings (see mascot-pixel.mjs), not scaled vectors
 fs.writeFileSync(path.join(png, 'am-icon-16.png'), await pixelPng(HEAD16));
 fs.writeFileSync(path.join(png, 'am-icon-32.png'), await pixelPng(HEAD32));
@@ -95,6 +97,28 @@ const site = path.join(root, 'src/assets/icons');
 fs.copyFileSync(path.join(out, 'am-icon.svg'), path.join(site, 'favicon.svg'));
 for (const [a, b] of [['am-icon-16.png', 'favicon-16.png'], ['am-icon-32.png', 'favicon-32.png'], ['am-icon-180.png', 'apple-touch-icon.png'], ['am-icon-192.png', 'icon-192.png'], ['am-icon-512.png', 'icon-512.png']]) fs.copyFileSync(path.join(png, a), path.join(site, b));
 fs.copyFileSync(path.join(png, 'am-og-1200x630.png'), path.join(root, 'src/assets/img/og.png'));
+// favicon.ico (PNG entries: 16 and 32 hand-hinted, 48 vector) and the web manifest
+{
+  const imgs = [16, 32, 48].map((n) => fs.readFileSync(path.join(png, `am-icon-${n}.png`)));
+  const head = Buffer.alloc(6); head.writeUInt16LE(1, 2); head.writeUInt16LE(imgs.length, 4);
+  let offset = 6 + 16 * imgs.length;
+  const dir = imgs.map((b, i) => { const e = Buffer.alloc(16); const n = [16, 32, 48][i]; e[0] = n; e[1] = n; e.writeUInt16LE(1, 4); e.writeUInt16LE(32, 6); e.writeUInt32LE(b.length, 8); e.writeUInt32LE(offset, 12); offset += b.length; return e; });
+  const ico = Buffer.concat([head, ...dir, ...imgs]);
+  fs.writeFileSync(path.join(png, 'favicon.ico'), ico);
+  fs.copyFileSync(path.join(png, 'favicon.ico'), path.join(site, 'favicon.ico'));
+  fs.copyFileSync(path.join(png, 'am-icon-maskable-192.png'), path.join(site, 'icon-maskable-192.png'));
+  fs.copyFileSync(path.join(png, 'am-icon-maskable-512.png'), path.join(site, 'icon-maskable-512.png'));
+  fs.writeFileSync(path.join(site, 'site.webmanifest'), JSON.stringify({
+    name: 'Abdelfattah Aboulfoutoh', short_name: 'Abdelfattah', description: 'Engineer. System Builder. Product Architect.',
+    start_url: '/', display: 'standalone', background_color: '#000000', theme_color: '#000000',
+    icons: [
+      { src: '/assets/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/assets/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: '/assets/icons/icon-maskable-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+      { src: '/assets/icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    ],
+  }, null, 2) + '\n');
+}
 // header / page sprite symbols (the build adds them to the icon sprite)
 fs.writeFileSync(path.join(root, 'build/lib/mascot.json'), JSON.stringify({ head: art.head, bust: art.bust, headLight: art.headLight, bustLight: art.bustLight }));
 console.log('mascot set built');

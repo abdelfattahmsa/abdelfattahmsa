@@ -83,6 +83,9 @@ export const art = {
   // for white / light backgrounds: same artwork, thin grey ring outside the white edge
   headLight: { vb: '36 16 168 184', inner: edgeLight(headParts) + face() },
   bustLight: { vb: '6 14 228 232', inner: edgeLight(bustParts) + body() + face() },
+  // print: one colour (black on white), no sticker edge, no yellow
+  headPrint: { vb: '40 20 160 172', inner: face() },
+  bustPrint: { vb: '12 20 216 226', inner: body(INK) + face() },
   // single colour version (tie in ink)
   bustMono: { vb: '6 14 228 232', inner: edge(bustParts) + body(INK) + face() },
   // circular avatar: yellow disc, bust bleeding off the bottom, no edge
@@ -98,6 +101,18 @@ export const art = {
   <ellipse cx="98" cy="108" rx="9" ry="9" fill="${INK}"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="${INK}"/>
 </g>`,
   },
+};
+
+// Android maskable icon: full-bleed yellow square, head kept inside the central safe zone (80% circle)
+export const maskable = {
+  vb: '0 0 64 64',
+  inner: `<rect width="64" height="64" fill="${YELLOW}"/>
+<g transform="translate(32 33.5) scale(.255) translate(-120 -112)">
+  <path d="${HEAD}" fill="${PAPER}"/>
+  <path d="${HAIR}" fill="${INK}"/>
+  <path d="${BEARD}" fill="${INK}" fill-rule="evenodd"/>
+  <ellipse cx="98" cy="108" rx="9" ry="9" fill="${INK}"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="${INK}"/>
+</g>`,
 };
 
 export const svgDoc = (a, title, size) =>

@@ -93,6 +93,7 @@ export function build() {
     "img-src 'self' data:",
     "font-src 'self'",
     "connect-src 'self' https://formspree.io",
+    "manifest-src 'self'",
     "form-action 'self' https://formspree.io",
     "base-uri 'self'",
   ].join('; ');
@@ -111,6 +112,7 @@ export function build() {
       sprite: `/assets/${spriteName}`,
       og: '/assets/img/og.png',
       faviconSvg: '/assets/icons/favicon.svg',
+      manifest: '/assets/icons/site.webmanifest',
       favicon16: '/assets/icons/favicon-16.png',
       favicon32: '/assets/icons/favicon-32.png',
       appleIcon: '/assets/icons/apple-touch-icon.png',
@@ -169,6 +171,8 @@ export function build() {
     .map(({ lang, path: p }) => `<url><loc>${esc(site.url + u(lang, p))}</loc></url>`)
     .join('\n');
   writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sm}\n</urlset>\n`);
+  // /favicon.ico at the site root: browsers ask for it by default
+  if (fs.existsSync(path.join(src, 'assets/icons/favicon.ico'))) fs.copyFileSync(path.join(src, 'assets/icons/favicon.ico'), path.join(dist, 'favicon.ico'));
   writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n`);
   writeFile(path.join(dist, '.nojekyll'), '');
   if (fs.existsSync(path.join(root, 'CNAME'))) fs.copyFileSync(path.join(root, 'CNAME'), path.join(dist, 'CNAME'));
