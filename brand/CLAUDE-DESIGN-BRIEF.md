@@ -51,8 +51,10 @@ UI language for the website, which the brand should also use: **circular frames 
 | `am-mascot.svg`, `am-mascot-mono.svg` | Full bust with white sticker edge (page art, 404, OG); mono = tie in black |
 | `am-mascot-head.svg` | Head only with sticker edge: **site header mark**, small uses |
 | `am-avatar.svg` | Head and shoulders on a yellow disc: social avatars |
-| `am-icon.svg` | Simplified head on a yellow disc (no ears, brows, nose, mouth): favicon and app icon |
+| `am-icon.svg` | Simplified head on a yellow disc (no ears, brows, nose, mouth): favicon and app icon. The **16 and 32 px PNGs are hand-hinted pixel drawings** (`mascot-pixel.mjs`), not scaled vectors |
 | `am-lockup.svg`, `am-lockup-white.svg` | Head + stacked name, horizontal lockup (black ink / white ink) |
+| `am-lockup-ar.svg`, `am-lockup-ar-white.svg` | **Arabic lockup**: name on the left (عبدالفتاح over أبو الفتوح, Tajawal Bold, shaped with HarfBuzz), head on the right |
+| `am-mascot-light.svg`, `am-mascot-head-light.svg` | **For white / light backgrounds**: same art with a thin grey ring outside the white sticker edge (the site uses these in the light theme) |
 | `png/` | Exports: bust, head, avatar 1024; lockups 2000; icons 16/32/48/180/192/512; OG 1200x630 |
 | `tests.html`, `png/mascot-test-sheet.png` | Test sheet |
 | `poses/` | **Ten poses** (calm, smile, wave, thinking, builder, searching, building, thumbs-up, idea, glasses) on one shared canvas: SVG + 1024 px PNG each, `poses.html` contact sheet. **Brand library only, not used on the website** |
@@ -69,7 +71,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | 32 px | Pass for the simplified icon |
 | 16 px favicon | **Marginal**: reads as yellow disc, dark hair, white face, dark beard; no detail |
 
-**Known weak spots:** the white sticker edge disappears on white backgrounds (the black outline still carries the shape); no Arabic lockup yet; the 16 px icon is not hand-hinted; poses are first drafts (arms are simple outlines).
+**Known weak spots:** on white backgrounds use the `-light` files (the plain white edge disappears); poses are first drafts (arms are simple outlines).
 
 ## 4. Typography
 
@@ -120,12 +122,13 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 8. Open items and risks (please address or flag)
 
-1. **Poses**: ten exist (section 3). Refine them as needed and extend: more props per wiki (design, research), Arabic-context poses, and a download-thumbnail system. Keep the flat sticker style; props may use yellow, the default mascot keeps the tie as its only yellow.
-2. **Arabic lockup**: design عبدالفتاح أبو الفتوح to sit beside the mascot.
-3. **Hinted favicon** (16x16, 32x32) for the simplified icon.
-4. **Peridot Holding** has no logo yet (text only on the site).
-5. **Likeness approval**: the owner should confirm details (beard length, hair, glasses variant) before the mascot is used on print.
-6. **Sticker edge on white**: decide whether to add a thin grey edge for white backgrounds.
+Done: owner approved the likeness; Arabic lockup; hand-hinted 16/32 px favicon; light-background variants; ten poses (first drafts).
+
+1. **Pose refinement and extension**: arms are simple outlines. Add props per wiki (design, research), and a download-thumbnail system. Keep the flat sticker style; props may use yellow, the default mascot keeps the tie as its only yellow.
+2. **Arabic**: the lockup exists; design Arabic-context poses and check the lockup beside Arabic body copy.
+3. **App icons**: maskable variants for Android and an `.ico` bundle.
+4. **Peridot Holding**: stays text only by decision.
+5. **Print**: confirm the mascot at print sizes (business card, letterhead) and add a one-colour print version.
 
 ## 9. Constraints
 

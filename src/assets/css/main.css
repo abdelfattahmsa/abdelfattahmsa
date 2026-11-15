@@ -397,3 +397,4 @@ html:not(.js) .suggest{display:none}
 .pagehead__mascot{position:absolute;inset-inline-end:0;inset-block-start:-8px;inline-size:auto;block-size:132px;aspect-ratio:228/232}
 @media (max-width:720px){.pagehead__mascot{display:none}}
 .notfound__mascot{inline-size:auto;block-size:150px;aspect-ratio:228/232}
+[data-theme="light"] .for-dark,[data-theme="dark"] .for-light{display:none}

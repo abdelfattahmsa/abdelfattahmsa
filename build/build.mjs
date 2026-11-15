@@ -111,6 +111,7 @@ export function build() {
       sprite: `/assets/${spriteName}`,
       og: '/assets/img/og.png',
       faviconSvg: '/assets/icons/favicon.svg',
+      favicon16: '/assets/icons/favicon-16.png',
       favicon32: '/assets/icons/favicon-32.png',
       appleIcon: '/assets/icons/apple-touch-icon.png',
       displayFont: satoshi.length ? `/assets/fonts/${satoshi[0]}` : null,

@@ -38,8 +38,8 @@ const poses = [
   { name: 'builder', title: 'Builder', note: 'Hard hat on. Engineering wiki, project controls, construction content.', face: { hat: true, mouth: 'smile' }, tie: true },
   {
     name: 'searching', title: 'Searching', note: 'Looking closely. Search, empty results, research pages.', face: { eyes: 'up', brows: 'raised' },
-    edgeExtra: sleeveEdge(sleeve(204, 220, 178, 176)) + `<circle cx="160" cy="146" r="32" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/>`,
-    over: () => sleeveInk(sleeve(204, 220, 178, 176)) + `<g ${line}><circle cx="160" cy="146" r="30" fill="none" stroke-width="6"/><path d="M146 138Q150 130 160 128" fill="none" stroke="${YELLOW}" stroke-width="5"/>${hand(180, 172, 13)}</g>`,
+    edgeExtra: sleeveEdge(sleeve(204, 220, 178, 176)) + `<circle cx="158" cy="146" r="38" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/>`,
+    over: () => sleeveInk(sleeve(204, 220, 178, 176)) + `<g ${line}><circle cx="158" cy="146" r="36" fill="none" stroke-width="6"/><path d="M140 138Q144 126 158 122" fill="none" stroke="${YELLOW}" stroke-width="5"/>${hand(180, 172, 13)}</g>`,
   },
   {
     name: 'laptop', title: 'Building', note: 'At the keyboard. Developer wiki, build guides, behind-the-scenes posts.', face: { mouth: 'smile' },

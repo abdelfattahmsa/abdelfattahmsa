@@ -72,10 +72,17 @@ export const edge = (parts, w = 18) =>
 export const headParts = `<path d="${HEAD}"/><path d="${HAIR}"/>${EARS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11"/>`).join('')}`;
 export const bustParts = `<path d="${SUIT}"/><path d="${NECK}"/>${headParts}`;
 
+// light-background edge: the white sticker edge gets a thin grey ring so it still reads on white
+export const edgeLight = (parts) =>
+  `<g fill="#cfcfcf" stroke="#cfcfcf" stroke-width="21.5" stroke-linejoin="round">${parts}</g>` + edge(parts);
+
 export const art = {
   // viewBoxes include the sticker edge
   head: { vb: '36 16 168 184', inner: edge(headParts) + face() },
   bust: { vb: '6 14 228 232', inner: edge(bustParts) + body() + face() },
+  // for white / light backgrounds: same artwork, thin grey ring outside the white edge
+  headLight: { vb: '36 16 168 184', inner: edgeLight(headParts) + face() },
+  bustLight: { vb: '6 14 228 232', inner: edgeLight(bustParts) + body() + face() },
   // single colour version (tie in ink)
   bustMono: { vb: '6 14 228 232', inner: edge(bustParts) + body(INK) + face() },
   // circular avatar: yellow disc, bust bleeding off the bottom, no edge
