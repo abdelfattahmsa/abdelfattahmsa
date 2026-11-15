@@ -94,5 +94,29 @@
   "group": "Research",
   "title": "Notes",
   "note": "Checklist in hand. Methods, schedules, \"how I check it\" posts."
+ },
+ {
+  "name": "blueprint",
+  "group": "Engineering",
+  "title": "Blueprint",
+  "note": "Reading the drawings. Civil and construction wiki, design reviews."
+ },
+ {
+  "name": "schedule",
+  "group": "Engineering",
+  "title": "Schedule",
+  "note": "Planning the programme. Project-controls wiki, baselines, critical path."
+ },
+ {
+  "name": "code",
+  "group": "Developer",
+  "title": "Coding",
+  "note": "Writing code. Developer wiki, tooling and automation guides."
+ },
+ {
+  "name": "launch",
+  "group": "Developer",
+  "title": "Launch",
+  "note": "Shipped. Releases, new tools, \"it is live\" announcements."
  }
 ]

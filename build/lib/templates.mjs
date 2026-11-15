@@ -165,6 +165,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="${assets.favicon16}" sizes="16x16" type="image/png">
 <link rel="icon" href="${assets.favicon32}" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="${assets.appleIcon}">
+<link rel="manifest" href="${assets.manifest}">
 <link rel="preload" href="/assets/fonts/tajawal-${lang === 'ar' ? 'arabic' : 'latin'}-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 ${assets.displayFont ? `<link rel="preload" href="${assets.displayFont}" as="font" type="font/woff2" crossorigin>` : ''}
 <link rel="stylesheet" href="${assets.css}">
