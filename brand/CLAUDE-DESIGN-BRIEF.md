@@ -57,7 +57,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | `am-mascot-light.svg`, `am-mascot-head-light.svg` | **For white / light backgrounds**: same art with a thin grey ring outside the white sticker edge (the site uses these in the light theme) |
 | `png/` | Exports: bust, head, avatar 1024; lockups 2000; icons 16/32/48/180/192/512; OG 1200x630 |
 | `tests.html`, `png/mascot-test-sheet.png` | Test sheet |
-| `poses/` | **Ten poses** (calm, smile, wave, thinking, builder, searching, building, thumbs-up, idea, glasses) on one shared canvas: SVG + 1024 px PNG each, `poses.html` contact sheet. **Brand library only, not used on the website** |
+| `poses/` | **Sixteen poses** on one shared canvas, in three groups: *core* (calm, smile, wave, thinking, builder, searching, building, thumbs-up, idea, glasses), *design* (sketching with a pencil, colour palette, drawing a vector curve on a tablet) and *research* (reading, data chart, notes clipboard). SVG + 1024 px PNG each, `poses.html` contact sheet, `poses.json` names and uses. **Brand library only, not used on the website** |
 | `exploration/` | The first six directions and the photo-based round, for context |
 
 **Testing results (honest).**
@@ -71,7 +71,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | 32 px | Pass for the simplified icon |
 | 16 px favicon | **Marginal**: reads as yellow disc, dark hair, white face, dark beard; no detail |
 
-**Known weak spots:** on white backgrounds use the `-light` files (the plain white edge disappears); poses are first drafts (arms are simple outlines).
+**Known weak spots:** on white backgrounds use the `-light` files (the plain white edge disappears); hands are simple shapes.
 
 ## 4. Typography
 
@@ -122,9 +122,9 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 ## 8. Open items and risks (please address or flag)
 
-Done: owner approved the likeness; Arabic lockup; hand-hinted 16/32 px favicon; light-background variants; ten poses (first drafts).
+Done: owner approved the likeness; Arabic lockup; hand-hinted 16/32 px favicon; light-background variants; sixteen poses including design and research props.
 
-1. **Pose refinement and extension**: arms are simple outlines. Add props per wiki (design, research), and a download-thumbnail system. Keep the flat sticker style; props may use yellow, the default mascot keeps the tie as its only yellow.
+1. **Poses**: sixteen exist, with white shirt cuffs and simple hands. Still to do: a download-thumbnail system, engineering and developer props beyond the hard hat and laptop, and hand-polish of the hands. Keep the flat sticker style; props may use yellow, the default mascot keeps the tie as its only yellow.
 2. **Arabic**: the lockup exists; design Arabic-context poses and check the lockup beside Arabic body copy.
 3. **App icons**: maskable variants for Android and an `.ico` bundle.
 4. **Peridot Holding**: stays text only by decision.
