@@ -27,14 +27,37 @@ function arm(x1, y1, x2, y2) {
     ink: `<path d="${d}" fill="none" stroke="${INK}" stroke-width="26" stroke-linecap="round"/><path d="${cuff}" fill="none" stroke="${INK}" stroke-width="30"/><path d="${cuff}" fill="none" stroke="${PAPER}" stroke-width="20"/>`,
   };
 }
-const handEdge = (x, y, r = 15) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/>`;
-// kinds: open (fingers up), fist, grip
-function hand(x, y, kind = 'fist', r = 15) {
-  const base = `<circle cx="${x}" cy="${y}" r="${r}" fill="${PAPER}"/>`;
-  if (kind === 'open') return `<g ${line}>${base}<path d="M${x - 9} ${y - r + 2}v-12M${x - 3} ${y - r}v-15M${x + 3} ${y - r}v-15M${x + 9} ${y - r + 2}v-12" fill="none" stroke-width="5"/></g>`;
-  if (kind === 'fist') return `<g ${line}>${base}<path d="M${x - 6} ${y - 3}h12M${x - 6} ${y + 4}h12" fill="none" stroke-width="3.5"/></g>`;
-  if (kind === 'hold') return `<g ${line}>${base}<path d="M${x - 6} ${y - 8}v5M${x} ${y - 9}v6M${x + 6} ${y - 8}v5" fill="none" stroke-width="3"/></g>`;
-  return `<g ${line}>${base}</g>`;
+// ---- hands: palm + fingers + thumb, drawn in local units (palm 28 wide) and scaled by r / 15
+// kinds: open (fingers up, waving), fist (knuckles + thumb across), thumb (fist with the thumb up)
+const FING = [[-10.5, 16], [-3.5, 19], [3.5, 17], [10.5, 13]];
+const handShapes = (kind) => {
+  if (kind === 'open') {
+    return {
+      back: FING.map(([cx, h]) => `<rect x="${cx - 3.2}" y="${-8 - h + 3}" width="6.4" height="${h + 6}" rx="3.2"/>`).join(''),
+      palm: '<rect x="-14" y="-8" width="28" height="24" rx="9"/>',
+      front: '<rect x="-3.5" y="-14" width="7" height="17" rx="3.5" transform="translate(-12 9) rotate(-42)"/>',
+      lines: '',
+    };
+  }
+  const base = {
+    back: kind === 'thumb' ? '<rect x="-8" y="-27" width="15" height="22" rx="7.5"/>' : '',
+    palm: '<rect x="-14" y="-10" width="28" height="25" rx="9"/>',
+    front: '<rect x="-13" y="2" width="18" height="8.5" rx="4.25"/>',
+    lines: '<path d="M-5 -10v7M0 -10v8M5 -10v7" fill="none" stroke-width="2.6"/>',
+  };
+  return base;
+};
+const handG = (x, y, kind, r, rot, inner) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${(r / 15).toFixed(3)})">${inner}</g>`;
+// white sticker edge for a hand: the same shapes, fat and white
+const handEdge = (x, y, r = 15, kind = 'fist', rot = 0) => {
+  const h = handShapes(kind);
+  return handG(x, y, kind, r, rot, `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="${(18 / (r / 15)).toFixed(1)}" stroke-linejoin="round">${h.back}${h.palm}${h.front}</g>`);
+};
+function hand(x, y, kind = 'fist', r = 15, rot = 0) {
+  if (kind === 'grip') kind = 'fist';
+  if (kind === 'hold') kind = 'fist';
+  const h = handShapes(kind);
+  return handG(x, y, kind, r, rot, `<g stroke="${INK}" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" fill="${PAPER}">${h.back}${h.palm}${h.lines}${h.front}</g>`);
 }
 const R_SHOULDER = [204, 218];
 const L_SHOULDER = [38, 224];
@@ -42,7 +65,7 @@ const L_SHOULDER = [38, 224];
 // ---- props held in front of the chest: drawn on the suit, no extra sticker edge needed
 const page = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${PAPER}"/>`;
 const bar = (x, y, w, h, c = INK) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="none"/>`;
-const hands2 = (y = 246) => hand(64, y, 'hold', 13) + hand(176, y, 'hold', 13);
+const hands2 = (y = 246) => hand(64, y, 'fist', 14, 8) + hand(176, y, 'fist', 14, -8);
 
 const poses = [
   // ---- the core ten (refined)
@@ -50,11 +73,11 @@ const poses = [
   { name: 'smile', group: 'Core', title: 'Smile', note: 'Friendly. Welcome states, success messages, social avatars.', face: { mouth: 'smile', eyes: 'happy' } },
   {
     name: 'wave', group: 'Core', title: 'Wave', note: 'Hello. Greetings, onboarding, newsletter sign-off.', face: { mouth: 'smile' },
-    build: () => { const a = arm(...R_SHOULDER, 224, 138); return { edge: a.edge + handEdge(226, 120, 17), ink: a.ink + hand(226, 120, 'open', 17) + `<path d="M246 98q10 14 0 30M256 90q16 22 0 46" fill="none" stroke="${YELLOW}" stroke-width="5" stroke-linecap="round"/>` }; },
+    build: () => { const a = arm(...R_SHOULDER, 224, 138); return { edge: a.edge + handEdge(226, 120, 18, 'open', 14), ink: a.ink + hand(226, 120, 'open', 18, 14) + `<path d="M243 102q8 12 0 26M251 96q12 18 0 38" fill="none" stroke="${YELLOW}" stroke-width="5" stroke-linecap="round"/>` }; },
   },
   {
     name: 'thinking', group: 'Core', title: 'Thinking', note: 'Working it out. Research, guides, "how it works" sections.', face: { eyes: 'up', brows: 'raised' },
-    build: () => { const a = arm(...L_SHOULDER, 96, 192); return { edge: a.edge + handEdge(110, 176, 18), ink: a.ink + hand(110, 176, 'fist', 18) + `<g fill="${YELLOW}" ${line}><circle cx="208" cy="40" r="7" stroke-width="3"/><circle cx="226" cy="16" r="11" stroke-width="3"/></g>` }; },
+    build: () => { const a = arm(...L_SHOULDER, 96, 192); return { edge: a.edge + handEdge(110, 178, 19, 'fist', -12), ink: a.ink + hand(110, 178, 'fist', 19, -12) + `<g fill="${YELLOW}" ${line}><circle cx="208" cy="40" r="7" stroke-width="3"/><circle cx="226" cy="16" r="11" stroke-width="3"/></g>` }; },
   },
   { name: 'builder', group: 'Core', title: 'Builder', note: 'Hard hat on. Engineering wiki, project controls, construction content.', face: { hat: true, mouth: 'smile' } },
   {
@@ -63,8 +86,8 @@ const poses = [
       const a = arm(216, 240, 208, 214);
       const handle = P(184, 172, 204, 204);
       return {
-        edge: a.edge + `<circle cx="158" cy="146" r="38" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/><path d="${handle}" stroke="${PAPER}" stroke-width="30" stroke-linecap="round"/>` + handEdge(206, 206, 14),
-        ink: a.ink + `<path d="${handle}" stroke="${INK}" stroke-width="12" stroke-linecap="round"/><g ${line}><circle cx="158" cy="146" r="36" fill="none" stroke-width="6"/><path d="M140 138Q144 126 158 122" fill="none" stroke="${YELLOW}" stroke-width="5"/></g>` + hand(206, 206, 'grip', 14),
+        edge: a.edge + `<circle cx="158" cy="146" r="38" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/><path d="${handle}" stroke="${PAPER}" stroke-width="30" stroke-linecap="round"/>` + handEdge(205, 207, 15, 'fist', 25),
+        ink: a.ink + `<path d="${handle}" stroke="${INK}" stroke-width="12" stroke-linecap="round"/><g ${line}><circle cx="158" cy="146" r="36" fill="none" stroke-width="6"/><path d="M140 138Q144 126 158 122" fill="none" stroke="${YELLOW}" stroke-width="5"/></g>` + hand(205, 207, 'fist', 15, 25),
       };
     },
   },
@@ -75,12 +98,8 @@ const poses = [
   {
     name: 'thumbs-up', group: 'Core', title: 'Thumbs up', note: 'Approved. Success, confirmations, "good to go".', face: { mouth: 'smile', eyes: 'happy' },
     build: () => {
-      const a = arm(...R_SHOULDER, 210, 168);
-      const thumb = `<rect x="201" y="112" width="15" height="40" rx="7.5"/>`;
-      return {
-        edge: a.edge + handEdge(210, 156, 18) + `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="18">${thumb}</g>`,
-        ink: a.ink + `<g ${line}><g fill="${PAPER}">${thumb}</g></g>` + hand(210, 156, 'fist', 18),
-      };
+      const a = arm(...R_SHOULDER, 210, 172);
+      return { edge: a.edge + handEdge(210, 160, 19, 'thumb', 6), ink: a.ink + hand(210, 160, 'thumb', 19, 6) };
     },
   },
   {
@@ -97,9 +116,9 @@ const poses = [
     name: 'pencil', group: 'Design', title: 'Sketching', note: 'Pencil up. Design wiki, drafts, "first idea" posts.', face: { mouth: 'smile', eyes: 'up' },
     build: () => {
       const a = arm(...R_SHOULDER, 216, 168);
-      const pencil = `<g transform="rotate(22 218 150)"><rect x="211" y="62" width="14" height="96" fill="${YELLOW}"/><rect x="211" y="52" width="14" height="12" rx="4" fill="${PAPER}"/><path d="M211 158h14l-7 20z" fill="${PAPER}"/><path d="M215.5 170h5l-2.5 8z" fill="${INK}" stroke="none"/></g>`;
-      const pencilEdge = `<g transform="rotate(22 218 150)"><rect x="211" y="52" width="14" height="108" rx="4" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/><path d="M211 158h14l-7 20z" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/></g>`;
-      return { edge: a.edge + pencilEdge + handEdge(214, 160, 16), ink: a.ink + `<g ${line}>${pencil}</g>` + hand(214, 160, 'grip', 16) };
+      const pencil = `<g transform="rotate(13 218 150)"><rect x="211" y="62" width="14" height="96" fill="${YELLOW}"/><rect x="211" y="52" width="14" height="12" rx="4" fill="${PAPER}"/><path d="M211 158h14l-7 20z" fill="${PAPER}"/><path d="M215.5 170h5l-2.5 8z" fill="${INK}" stroke="none"/></g>`;
+      const pencilEdge = `<g transform="rotate(13 218 150)"><rect x="211" y="52" width="14" height="108" rx="4" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/><path d="M211 158h14l-7 20z" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/></g>`;
+      return { edge: a.edge + pencilEdge + handEdge(214, 162, 17, 'fist', 22), ink: a.ink + `<g ${line}>${pencil}</g>` + hand(214, 162, 'fist', 17, 22) };
     },
   },
   {
@@ -109,8 +128,8 @@ const poses = [
       const pal = `<path d="M30 168C30 140 62 124 96 128C128 132 130 156 112 164C100 169 104 182 114 186C124 192 112 212 80 212C48 212 30 196 30 168Z"/>`;
       const T = 'translate(2 78) scale(.85)';
       return {
-        edge: a.edge + `<g transform="${T}" fill="${PAPER}" stroke="${PAPER}" stroke-width="21" stroke-linejoin="round">${pal}</g>` + handEdge(48, 238, 13),
-        ink: a.ink + `<g transform="${T}" ${line}><g fill="${PAPER}">${pal}</g><circle cx="50" cy="156" r="7" fill="${YELLOW}" stroke-width="3"/><circle cx="72" cy="146" r="7" fill="${INK}" stroke-width="3"/><circle cx="96" cy="148" r="7" fill="${GREY}" stroke-width="3"/><circle cx="104" cy="170" r="7" fill="${PAPER}" stroke-width="3"/></g>` + hand(48, 240, 'grip', 13),
+        edge: a.edge + `<g transform="${T}" fill="${PAPER}" stroke="${PAPER}" stroke-width="21" stroke-linejoin="round">${pal}</g>` + handEdge(48, 238, 14, 'fist', -10),
+        ink: a.ink + `<g transform="${T}" ${line}><g fill="${PAPER}">${pal}</g><circle cx="50" cy="156" r="7" fill="${YELLOW}" stroke-width="3"/><circle cx="72" cy="146" r="7" fill="${INK}" stroke-width="3"/><circle cx="96" cy="148" r="7" fill="${GREY}" stroke-width="3"/><circle cx="104" cy="170" r="7" fill="${PAPER}" stroke-width="3"/></g>` + hand(48, 240, 'fist', 14, -10),
       };
     },
   },

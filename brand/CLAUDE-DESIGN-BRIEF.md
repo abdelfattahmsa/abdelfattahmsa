@@ -55,7 +55,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | `png/favicon.ico` | **.ico bundle**: 16 and 32 hand-hinted, 48 vector (served at `/favicon.ico`) |
 | `am-icon.svg` | Simplified head on a yellow disc (no ears, brows, nose, mouth): favicon and app icon. The **16 and 32 px PNGs are hand-hinted pixel drawings** (`mascot-pixel.mjs`), not scaled vectors |
 | `am-lockup.svg`, `am-lockup-white.svg` | Head + stacked name, horizontal lockup (black ink / white ink) |
-| `am-lockup-ar.svg`, `am-lockup-ar-white.svg` | **Arabic lockup**: name on the left (عبدالفتاح over أبو الفتوح, Tajawal Bold, shaped with HarfBuzz), head on the right |
+| `am-lockup-ar.svg`, `am-lockup-ar-white.svg` | **Arabic lockup**: name on the left (عبدالفتاح over أبو الفتوح, Tajawal Bold, shaped with HarfBuzz), head on the right. The Arabic pages of the site use the same head and Arabic name in the header |
 | `am-mascot-light.svg`, `am-mascot-head-light.svg` | **For white / light backgrounds**: same art with a thin grey ring outside the white sticker edge (the site uses these in the light theme) |
 | `png/` | Exports: bust, head, avatar 1024; lockups 2000; icons 16/32/48/180/192/512; OG 1200x630 |
 | `tests.html`, `png/mascot-test-sheet.png` | Test sheet |
@@ -66,7 +66,7 @@ UI language for the website, which the brand should also use: **circular frames 
 
 | Folder | Contents |
 |---|---|
-| `print/` | `am-mascot-print.svg` and `am-mascot-head-print.svg` (**one colour**, black on white, no sticker edge, no yellow); **business card** front (black, white lockup, yellow rule) and back (white, one-colour mascot, tagline, email, site, city), 85 x 55 mm with 3 mm bleed and a 5 mm safe margin; **A4 letterhead** (lockup, hairline with a yellow start, footer). SVG with outlined text + 300 dpi PNG previews. Contact line uses email, site and city only (no phone) |
+| `print/` | `am-mascot-print.svg` and `am-mascot-head-print.svg` (**one colour**, black on white, no sticker edge, no yellow). **Business card, two sides** (85 x 55 mm, 3 mm bleed, 5 mm safe margin, SVG + PDF + PNG): *front* is black with the mascot head and stacked name and a quiet ring pattern; *back* is white with name (Abdelfattah M. Aboulfoutoh, MSc.), title (Engineer & entrepreneur), phone, email, web (abdelfattah.site \| Kyberia.tech) and address (Maadi, Cairo, Egypt) over a faint ring pattern; **no logo or mascot in the pattern**. **A4 letterhead**: small header lockup, faint mascot watermark, footer with email, web, phone, address and page number; SVG + PDF + PNG, plus an **editable Word file** (`letterhead-a4.docx`, built by `brand/build-letterhead-docx.py`) where the header, watermark and footer repeat on every page and the page number is a live field. Text is outlined in the SVG and PDF |
 | `covers/` | **Download-thumbnail system**: 1200 x 900 (4:3), black, a circular glyph frame with one yellow dot, the category name in Satoshi Bold, a matching pose at the bottom right. One cover per resource category (Claude, Notion, Spreadsheets, Website templates, CV and cover letters, Other) plus a blank "Your title here" template. Brand library only |
 
 **Testing results (honest).**
@@ -80,7 +80,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | 32 px | Pass for the simplified icon |
 | 16 px favicon | **Marginal**: reads as yellow disc, dark hair, white face, dark beard; no detail |
 
-**Known weak spots:** on white backgrounds use the `-light` files (the plain white edge disappears); hands are simple shapes.
+**Known weak spots:** on white backgrounds use the `-light` files (the plain white edge disappears); hands are drawn as palm, fingers and thumb (open, fist, thumbs-up).
 
 ## 4. Typography
 
