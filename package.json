@@ -10,6 +10,7 @@
     "admin": "node admin/server.mjs",
     "check": "node build/check.mjs",
     "brand": "node brand/build-logo.mjs && node brand/build-mascot.mjs && node brand/mascot-poses.mjs && node brand/build-print.mjs && node brand/build-covers.mjs",
+    "brand:letterhead": "python3 brand/build-letterhead-docx.py",
     "brand:poses": "node brand/mascot-poses.mjs",
     "fonts:pack": "node build/font-pack.mjs"
   },

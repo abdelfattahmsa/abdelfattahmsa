@@ -106,7 +106,7 @@ export function createTemplates(ctx) {
     return `<header class="topbar">
   <div class="topbar__start">
     <button type="button" class="circle" id="hub-toggle" aria-controls="hub-drawer" aria-expanded="false" aria-label="${esc(T(lang, 'a11y.hub'))}">${icon('i-hub', 'flip')}</button>
-    <a class="brandlink" href="${u(lang, '/')}" aria-label="${esc(T(lang, 'a11y.home'))}">${mascotIcon('head', 'brandlink__face')}${icon('logo', 'brandlink__mark')}</a>
+    <a class="brandlink" href="${u(lang, '/')}" aria-label="${esc(T(lang, 'a11y.home'))}">${mascotIcon('head', 'brandlink__face')}${lang === 'ar' ? icon('logo-ar', 'brandlink__mark brandlink__mark--ar') : icon('logo', 'brandlink__mark')}</a>
   </div>
   <nav class="topnav" id="nav-panel" aria-label="${esc(T(lang, 'a11y.menu'))}"><ul>${nav}</ul>
     <div class="topnav__tools">

@@ -63,6 +63,12 @@ export function buildSprite(root, markPath, kyberia = {}) {
   const mascot = JSON.parse(fs.readFileSync(path.join(root, 'build/lib/mascot.json'), 'utf8'));
   for (const [id, a] of Object.entries(mascot)) sym.push(`<symbol id="mascot-${id}" viewBox="${a.vb}">${a.inner}</symbol>`);
   sym.push(`<symbol id="logo" viewBox="0 0 ${markPath.w} ${markPath.h}"><path fill="currentColor" d="${markPath.d}"/></symbol>`);
+  // the Arabic name (Tajawal Bold, shaped and outlined by brand/arabic-name.py) for the Arabic header
+  const arPath = path.join(root, 'brand/mascot/arabic-name.json');
+  if (fs.existsSync(arPath)) {
+    const ar = JSON.parse(fs.readFileSync(arPath, 'utf8'));
+    sym.push(`<symbol id="logo-ar" viewBox="0 0 ${ar.w} ${ar.h}"><path fill="currentColor" d="${ar.d}"/></symbol>`);
+  }
   return `<svg xmlns="http://www.w3.org/2000/svg">${sym.join('')}</svg>`;
 }
 
