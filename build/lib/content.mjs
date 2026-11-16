@@ -36,6 +36,8 @@ export function collections(site) {
 export const isHidden = (data) => data.draft === true;
 export const isDraft = (data) => data.draft === true || data.status === 'draft';
 
+export const isoDate = (d) => d.toISOString().slice(0, 10);
+
 export const dateOf = (v) => {
   if (!v) return null;
   const d = v instanceof Date ? v : new Date(v);

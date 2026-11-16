@@ -1,5 +1,5 @@
 import { esc } from './util.mjs';
-import { pick, isDraft } from './content.mjs';
+import { pick, isDraft, isoDate } from './content.mjs';
 import { normalise } from './search.mjs';
 import { DEFAULT_LANG, langInfo, otherLang, translator, u } from './i18n.mjs';
 
@@ -16,7 +16,7 @@ export function createTemplates(ctx) {
 
   const fmtDate = (d, lang) =>
     d ? new Intl.DateTimeFormat(langInfo(lang).dateLocale, { year: 'numeric', month: 'long', day: 'numeric' }).format(d) : '';
-  const dateEl = (d, lang) => (d ? `<time datetime="${d.toISOString().slice(0, 10)}">${esc(fmtDate(d, lang))}</time>` : '');
+  const dateEl = (d, lang) => (d ? `<time datetime="${isoDate(d)}">${esc(fmtDate(d, lang))}</time>` : '');
 
   const draftBadge = (lang, data) => (isDraft(data) ? `<span class="badge">${esc(T(lang, 'hub.draft'))}</span>` : '');
   const untranslatedNotice = (lang, v) => (v.untranslated ? `<p class="notice" role="note">${esc(T(lang, 'hub.untranslated'))}</p>` : '');

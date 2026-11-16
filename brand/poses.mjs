@@ -57,7 +57,6 @@ const bar = (x, y, w, h, c = INK) => `<rect x="${x}" y="${y}" width="${w}" heigh
 const hands2 = (y = 246) => hand(64, y, 'fist', 14, 8) + hand(176, y, 'fist', 14, -8);
 
 export const POSES = [
-  // ---- the core ten (refined)
   { name: 'calm', group: 'Core', title: 'Calm', note: 'Default. Closed mouth, steady eyes. Headers, About, serious pages.', face: {} },
   { name: 'smile', group: 'Core', title: 'Smile', note: 'Friendly. Welcome states, success messages, social avatars.', face: { mouth: 'smile', eyes: 'happy' } },
   {
@@ -100,7 +99,6 @@ export const POSES = [
   },
   { name: 'glasses', group: 'Core', title: 'Glasses', note: 'Glasses on (they appear in the reference photo). Reading, detail work.', face: { glasses: true, mouth: 'smile' } },
 
-  // ---- design
   {
     name: 'pencil', group: 'Design', title: 'Sketching', note: 'Pencil up. Design wiki, drafts, "first idea" posts.', face: { mouth: 'smile', eyes: 'up' },
     build: () => {
@@ -130,7 +128,6 @@ export const POSES = [
     }),
   },
 
-  // ---- research
   {
     name: 'reading', group: 'Research', title: 'Reading', note: 'Deep in a paper. Research page, literature notes.', face: { eyes: 'up', brows: 'raised' },
     build: () => ({
@@ -153,7 +150,6 @@ export const POSES = [
     }),
   },
 
-  // ---- engineering
   {
     name: 'blueprint', group: 'Engineering', title: 'Blueprint', note: 'Reading the drawings. Civil and construction wiki, design reviews.', face: { eyes: 'up', brows: 'raised' },
     build: () => ({
@@ -169,7 +165,6 @@ export const POSES = [
     }),
   },
 
-  // ---- developer
   {
     name: 'code', group: 'Developer', title: 'Coding', note: 'Writing code. Developer wiki, tooling and automation guides.', face: { mouth: 'smile' },
     build: () => ({

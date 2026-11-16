@@ -13,7 +13,7 @@ import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { renderMarkdown } from '../build/lib/markdown.mjs';
-import { collections, INDEX_SLUG, isDraft, dateOf } from '../build/lib/content.mjs';
+import { collections, INDEX_SLUG, isDraft, dateOf, isoDate } from '../build/lib/content.mjs';
 import { LANGS, DEFAULT_LANG, langInfo, contentFile, parseContentFile } from '../build/lib/i18n.mjs';
 import { root, contentDir, dataDir, downloadsDir, DOWNLOADS_URL } from '../build/lib/paths.mjs';
 import { slugify, contentType, readJSON } from '../build/lib/util.mjs';
@@ -28,7 +28,6 @@ const UI = path.join(root, 'admin/ui');
 const SLUG = /^[a-z0-9_][a-z0-9_-]{0,80}$/;
 const MAX_UPLOAD = 60 * 1024 * 1024;
 const ALLOWED_EXT = new Set(['pdf', 'zip', 'xlsx', 'xlsm', 'xls', 'csv', 'docx', 'dotx', 'doc', 'pptx', 'potx', 'md', 'txt', 'json', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'ics', 'otf', 'ttf', 'woff2']);
-const isoDate = (v) => (v instanceof Date ? v.toISOString().slice(0, 10) : v);
 
 // admin/schema.json, with "wiki-*" expanded to one collection per wiki and select options resolved
 const schema = (() => {
@@ -89,7 +88,7 @@ function readItem(c, slug, lang) {
   const file = fileFor(c, slug, lang);
   if (!fs.existsSync(file)) return null;
   const { data, content } = matter(fs.readFileSync(file, 'utf8'));
-  for (const k of Object.keys(data)) data[k] = isoDate(data[k]);
+  for (const k of Object.keys(data)) if (data[k] instanceof Date) data[k] = isoDate(data[k]);
   return { data, body: content.replace(/^\n+/, '') };
 }
 

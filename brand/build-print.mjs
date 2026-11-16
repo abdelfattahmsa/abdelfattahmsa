@@ -66,7 +66,6 @@ const W = 91, H = 61;
   const hd = art.headPrint, [, , hw, hh] = hd.vb.split(' ').map(Number);
   const wh = 130, ws = wh / hh;
   body += `<svg x="${((210 - hw * ws) / 2).toFixed(2)}" y="120" width="${(hw * ws).toFixed(2)}" height="${wh}" viewBox="${hd.vb}" opacity="0.05">${hd.inner}</svg>`;
-  // footer
   body += `<rect x="20" y="270.2" width="14" height="0.8" fill="${YELLOW}"/><rect x="34" y="270.4" width="156" height="0.25" fill="#000000"/>`;
   body += text(T500, `${D.email}  ·  ${D.phone}`, 20, 277, 2.8, '#000000');
   body += text(T500, [...D.web, D.address].join('  ·  '), 20, 281.6, 2.8, '#000000');
