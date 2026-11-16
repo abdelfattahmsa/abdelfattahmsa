@@ -1,64 +1,35 @@
-// Builds the mascot brand set from brand/mascot-art.mjs. Run after build-logo.mjs:  npm run brand
-// Writes brand/mascot/*.svg + png/, the site's icons and social image, and build/lib/mascot.json (header sprite).
+// Builds the mascot brand set from brand/mascot-art.mjs: brand/mascot/*.svg + png/, the site's icons
+// (src/assets/icons/) and social image (src/assets/img/og.png), and src/data/mascot.json (header sprite).
+// Run after build-logo.mjs:  npm run brand
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { art, maskable, svgDoc, YELLOW } from './mascot-art.mjs';
+import { art, maskable, INK, PAPER, YELLOW } from './mascot-art.mjs';
 import { png as pixelPng, HEAD16, HEAD32 } from './mascot-pixel.mjs';
+import { lockup, lockupAr } from './lockup.mjs';
+import { NAME, outDir, readData, root, siteIcons, svgDoc, toPng, writeData, TRANSPARENT } from './lib.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const out = path.join(root, 'brand/mascot');
-const png = path.join(out, 'png');
-fs.mkdirSync(png, { recursive: true });
+const out = outDir('mascot');
+const png = outDir('mascot/png');
 const write = (n, c) => fs.writeFileSync(path.join(out, n), c);
-const word = JSON.parse(fs.readFileSync(path.join(root, 'build/lib/mark-path.json'), 'utf8'));
-const TITLE = 'Abdelfattah Aboulfoutoh';
+const word = readData('wordmark.json');
 
-// ---- standalone SVGs
-write('am-mascot.svg', svgDoc(art.bust, TITLE));
-write('am-mascot-mono.svg', svgDoc(art.bustMono, TITLE));
-write('am-mascot-head.svg', svgDoc(art.head, TITLE));
-write('am-avatar.svg', svgDoc(art.avatar, TITLE));
-write('am-icon.svg', svgDoc(art.icon, TITLE));
-write('am-icon-maskable.svg', svgDoc(maskable, TITLE));
-write('am-mascot-light.svg', svgDoc(art.bustLight, TITLE));
-write('am-mascot-head-light.svg', svgDoc(art.headLight, TITLE));
-
-// ---- horizontal lockup: head + stacked name
-function lockup(ink) {
-  const [, , hw, hh] = art.head.vb.split(' ').map(Number);
-  const H = 200, s = H / hh, fw = hw * s;
-  const ws = 1.0, ww = word.w * ws, wh = word.h * ws;
-  const gap = 36, W = fw + gap + ww;
-  const face = `<svg x="0" y="0" width="${fw.toFixed(1)}" height="${H}" viewBox="${art.head.vb}">${art.head.inner}</svg>`;
-  const name = `<g transform="translate(${(fw + gap).toFixed(1)} ${((H - wh) / 2).toFixed(1)}) scale(${ws})"><path fill="${ink}" d="${word.d}"/></g>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(1)} ${H}" role="img" aria-label="${TITLE}"><title>${TITLE}</title>${face}${name}</svg>\n`;
-}
-write('am-lockup.svg', lockup('#000000'));
-write('am-lockup-white.svg', lockup('#ffffff'));
-
-// ---- Arabic lockup: right-to-left, so the head sits on the right and the name on the left (right-aligned lines)
-const ar = JSON.parse(fs.readFileSync(path.join(out, 'arabic-name.json'), 'utf8'));
-function lockupAr(ink) {
-  const [, , hw, hh] = art.head.vb.split(' ').map(Number);
-  const H = 200, s = H / hh, fw = hw * s;
-  const k = word.h / ar.h; // same total height as the English name
-  const ww = ar.w * k, wh = ar.h * k;
-  const gap = 36, W = ww + gap + fw;
-  const name = `<g transform="translate(0 ${((H - wh) / 2).toFixed(1)}) scale(${k.toFixed(4)})"><path fill="${ink}" d="${ar.d}"/></g>`;
-  const face = `<svg x="${(ww + gap).toFixed(1)}" y="0" width="${fw.toFixed(1)}" height="${H}" viewBox="${art.head.vb}">${art.head.inner}</svg>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(1)} ${H}" role="img" aria-label="عبدالفتاح أبو الفتوح"><title>عبدالفتاح أبو الفتوح</title>${name}${face}</svg>\n`;
-}
-write('am-lockup-ar.svg', lockupAr('#000000'));
-write('am-lockup-ar-white.svg', lockupAr('#ffffff'));
+write('am-mascot.svg', svgDoc(art.bust, NAME));
+write('am-mascot-mono.svg', svgDoc(art.bustMono, NAME));
+write('am-mascot-head.svg', svgDoc(art.head, NAME));
+write('am-avatar.svg', svgDoc(art.avatar, NAME));
+write('am-icon.svg', svgDoc(art.icon, NAME));
+write('am-icon-maskable.svg', svgDoc(maskable, NAME));
+write('am-mascot-light.svg', svgDoc(art.bustLight, NAME));
+write('am-mascot-head-light.svg', svgDoc(art.headLight, NAME));
+write('am-lockup.svg', lockup(INK));
+write('am-lockup-white.svg', lockup(PAPER));
+write('am-lockup-ar.svg', lockupAr(INK));
+write('am-lockup-ar-white.svg', lockupAr(PAPER));
 
 // ---- rasters (transparent)
-const T = { r: 0, g: 0, b: 0, alpha: 0 };
 const read = (n) => fs.readFileSync(path.join(out, n));
-async function raster(name, file, width) {
-  await sharp(read(file), { density: 384 }).resize({ width, fit: 'contain', background: T }).png({ compressionLevel: 9 }).toFile(path.join(png, name));
-}
+const raster = (name, file, width) => toPng(read(file), path.join(png, name), { width, fit: 'contain', background: TRANSPARENT });
 await raster('am-mascot-1024.png', 'am-mascot.svg', 1024);
 await raster('am-mascot-head-1024.png', 'am-mascot-head.svg', 1024);
 await raster('am-avatar-1024.png', 'am-avatar.svg', 1024);
@@ -77,48 +48,35 @@ fs.writeFileSync(path.join(png, 'am-icon-32.png'), await pixelPng(HEAD32));
 // ---- social / Open Graph 1200x630: black, mascot left, name right, short yellow rule
 {
   const WW = 1200, HH = 630;
-  const mh = 470;
-  const mascot = await sharp(read('am-mascot.svg'), { density: 384 }).resize({ height: mh }).png().toBuffer();
+  const mascot = await sharp(read('am-mascot.svg'), { density: 384 }).resize({ height: 470 }).png().toBuffer();
   const mm = await sharp(mascot).metadata();
   const nw = 520;
   const name = await sharp(Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${word.w} ${word.h}"><path fill="#ffffff" d="${word.d}"/></svg>`), { density: 384 }).resize({ width: nw }).png().toBuffer();
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${word.w} ${word.h}"><path fill="${PAPER}" d="${word.d}"/></svg>`), { density: 384 }).resize({ width: nw }).png().toBuffer();
   const nm = await sharp(name).metadata();
-  const gap = 70, total = mm.width + gap + nw, left = Math.round((WW - total) / 2);
+  const gap = 70, left = Math.round((WW - (mm.width + gap + nw)) / 2);
   const nx = left + mm.width + gap, ny = Math.round((HH - nm.height) / 2) - 14;
   const rule = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${WW}" height="${HH}"><rect x="${nx}" y="${ny + nm.height + 34}" width="64" height="6" fill="${YELLOW}"/></svg>`);
-  await sharp({ create: { width: WW, height: HH, channels: 4, background: '#000000' } })
+  await sharp({ create: { width: WW, height: HH, channels: 4, background: INK } })
     .composite([{ input: mascot, left, top: Math.round((HH - mm.height) / 2) }, { input: name, left: nx, top: ny }, { input: rule }])
     .png({ compressionLevel: 9 }).toFile(path.join(png, 'am-og-1200x630.png'));
 }
 
-// ---- site copies
-const site = path.join(root, 'src/assets/icons');
-fs.copyFileSync(path.join(out, 'am-icon.svg'), path.join(site, 'favicon.svg'));
-for (const [a, b] of [['am-icon-16.png', 'favicon-16.png'], ['am-icon-32.png', 'favicon-32.png'], ['am-icon-180.png', 'apple-touch-icon.png'], ['am-icon-192.png', 'icon-192.png'], ['am-icon-512.png', 'icon-512.png']]) fs.copyFileSync(path.join(png, a), path.join(site, b));
-fs.copyFileSync(path.join(png, 'am-og-1200x630.png'), path.join(root, 'src/assets/img/og.png'));
-// favicon.ico (PNG entries: 16 and 32 hand-hinted, 48 vector) and the web manifest
+// ---- favicon.ico: PNG entries, 16 and 32 hand-hinted, 48 vector
 {
-  const imgs = [16, 32, 48].map((n) => fs.readFileSync(path.join(png, `am-icon-${n}.png`)));
+  const sizes = [16, 32, 48];
+  const imgs = sizes.map((n) => fs.readFileSync(path.join(png, `am-icon-${n}.png`)));
   const head = Buffer.alloc(6); head.writeUInt16LE(1, 2); head.writeUInt16LE(imgs.length, 4);
   let offset = 6 + 16 * imgs.length;
-  const dir = imgs.map((b, i) => { const e = Buffer.alloc(16); const n = [16, 32, 48][i]; e[0] = n; e[1] = n; e.writeUInt16LE(1, 4); e.writeUInt16LE(32, 6); e.writeUInt32LE(b.length, 8); e.writeUInt32LE(offset, 12); offset += b.length; return e; });
-  const ico = Buffer.concat([head, ...dir, ...imgs]);
-  fs.writeFileSync(path.join(png, 'favicon.ico'), ico);
-  fs.copyFileSync(path.join(png, 'favicon.ico'), path.join(site, 'favicon.ico'));
-  fs.copyFileSync(path.join(png, 'am-icon-maskable-192.png'), path.join(site, 'icon-maskable-192.png'));
-  fs.copyFileSync(path.join(png, 'am-icon-maskable-512.png'), path.join(site, 'icon-maskable-512.png'));
-  fs.writeFileSync(path.join(site, 'site.webmanifest'), JSON.stringify({
-    name: 'Abdelfattah Aboulfoutoh', short_name: 'Abdelfattah', description: 'Engineer. System Builder. Product Architect.',
-    start_url: '/', display: 'standalone', background_color: '#000000', theme_color: '#000000',
-    icons: [
-      { src: '/assets/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-      { src: '/assets/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-      { src: '/assets/icons/icon-maskable-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-      { src: '/assets/icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-    ],
-  }, null, 2) + '\n');
+  const dir = imgs.map((b, i) => { const e = Buffer.alloc(16); e[0] = sizes[i]; e[1] = sizes[i]; e.writeUInt16LE(1, 4); e.writeUInt16LE(32, 6); e.writeUInt32LE(b.length, 8); e.writeUInt32LE(offset, 12); offset += b.length; return e; });
+  fs.writeFileSync(path.join(png, 'favicon.ico'), Buffer.concat([head, ...dir, ...imgs]));
 }
-// header / page sprite symbols (the build adds them to the icon sprite)
-fs.writeFileSync(path.join(root, 'build/lib/mascot.json'), JSON.stringify({ head: art.head, bust: art.bust, headLight: art.headLight, bustLight: art.bustLight }));
+
+// ---- site copies (the site's manifest lists them: build/build.mjs)
+fs.copyFileSync(path.join(out, 'am-icon.svg'), path.join(siteIcons, 'favicon.svg'));
+for (const [a, b] of [['am-icon-16.png', 'favicon-16.png'], ['am-icon-32.png', 'favicon-32.png'], ['am-icon-180.png', 'apple-touch-icon.png'], ['am-icon-192.png', 'icon-192.png'], ['am-icon-512.png', 'icon-512.png'], ['am-icon-maskable-192.png', 'icon-maskable-192.png'], ['am-icon-maskable-512.png', 'icon-maskable-512.png'], ['favicon.ico', 'favicon.ico']]) {
+  fs.copyFileSync(path.join(png, a), path.join(siteIcons, b));
+}
+fs.copyFileSync(path.join(png, 'am-og-1200x630.png'), path.join(root, 'src/assets/img/og.png'));
+writeData('mascot.json', { head: art.head, bust: art.bust, headLight: art.headLight, bustLight: art.bustLight });
 console.log('mascot set built');

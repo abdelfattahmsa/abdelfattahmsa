@@ -2,49 +2,32 @@
 // Text is outlined (opentype.js) so the files need no fonts. Run: npm run brand  (or node brand/build-print.mjs)
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import opentype from 'opentype.js';
 import sharp from 'sharp';
-import { art, svgDoc, YELLOW } from './mascot-art.mjs';
+import { art, INK, YELLOW } from './mascot-art.mjs';
+import { lockup as lockupDoc } from './lockup.mjs';
+import { DETAILS as D, NAME, lockupLayout, outDir, readData, svgDoc, tajawal, toPng, TRANSPARENT } from './lib.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const out = path.join(root, 'brand/print');
-fs.mkdirSync(out, { recursive: true });
-const word = JSON.parse(fs.readFileSync(path.join(root, 'build/lib/mark-path.json'), 'utf8'));
-const TITLE = 'Abdelfattah Aboulfoutoh';
-
-const loadFont = (f) => { const b = fs.readFileSync(path.join(root, 'node_modules/@fontsource/tajawal/files', f)); return opentype.parse(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength)); };
-const T500 = loadFont('tajawal-latin-500-normal.woff');
-const T700 = loadFont('tajawal-latin-700-normal.woff');
+const out = outDir('print');
+const word = readData('wordmark.json');
+const T500 = tajawal(500);
+const T700 = tajawal(700);
 const text = (font, str, x, y, size, fill) => `<path fill="${fill}" d="${font.getPath(str, x, y, size, { kerning: true }).toPathData(2)}"/>`;
 
 // head mark (sticker edge when on dark, plain print version on light) + stacked name, as a nested svg group
 function lockup({ x, y, h, ink, dark }) {
   const head = dark ? art.head : art.headPrint;
-  const [, , hw, hh] = head.vb.split(' ').map(Number);
-  const s = h / hh, fw = hw * s;
-  const ws = h / 200, ww = word.w * ws, wh = word.h * ws, gap = h * 0.18;
+  const { fw, ws, gap, wh, w } = lockupLayout(head, word, h);
   return {
-    w: fw + gap + ww,
+    w,
     svg: `<svg x="${x}" y="${y}" width="${fw.toFixed(2)}" height="${h}" viewBox="${head.vb}">${head.inner}</svg><g transform="translate(${(x + fw + gap).toFixed(2)} ${(y + (h - wh) / 2).toFixed(2)}) scale(${ws.toFixed(5)})"><path fill="${ink}" d="${word.d}"/></g>`,
   };
 }
 const doc = (wmm, hmm, body, bg) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" width="${wmm}mm" height="${hmm}mm" viewBox="0 0 ${wmm} ${hmm}" role="img" aria-label="${TITLE}"><title>${TITLE}</title><rect width="${wmm}" height="${hmm}" fill="${bg}"/>${body}</svg>\n`;
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${wmm}mm" height="${hmm}mm" viewBox="0 0 ${wmm} ${hmm}" role="img" aria-label="${NAME}"><title>${NAME}</title><rect width="${wmm}" height="${hmm}" fill="${bg}"/>${body}</svg>\n`;
 
 // ---- one-colour print mascot (black on white, no edge, no yellow)
-fs.writeFileSync(path.join(out, 'am-mascot-print.svg'), svgDoc(art.bustPrint, TITLE));
-fs.writeFileSync(path.join(out, 'am-mascot-head-print.svg'), svgDoc(art.headPrint, TITLE));
-
-// ---- owner details (business card back + letterhead footer)
-const D = {
-  name: 'Abdelfattah M. Aboulfoutoh, MSc.',
-  title: 'Engineer & entrepreneur',
-  phone: '+20 100 548 0636',
-  email: 'abdelfattah.aboulfoutoh@outlook.com',
-  web: 'abdelfattah.site | Kyberia.tech',
-  address: 'Maadi, Cairo, Egypt',
-};
+fs.writeFileSync(path.join(out, 'am-mascot-print.svg'), svgDoc(art.bustPrint, NAME));
+fs.writeFileSync(path.join(out, 'am-mascot-head-print.svg'), svgDoc(art.headPrint, NAME));
 // concentric rings (the circular-frame language): a quiet design element, no logo or mascot
 const rings = (cx, cy, radii, stroke, w = 0.3) => radii.map((r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${stroke}" stroke-width="${w}"/>`).join('');
 const clipTrim = (id, w, h) => `<clipPath id="${id}"><rect width="${w}" height="${h}"/></clipPath>`;
@@ -54,8 +37,7 @@ const W = 91, H = 61;
 {
   // side 1: black. Mascot head + stacked name, quiet rings bottom right, short yellow rule
   const hLk = 19;
-  const lk = lockup({ x: 0, y: 0, h: hLk, ink: '#ffffff', dark: true });
-  const x0 = (W - lk.w) / 2, y0 = (H - hLk) / 2 - 3;
+  const x0 = (W - lockupLayout(art.head, word, hLk).w) / 2, y0 = (H - hLk) / 2 - 3;
   const l = lockup({ x: x0, y: y0, h: hLk, ink: '#ffffff', dark: true });
   const ringsF = `<g clip-path="url(#cf)">${clipTrim('cf', W, H)}${rings(W - 4, H - 2, [14, 22, 30, 38, 46, 54], '#1c1c1c', 0.35)}</g>`;
   fs.writeFileSync(path.join(out, 'business-card-front.svg'), doc(W, H, ringsF + l.svg + `<rect x="${x0.toFixed(2)}" y="${(y0 + hLk + 5).toFixed(2)}" width="12" height="0.8" fill="${YELLOW}"/>`, '#000000'));
@@ -66,7 +48,7 @@ const W = 91, H = 61;
   body += text(T700, D.name, L, 17, 3.7, '#000000');
   body += text(T500, D.title, L, 22, 2.7, '#595959');
   body += `<rect x="${L}" y="25.2" width="10" height="0.7" fill="${YELLOW}"/>`;
-  const rows = [['TEL', D.phone], ['EMAIL', D.email], ['WEB', D.web], ['ADDRESS', D.address]];
+  const rows = [['TEL', D.phone], ['EMAIL', D.email], ['WEB', D.web.join(' | ')], ['ADDRESS', D.address]];
   let y = 33;
   for (const [k, v] of rows) {
     body += text(T700, k, L, y, 1.9, '#8a8a8a');
@@ -84,10 +66,9 @@ const W = 91, H = 61;
   const hd = art.headPrint, [, , hw, hh] = hd.vb.split(' ').map(Number);
   const wh = 130, ws = wh / hh;
   body += `<svg x="${((210 - hw * ws) / 2).toFixed(2)}" y="120" width="${(hw * ws).toFixed(2)}" height="${wh}" viewBox="${hd.vb}" opacity="0.05">${hd.inner}</svg>`;
-  // footer
   body += `<rect x="20" y="270.2" width="14" height="0.8" fill="${YELLOW}"/><rect x="34" y="270.4" width="156" height="0.25" fill="#000000"/>`;
   body += text(T500, `${D.email}  ·  ${D.phone}`, 20, 277, 2.8, '#000000');
-  body += text(T500, `${D.web.replace(' | ', '  ·  ')}  ·  ${D.address}`, 20, 281.6, 2.8, '#000000');
+  body += text(T500, [...D.web, D.address].join('  ·  '), 20, 281.6, 2.8, '#000000');
   const pg = 'Page 1';
   body += text(T700, pg, 190 - T700.getAdvanceWidth(pg, 2.8), 277, 2.8, '#000000');
   fs.writeFileSync(path.join(out, 'letterhead-a4.svg'), doc(210, 297, body, '#ffffff'));
@@ -95,7 +76,7 @@ const W = 91, H = 61;
 
 // ---- assets for the Word letterhead (brand/build-letterhead-docx.py): padded logo, faint watermark
 {
-  const lockupPng = await sharp(fs.readFileSync(path.join(root, 'brand/mascot/am-lockup.svg')), { density: 300 }).resize({ width: 1400 }).extend({ right: 40, top: 20, bottom: 20, left: 10, background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
+  const lockupPng = await sharp(Buffer.from(lockupDoc(INK)), { density: 300 }).resize({ width: 1400 }).extend({ right: 40, top: 20, bottom: 20, left: 10, background: TRANSPARENT }).png().toBuffer();
   fs.writeFileSync(path.join(out, 'letterhead-logo.png'), lockupPng);
   const hd = art.headPrint;
   const wm = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${hd.vb}"><g opacity=".06">${hd.inner}</g></svg>`;
@@ -105,8 +86,6 @@ const W = 91, H = 61;
 // ---- PNG previews at 300 dpi
 const mmToPx = (mm) => Math.round((mm / 25.4) * 300);
 for (const [f, w] of [['business-card-front', W], ['business-card-back', W], ['letterhead-a4', 210], ['am-mascot-print', 0]]) {
-  const file = path.join(out, f + '.svg');
-  const img = sharp(fs.readFileSync(file), { density: 300 });
-  await (w ? img.resize({ width: mmToPx(w) }) : img.resize({ width: 1024 })).png({ compressionLevel: 9 }).toFile(path.join(out, f + '.png'));
+  await toPng(fs.readFileSync(path.join(out, f + '.svg')), path.join(out, f + '.png'), { width: w ? mmToPx(w) : 1024 }, 300);
 }
 console.log('print set built');

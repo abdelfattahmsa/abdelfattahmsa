@@ -1,6 +1,7 @@
 // Hand-hinted favicon pixels. K = black, W = white, . = leave the yellow disc.
 // 16 x 16 is drawn by hand; 32 x 32 is that drawing doubled, then refined by hand (brows, nose, lips).
 import sharp from 'sharp';
+import { INK, PAPER, YELLOW } from './mascot-art.mjs';
 
 export const HEAD16 = [
   '................',
@@ -35,8 +36,9 @@ function head32() {
 }
 export const HEAD32 = head32();
 
-const YEL = [255, 204, 0], BLK = [0, 0, 0], WHT = [255, 255, 255];
-export function pixels(rows) {
+const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const YEL = rgb(YELLOW), BLK = rgb(INK), WHT = rgb(PAPER);
+function pixels(rows) {
   const n = rows.length;
   const buf = Buffer.alloc(n * n * 4);
   for (let y = 0; y < n; y++) {

@@ -1,10 +1,12 @@
 // Post-build checks on dist/. Exits 1 on any failure so CI blocks a bad deploy.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
+import { root } from './lib/paths.mjs';
+import { LANGS, u } from './lib/i18n.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const dist = path.join(root, process.env.OUT_DIR || 'dist');
+const { values } = parseArgs({ options: { out: { type: 'string', default: 'dist' } } });
+const dist = path.join(root, values.out);
 if (!fs.existsSync(dist)) { console.error('dist/ missing. Run npm run build first.'); process.exit(1); }
 
 const problems = [];
@@ -60,9 +62,9 @@ for (const f of htmlFiles) {
   }
 }
 
-for (const lang of ['', 'ar/']) {
-  const idx = path.join(dist, lang, 'search-index.json');
-  if (!fs.existsSync(idx)) fail('/' + lang, 'search-index.json missing');
+for (const lang of LANGS) {
+  const idx = path.join(dist, u(lang, '/search-index.json'));
+  if (!fs.existsSync(idx)) fail(u(lang, '/'), 'search-index.json missing');
   else {
     const j = JSON.parse(fs.readFileSync(idx, 'utf8'));
     for (const it of j.i) if (!resolves(it.u)) fail('search-index', `dead result ${it.u}`);
