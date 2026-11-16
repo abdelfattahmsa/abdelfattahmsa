@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { root } from './paths.mjs';
 
-// Simple stroke icons (24 grid, 1.75 stroke, round caps) + brand glyphs from simple-icons.
+// Stroke icons: 24 grid, 1.75 stroke, round caps. Also drawn on the download covers (brand/build-covers.mjs).
 export const STROKE = {
   search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   hub: '<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M9.5 4v16"/>',
@@ -22,54 +23,46 @@ export const STROKE = {
   pencil: '<path d="M4 20l1-4L16 5l3 3L8 19l-4 1z"/><path d="M14 7l3 3"/>',
   file: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
   compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
-  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   gift: '<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M3 9h18M12 9v11M12 9c-2.5 0-4-1-4-2.5S9.5 4 12 9zM12 9c2.5 0 4-1 4-2.5S14.5 4 12 9z"/>',
   book: '<path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4z"/><path d="M5 17a3 3 0 0 1 3-3h10"/>',
 };
 
-// Project marks (48 grid). Placeholders until final brand marks are supplied.
-const spokes = (r = 0, scale = 1) =>
-  [0, 45, 90, 135]
-    .map((a) => `<rect x="${24 - 3 * scale}" y="${24 - 18 * scale}" width="${6 * scale}" height="${36 * scale}" rx="${3 * scale}" transform="rotate(${a + r} 24 24)"/>`)
-    .join('');
-const MARKS = {
-  asterisk: `<g fill="currentColor">${spokes()}</g>`,
-  'asterisk-ring': `<g fill="currentColor">${spokes(0, 0.58)}</g><circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="3"/>`,
-  'asterisk-square': `<g fill="currentColor">${spokes(0, 0.58)}</g><rect x="3" y="3" width="42" height="42" rx="11" fill="none" stroke="currentColor" stroke-width="3"/>`,
-  gem: '<path d="M24 4l15 9v22l-15 9-15-9V13z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M24 15l7 4.5v9L24 33l-7-4.5v-9z" fill="currentColor"/>',
-};
+// The packaged Medium glyph is wider than its viewBox; draw the classic mark instead.
+const MEDIUM = '<g fill="currentColor"><ellipse cx="6.6" cy="12" rx="5.6" ry="5.8"/><ellipse cx="16" cy="12" rx="3" ry="5.6"/><ellipse cx="21.1" cy="12" rx="1.1" ry="4.9"/></g>';
 
-export function buildSprite(root, markPath, kyberia = {}) {
+function socialGlyph(id) {
+  if (id === 'medium') return MEDIUM;
+  const svg = fs.readFileSync(path.join(root, 'node_modules/simple-icons/icons', `${id}.svg`), 'utf8');
+  return `<path fill="currentColor" d="${svg.match(/<path d="([^"]+)"/)[1]}"/>`;
+}
+
+// One SVG sprite for the whole site: stroke icons (i-*), social glyphs (s-*), the Kyberia lockups in
+// three recolourable parts (k-<arm>-mark|word|suffix), the mascot (mascot-*) and the name (logo, logo-ar).
+export function buildSprite({ socials, brand }) {
   const sym = [];
   for (const [id, body] of Object.entries(STROKE)) {
     sym.push(`<symbol id="i-${id}" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${body}</g></symbol>`);
   }
-  for (const id of ['github', 'instagram', 'behance', 'medium', 'researchgate', 'x', 'linkedin']) {
-    const svg = fs.readFileSync(path.join(root, 'node_modules/simple-icons/icons', `${id}.svg`), 'utf8');
-    const d = svg.match(/<path d="([^"]+)"/)?.[1];
-    if (id === 'medium') {
-      // the packaged glyph is wider than its viewBox; draw the classic mark instead
-      sym.push('<symbol id="s-medium" viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="6.6" cy="12" rx="5.6" ry="5.8"/><ellipse cx="16" cy="12" rx="3" ry="5.6"/><ellipse cx="21.1" cy="12" rx="1.1" ry="4.9"/></g></symbol>');
-    } else if (d) sym.push(`<symbol id="s-${id}" viewBox="0 0 24 24"><path fill="currentColor" d="${d}"/></symbol>`);
-  }
-  for (const [id, body] of Object.entries(MARKS)) sym.push(`<symbol id="m-${id}" viewBox="0 0 48 48">${body}</symbol>`);
-  // the real Kyberia lockups (extracted from the brand guidelines), as three recolourable parts per arm
-  for (const [arm, v] of Object.entries(kyberia)) {
+  for (const { id } of socials) sym.push(`<symbol id="s-${id}" viewBox="0 0 24 24">${socialGlyph(id)}</symbol>`);
+  for (const [arm, v] of Object.entries(brand.kyberia)) {
     sym.push(`<g id="k-${arm}-mark" fill="currentColor">${v.mark.map((d) => `<path d="${d}"/>`).join('')}</g>`);
     sym.push(`<g id="k-${arm}-word" fill="currentColor"><path d="${v.word}"/></g>`);
     sym.push(`<g id="k-${arm}-suffix" fill="currentColor"><path d="${v.suffix}"/></g>`);
   }
-  // the mascot (head for the header, bust for pages), pre-drawn by brand/build-mascot.mjs
-  const mascot = JSON.parse(fs.readFileSync(path.join(root, 'build/lib/mascot.json'), 'utf8'));
-  for (const [id, a] of Object.entries(mascot)) sym.push(`<symbol id="mascot-${id}" viewBox="${a.vb}">${a.inner}</symbol>`);
-  sym.push(`<symbol id="logo" viewBox="0 0 ${markPath.w} ${markPath.h}"><path fill="currentColor" d="${markPath.d}"/></symbol>`);
-  // the Arabic name (Tajawal Bold, shaped and outlined by brand/arabic-name.py) for the Arabic header
-  const arPath = path.join(root, 'brand/mascot/arabic-name.json');
-  if (fs.existsSync(arPath)) {
-    const ar = JSON.parse(fs.readFileSync(arPath, 'utf8'));
-    sym.push(`<symbol id="logo-ar" viewBox="0 0 ${ar.w} ${ar.h}"><path fill="currentColor" d="${ar.d}"/></symbol>`);
+  for (const [id, a] of Object.entries(brand.mascot)) sym.push(`<symbol id="mascot-${id}" viewBox="${a.vb}">${a.inner}</symbol>`);
+  for (const [id, w] of [['logo', brand.wordmark], ['logo-ar', brand.wordmarkAr]]) {
+    sym.push(`<symbol id="${id}" viewBox="0 0 ${w.w} ${w.h}"><path fill="currentColor" d="${w.d}"/></symbol>`);
   }
   return `<svg xmlns="http://www.w3.org/2000/svg">${sym.join('')}</svg>`;
 }
 
-export const hasIcon = (id) => id in STROKE;
+// The header shows the mascot head and the name through <use>, which carries no size of its own,
+// so their CSS boxes take the proportions of the symbols above.
+export function logoCss(brand) {
+  const [, , hw, hh] = brand.mascot.head.vb.split(' ');
+  return [
+    `.brandlink__face{aspect-ratio:${hw}/${hh}}`,
+    `.brandlink__mark{aspect-ratio:${brand.wordmark.w}/${brand.wordmark.h}}`,
+    `.brandlink__mark--ar{aspect-ratio:${brand.wordmarkAr.w}/${brand.wordmarkAr.h}}`,
+  ].join('\n') + '\n';
+}

@@ -13,13 +13,7 @@
   };
 
   // Same normalisation as the build (Arabic-aware).
-  function normalise(s) {
-    return String(s || '').toLowerCase()
-      .replace(/[ً-ٰٟـ]/g, '')
-      .replace(/[أإآ]/g, 'ا')
-      .replace(/ى/g, 'ي')
-      .replace(/ة/g, 'ه');
-  }
+  /* @normalise: the build inserts normalise(s) here, from build/lib/search.mjs */
 
   /* ------------------------------------------------------------ theme */
   $$('[data-theme-toggle]').forEach(function (btn) {

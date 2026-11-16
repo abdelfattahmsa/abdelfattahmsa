@@ -23,14 +23,13 @@ export function writeFile(file, data) {
   fs.writeFileSync(file, data);
 }
 
-export function copyDir(src, dest, filter = () => true) {
+export function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
   ensureDir(dest);
   for (const e of fs.readdirSync(src, { withFileTypes: true })) {
     const s = path.join(src, e.name);
     const d = path.join(dest, e.name);
-    if (!filter(s)) continue;
-    if (e.isDirectory()) copyDir(s, d, filter);
+    if (e.isDirectory()) copyDir(s, d);
     else fs.copyFileSync(s, d);
   }
 }
@@ -43,12 +42,5 @@ export function humanSize(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-// Arabic-aware normalisation, shared with the client search (see main.js).
-export function normalise(s = '') {
-  return String(s)
-    .toLowerCase()
-    .replace(/[ً-ٰٟـ]/g, '')
-    .replace(/[أإآ]/g, 'ا')
-    .replace(/ى/g, 'ي')
-    .replace(/ة/g, 'ه');
-}
+const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.ico': 'image/x-icon' };
+export const contentType = (file) => MIME[path.extname(file)] || 'application/octet-stream';

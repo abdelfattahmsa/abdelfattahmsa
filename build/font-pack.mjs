@@ -2,9 +2,8 @@
 // Usage:  npm run fonts:pack   then follow the printed steps. Output goes to .secrets/ (git-ignored).
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { root } from './lib/paths.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = path.join(root, 'src/assets/fonts/Satoshi-Variable.woff2');
 if (!fs.existsSync(file)) { console.error('Put Satoshi-Variable.woff2 in src/assets/fonts/ first.'); process.exit(1); }
 const b64 = fs.readFileSync(file).toString('base64');

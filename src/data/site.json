@@ -16,6 +16,16 @@
     "en": "Bridging physical infrastructure with digital solutions: designing structured, scalable systems for life, work, and technology.",
     "ar": "أربط البنية التحتية المادية بالحلول الرقمية: أصمم أنظمة منظّمة وقابلة للتوسع للحياة والعمل والتقنية."
   },
+  "person": {
+    "jobTitle": "Civil Engineer, Project Controls Engineer, Founder",
+    "locality": "Cairo",
+    "country": "EG"
+  },
+  "app": {
+    "name": "Abdelfattah Aboulfoutoh",
+    "shortName": "Abdelfattah",
+    "color": "#000000"
+  },
   "contact": {
     "formEndpoint": "https://formspree.io/f/mzeebegw",
     "inbox": [
@@ -74,6 +84,7 @@
   "wikis": [
     {
       "id": "engineering",
+      "icon": "layers",
       "title": {
         "en": "Engineering Wiki",
         "ar": "ويكي الهندسة"
@@ -85,6 +96,7 @@
     },
     {
       "id": "developer",
+      "icon": "code",
       "title": {
         "en": "Developer Wiki",
         "ar": "ويكي المطوّر"
@@ -96,6 +108,7 @@
     },
     {
       "id": "design",
+      "icon": "pencil",
       "title": {
         "en": "Design Wiki",
         "ar": "ويكي التصميم"
@@ -213,7 +226,6 @@
       "url": "https://kyberia.tech",
       "color": "#FF2F92",
       "colorText": "#BD005F",
-      "kyberia": true,
       "blurb": {
         "en": "The agency front door. Brands, websites and apps for clients.",
         "ar": "واجهة الوكالة. هويات ومواقع وتطبيقات للعملاء."
@@ -225,7 +237,6 @@
       "url": "https://labs.kyberia.tech",
       "color": "#2D6BFF",
       "colorText": "#1F4FD6",
-      "kyberia": true,
       "blurb": {
         "en": "R&D and products: Monk, Nomad, Mizan and Matica Engine.",
         "ar": "البحث والمنتجات: Monk وNomad وMizan وMatica Engine."
@@ -237,7 +248,6 @@
       "url": "https://studio.kyberia.tech",
       "color": "#FF7A1A",
       "colorText": "#A84700",
-      "kyberia": true,
       "blurb": {
         "en": "Creative services and original IP: branding, motion and worlds of our own.",
         "ar": "خدمات إبداعية وملكية فكرية أصلية: هوية وحركة وعوالم خاصة بنا."
@@ -249,7 +259,6 @@
       "url": "https://peridot-holdings.com",
       "color": "#7EB731",
       "colorText": "#517320",
-      "kyberia": false,
       "blurb": {
         "en": "The holding that structures long-term ventures and partnerships.",
         "ar": "الشركة القابضة التي تنظّم المشاريع والشراكات طويلة الأجل."
