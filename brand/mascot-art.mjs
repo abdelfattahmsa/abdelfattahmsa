@@ -1,5 +1,5 @@
 // The mascot, drawn once. 240 x 240 design grid, flat shapes, 5-unit black outline, yellow tie.
-// Everything else (site sprite, logos, icons, OG image) is built from these strings by build-mascot.mjs.
+// The brand scripts (build-mascot, build-poses, build-print) build every mascot file from these strings.
 export const YELLOW = '#ffcc00';
 export const INK = '#000000';
 export const PAPER = '#ffffff';
@@ -19,6 +19,8 @@ const PATCH = {
 };
 const BEARD = BEARD_OUTER + PATCH.calm;
 const EARS = [[60, 120], [180, 120]];
+// hard hat: crown, brim
+export const HAT = ['M54 82C54 38 84 16 120 16C156 16 186 38 186 82Z', 'M42 82H198V94H42Z'];
 
 export const line = `stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
 
@@ -39,7 +41,7 @@ export const face = (o = {}) => {
     ? `<rect x="76" y="96" width="42" height="30" rx="12" fill="none" stroke-width="5"/><rect x="122" y="96" width="42" height="30" rx="12" fill="none" stroke-width="5"/><path d="M118 108H122M76 106L63 102M164 106L177 102" fill="none" stroke-width="5"/>`
     : '';
   const hatEl = hat
-    ? `<path d="M54 82C54 38 84 16 120 16C156 16 186 38 186 82Z" fill="${YELLOW}"/><path d="M42 82H198V94H42Z" fill="${YELLOW}"/><path d="M104 18V40M136 18V40" fill="none" stroke-width="4"/>`
+    ? `${HAT.map((d) => `<path d="${d}" fill="${YELLOW}"/>`).join('')}<path d="M104 18V40M136 18V40" fill="none" stroke-width="4"/>`
     : '';
   return `
 <g ${line}>
@@ -76,6 +78,14 @@ export const bustParts = `<path d="${SUIT}"/><path d="${NECK}"/>${headParts}`;
 export const edgeLight = (parts) =>
   `<g fill="#cfcfcf" stroke="#cfcfcf" stroke-width="21.5" stroke-linejoin="round">${parts}</g>` + edge(parts);
 
+// simplified head (no ears, brows, nose or mouth) so it survives 16 px
+const smallHead = (transform) => `<g transform="${transform}">
+  <path d="${HEAD}" fill="${PAPER}"/>
+  <path d="${HAIR}" fill="${INK}"/>
+  <path d="${BEARD}" fill="${INK}" fill-rule="evenodd"/>
+  <ellipse cx="98" cy="108" rx="9" ry="9" fill="${INK}"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="${INK}"/>
+</g>`;
+
 export const art = {
   // viewBoxes include the sticker edge
   head: { vb: '36 16 168 184', inner: edge(headParts) + face() },
@@ -90,16 +100,11 @@ export const art = {
   bustMono: { vb: '6 14 228 232', inner: edge(bustParts) + body(INK) + face() },
   // circular avatar: yellow disc, bust bleeding off the bottom, no edge
   avatar: { vb: '0 0 240 240', inner: `<clipPath id="av"><circle cx="120" cy="120" r="120"/></clipPath><circle cx="120" cy="120" r="120" fill="${YELLOW}"/><g clip-path="url(#av)">${body(INK)}${face()}</g>` },
-  // favicon: simplified head (no ears, brows, nose or mouth) so it survives 16 px
+  // favicon
   icon: {
     vb: '0 0 64 64',
     inner: `<circle cx="32" cy="32" r="32" fill="${YELLOW}"/>
-<g transform="translate(32 33) scale(.34) translate(-120 -112)">
-  <path d="${HEAD}" fill="${PAPER}"/>
-  <path d="${HAIR}" fill="${INK}"/>
-  <path d="${BEARD}" fill="${INK}" fill-rule="evenodd"/>
-  <ellipse cx="98" cy="108" rx="9" ry="9" fill="${INK}"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="${INK}"/>
-</g>`,
+${smallHead('translate(32 33) scale(.34) translate(-120 -112)')}`,
   },
 };
 
@@ -107,13 +112,5 @@ export const art = {
 export const maskable = {
   vb: '0 0 64 64',
   inner: `<rect width="64" height="64" fill="${YELLOW}"/>
-<g transform="translate(32 33.5) scale(.255) translate(-120 -112)">
-  <path d="${HEAD}" fill="${PAPER}"/>
-  <path d="${HAIR}" fill="${INK}"/>
-  <path d="${BEARD}" fill="${INK}" fill-rule="evenodd"/>
-  <ellipse cx="98" cy="108" rx="9" ry="9" fill="${INK}"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="${INK}"/>
-</g>`,
+${smallHead('translate(32 33.5) scale(.255) translate(-120 -112)')}`,
 };
-
-export const svgDoc = (a, title, size) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${a.vb}"${size ? ` width="${size[0]}" height="${size[1]}"` : ''} role="img" aria-label="${title}"><title>${title}</title>${a.inner}</svg>\n`;

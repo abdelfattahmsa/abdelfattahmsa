@@ -1,7 +1,7 @@
 """Editable Word letterhead: small header logo, faint mascot watermark behind the text, details and a live page number in the footer.
 Run:  python3 brand/build-letterhead-docx.py   (needs: pip install python-docx; the PNG assets come from `npm run brand`)
 Writes brand/print/letterhead-a4.docx. The page number is a PAGE field, so it updates on every page."""
-import pathlib
+import json, pathlib
 from docx import Document
 from docx.shared import Mm, Pt, RGBColor, Emu
 from docx.enum.text import WD_TAB_ALIGNMENT
@@ -12,7 +12,9 @@ root = pathlib.Path(__file__).resolve().parent.parent
 P = root / 'brand/print'
 LOGO = P / 'letterhead-logo.png'
 WM = P / 'letterhead-watermark.png'
-DETAILS = ['abdelfattah.aboulfoutoh@outlook.com  ·  +20 100 548 0636', 'abdelfattah.site  ·  Kyberia.tech  ·  Maadi, Cairo, Egypt']
+D = json.loads((root / 'brand/details.json').read_text(encoding='utf-8'))
+# the same two footer lines as the SVG letterhead (brand/build-print.mjs)
+DETAILS = [f"{D['email']}  ·  {D['phone']}", '  ·  '.join(D['web'] + [D['address']])]
 
 d = Document()
 sec = d.sections[0]
@@ -72,6 +74,6 @@ d.add_paragraph('Dear [name],')
 d.add_paragraph('[Write the letter here. The header, watermark and footer repeat on every page, and the page number updates automatically.]')
 d.add_paragraph('')
 d.add_paragraph('Sincerely,')
-d.add_paragraph('Abdelfattah M. Aboulfoutoh, MSc.')
+d.add_paragraph(D['name'])
 d.save(str(P / 'letterhead-a4.docx'))
 print('letterhead docx built')

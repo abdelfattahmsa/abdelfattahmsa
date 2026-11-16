@@ -1,17 +1,9 @@
-// Pose set for the mascot (16 poses). Built on mascot-art.mjs; NOT used on the website (brand library only).
-// Run: node brand/mascot-poses.mjs   -> brand/mascot/poses/*.svg, png/, and poses.html (contact sheet source)
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import sharp from 'sharp';
-import { face, body, edge, bustParts, line, INK, PAPER, YELLOW } from './mascot-art.mjs';
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const out = path.join(root, 'brand/mascot/poses');
-fs.mkdirSync(path.join(out, 'png'), { recursive: true });
+// The mascot's poses, built on mascot-art.mjs. Brand library only (not used on the website):
+// written out by build-poses.mjs and drawn on the download covers by build-covers.mjs.
+import { face, body, edge, bustParts, line, HAT, INK, PAPER, YELLOW } from './mascot-art.mjs';
 
 // shared canvas for every pose, sticker edge included, so poses line up and swap without shifting
-const VB = '-12 -62 276 314';
+export const VB = '-12 -62 276 314';
 const GREY = '#a6a6a6';
 
 // ---- arms: a round-capped black sleeve with a white sticker edge, a white shirt cuff at the wrist, then a hand
@@ -39,25 +31,22 @@ const handShapes = (kind) => {
       lines: '',
     };
   }
-  const base = {
+  return {
     back: kind === 'thumb' ? '<rect x="-8" y="-27" width="15" height="22" rx="7.5"/>' : '',
     palm: '<rect x="-14" y="-10" width="28" height="25" rx="9"/>',
     front: '<rect x="-13" y="2" width="18" height="8.5" rx="4.25"/>',
     lines: '<path d="M-5 -10v7M0 -10v8M5 -10v7" fill="none" stroke-width="2.6"/>',
   };
-  return base;
 };
-const handG = (x, y, kind, r, rot, inner) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${(r / 15).toFixed(3)})">${inner}</g>`;
+const handG = (x, y, r, rot, inner) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${(r / 15).toFixed(3)})">${inner}</g>`;
 // white sticker edge for a hand: the same shapes, fat and white
 const handEdge = (x, y, r = 15, kind = 'fist', rot = 0) => {
   const h = handShapes(kind);
-  return handG(x, y, kind, r, rot, `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="${(18 / (r / 15)).toFixed(1)}" stroke-linejoin="round">${h.back}${h.palm}${h.front}</g>`);
+  return handG(x, y, r, rot, `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="${(18 / (r / 15)).toFixed(1)}" stroke-linejoin="round">${h.back}${h.palm}${h.front}</g>`);
 };
 function hand(x, y, kind = 'fist', r = 15, rot = 0) {
-  if (kind === 'grip') kind = 'fist';
-  if (kind === 'hold') kind = 'fist';
   const h = handShapes(kind);
-  return handG(x, y, kind, r, rot, `<g stroke="${INK}" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" fill="${PAPER}">${h.back}${h.palm}${h.lines}${h.front}</g>`);
+  return handG(x, y, r, rot, `<g stroke="${INK}" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" fill="${PAPER}">${h.back}${h.palm}${h.lines}${h.front}</g>`);
 }
 const R_SHOULDER = [204, 218];
 const L_SHOULDER = [38, 224];
@@ -67,7 +56,7 @@ const page = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"
 const bar = (x, y, w, h, c = INK) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="none"/>`;
 const hands2 = (y = 246) => hand(64, y, 'fist', 14, 8) + hand(176, y, 'fist', 14, -8);
 
-const poses = [
+export const POSES = [
   // ---- the core ten (refined)
   { name: 'calm', group: 'Core', title: 'Calm', note: 'Default. Closed mouth, steady eyes. Headers, About, serious pages.', face: {} },
   { name: 'smile', group: 'Core', title: 'Smile', note: 'Friendly. Welcome states, success messages, social avatars.', face: { mouth: 'smile', eyes: 'happy' } },
@@ -200,31 +189,13 @@ const poses = [
   },
 ];
 
-function build(p) {
-  const f = face(p.face);
+// the artwork of one pose (everything inside its <svg>)
+export function poseInner(p) {
   const built = p.build ? p.build() : { edge: '', ink: '' };
   const stick = edge(bustParts, 18) + built.edge;
-  const hatEdge = p.face.hat ? `<path d="M54 82C54 38 84 16 120 16C156 16 186 38 186 82Z" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/><path d="M42 82H198V94H42Z" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/>` : '';
-  const inner = stick + hatEdge + body(YELLOW) + f + built.ink;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB}" role="img" aria-label="Abdelfattah mascot: ${p.title}"><title>Abdelfattah mascot: ${p.title}</title>${inner}</svg>\n`;
+  const hatEdge = p.face.hat ? HAT.map((d) => `<path d="${d}" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/>`).join('') : '';
+  return stick + hatEdge + body(YELLOW) + face(p.face) + built.ink;
 }
 
-for (const p of poses) {
-  const svg = build(p);
-  fs.writeFileSync(path.join(out, `am-pose-${p.name}.svg`), svg);
-  await sharp(Buffer.from(svg), { density: 384 }).resize({ height: 1024 }).png({ compressionLevel: 9 }).toFile(path.join(out, 'png', `am-pose-${p.name}-1024.png`));
-}
-fs.writeFileSync(path.join(out, 'poses.json'), JSON.stringify(poses.map(({ name, group, title, note }) => ({ name, group, title, note })), null, 1));
-
-const html = `<!doctype html><html lang="en"><meta charset="utf-8"><title>Mascot poses</title>
-<style>*{box-sizing:border-box}body{margin:0;padding:40px;background:#000;color:#fff;font-family:Tajawal,system-ui,sans-serif}
-h1{font-size:28px;margin:0 0 6px}.sub{color:#a6a6a6;margin:0 0 28px}
-.g{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1300px}
-.c{background:#0b0b0b;border:1px solid #252525;border-radius:28px;padding:16px}
-.h{background:#000;border-radius:20px;display:grid;place-items:center;height:260px}.h img{height:240px}
-.k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffcc00}
-h2{font-size:17px;margin:4px 0 4px}p{margin:0;color:#a6a6a6;font-size:12.5px;line-height:1.45;min-height:36px}</style>
-<body><h1>Mascot poses</h1><p class="sub">${poses.length} poses on one shared canvas: core, design and research. Brand library only: not used on the website.</p>
-<div class="g">${poses.map((p) => `<div class="c"><div class="h"><img src="am-pose-${p.name}.svg" alt=""></div><div class="k">${p.group}</div><h2>${p.title}</h2><p>${p.note}</p></div>`).join('')}</div></body></html>`;
-fs.writeFileSync(path.join(out, 'poses.html'), html);
-console.log('poses built:', poses.length);
+export const poseSvg = (p) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB}" role="img" aria-label="Abdelfattah mascot: ${p.title}"><title>Abdelfattah mascot: ${p.title}</title>${poseInner(p)}</svg>\n`;
