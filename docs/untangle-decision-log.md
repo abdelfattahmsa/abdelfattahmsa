@@ -67,6 +67,7 @@ snapshotted before any change and diffed after.
 - `admin/server.mjs:104` validates the field named `url` (an `if` for one field name).
 - `build.mjs:175, 178` copy `favicon.ico` and `CNAME` only if present (kept: CNAME is optional; favicon.ico is generated and committed, so its `if` goes).
 - `brand/build-covers.mjs:254-262` silently draws a cover without glyph or pose for a category it does not know.
+- `admin/schema.json` marks every collection `bilingual: true`; `admin/ui/admin.js:79,98` branch on it (config that never varies).
 
 ### Comments and tests
 
@@ -75,7 +76,7 @@ snapshotted before any change and diffed after.
 
 ## 2. Fixes (each above the problems it solves)
 
-- **One table of content collections** (`build/lib/content.mjs → collections(site)`): folder, URL base, date field, ordering, search type and whether it has a wiki `_index`, for every collection, with the wikis generated from `site.json → wikis` (which now also carries each wiki's icon). Content loading, pages, the drawer, the search index and the admin all read it, and every loaded item carries its own `url`.
+- **One table of content collections** (`build/lib/content.mjs → collections(site)`): folder, URL base, date field, ordering and whether it has a wiki `_index`, for every collection, with the wikis generated from `site.json → wikis` (which now also carries each wiki's icon). Content loading, pages, the drawer, the search index and the admin all read it, and every loaded item carries its own `url`.
   - search index and templates each spell out every section's URL
   - `content.mjs` hard-codes folders; `admin/schema.json` repeats them as `dir`
   - schema hard-codes the three wikis; `wikiIcons` is a fourth list
@@ -131,6 +132,20 @@ snapshotted before any change and diffed after.
 - `CNAME` is copied only if present: it is genuinely optional.
 - The home page's own search (no overlay, no search button): a page type, not a special case.
 
+- `src/assets/js/main.js` looks up the home search box twice (`:217`, `:246`) and the download filter's reset assumes the first chip is "all". Left as is: the file ships unchanged byte for byte, which keeps the JavaScript diff empty; the cost is two lines.
+- The Arabic header uses its own logo symbol (`templates.mjs`, `lang === 'ar'`): the Arabic wordmark is Arabic-only artwork.
+- The SVG and Word letterheads each join the footer lines with the same separator (`build-print.mjs`, `build-letterhead-docx.py`): two renderers in two languages; the data they join is shared (`brand/details.json`).
+
 ## 3. Output after the refactor
 
-See the commit messages and the final section of this log (added at the end of the work).
+Checked against snapshots taken from the untouched code (`db2ba2c`):
+
+- `npm run build`: 38 pages, `npm run check`: all checks passed (before and after). Drafts build (`--drafts`): 44 pages, all checks passed.
+- `dist/`, after mapping hashed asset names: every page, both search indexes, `sitemap.xml`, `robots.txt`, `site.webmanifest`, `main.js` and all copied assets are byte-identical, except:
+  - every page: whitespace between `</summary>` and `<ul>` in the hub drawer (one tree helper for wikis, research and journey);
+  - `main.css`: the "Heming" comments now say Satoshi, and the three header-logo `aspect-ratio`s move from hand-typed values (`554/163`, `411/222`) to a generated block with the exact values (`554.1/163.42`, `410.7/221.9`, `168/184`);
+  - the icon sprite: the social glyphs follow `site.json` order, and the unused `m-*` marks and `i-check` are gone.
+  The same holds for the drafts build.
+- Brand generators (run here without Satoshi, so compared with the old scripts run the same way): every SVG, PNG, PDF-preview, `favicon.ico`, `og.png`, `src/data/*.json` file and the Word letterhead's contents are byte-identical. Only `brand/mascot/poses/poses.html` changes: its subtitle lists all five pose groups.
+- Comments: about 25 removed (section labels that named the next line, comments about deleted code), 8 rewritten because they were wrong (Heming, 16 poses, three pose groups, placeholder marks).
+- Tests: none exist; `build/check.mjs` was kept whole (every check can fail on a real regression).

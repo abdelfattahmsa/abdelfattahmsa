@@ -1,5 +1,5 @@
 import { esc } from './util.mjs';
-import { pick, isDraft, isoDate } from './content.mjs';
+import { pick, isDraft, isoDate, collections } from './content.mjs';
 import { normalise } from './search.mjs';
 import { DEFAULT_LANG, langInfo, otherLang, translator, u } from './i18n.mjs';
 
@@ -8,6 +8,7 @@ export function createTemplates(ctx) {
   const { site, assets, content } = ctx;
   const { T, L } = translator(ctx.i18n);
   const abs = (lang, p) => site.url + u(lang, p);
+  const C = collections(site);
 
   const icon = (id, cls = '') =>
     `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="${assets.sprite}#${id}"/></svg>`;
@@ -61,8 +62,8 @@ export function createTemplates(ctx) {
   </div>
   <nav class="drawer__nav" aria-label="${esc(T(lang, 'menu.hub'))}">
     ${wikis}
-    ${tree('file', T(lang, 'hub.research'), '/hub/research/', content.research)}
-    ${tree('compass', T(lang, 'hub.journey'), '/hub/journey/', content.journey)}
+    ${tree('file', T(lang, 'hub.research'), C.research.base, content.research)}
+    ${tree('compass', T(lang, 'hub.journey'), C.journey.base, content.journey)}
   </nav>
 </aside>`;
   }
@@ -330,8 +331,8 @@ ${socials(lang, 'socials--page')}`;
     const inner = `${pageHead(lang, T(lang, 'hub.title'), T(lang, 'hub.lead'))}
 <section aria-labelledby="h-wikis"><h2 id="h-wikis" class="eyebrow">${esc(T(lang, 'hub.wikis'))}</h2><div class="cards">${wikiCards}</div></section>
 <section aria-labelledby="h-more"><h2 id="h-more" class="eyebrow">${esc(T(lang, 'hub.research'))} · ${esc(T(lang, 'hub.journey'))}</h2><div class="cards cards--2">
-${cardLink(lang, { href: '/hub/research/', iconId: 'i-file', title: T(lang, 'hub.research'), text: T(lang, 'hub.research.lead'), meta: countLabel(lang, content.research.length) })}
-${cardLink(lang, { href: '/hub/journey/', iconId: 'i-compass', title: T(lang, 'hub.journey'), text: T(lang, 'hub.journey.lead'), meta: countLabel(lang, content.journey.length) })}
+${cardLink(lang, { href: C.research.base, iconId: 'i-file', title: T(lang, 'hub.research'), text: T(lang, 'hub.research.lead'), meta: countLabel(lang, content.research.length) })}
+${cardLink(lang, { href: C.journey.base, iconId: 'i-compass', title: T(lang, 'hub.journey'), text: T(lang, 'hub.journey.lead'), meta: countLabel(lang, content.journey.length) })}
 </div></section>
 ${latest.length ? `<section aria-labelledby="h-latest"><h2 id="h-latest" class="eyebrow">${esc(T(lang, 'hub.journey'))}</h2>${rowList(lang, latest)}</section>` : ''}`;
     const out = [{ path: '/hub/', html: layout({ lang, path: '/hub/', title: T(lang, 'hub.title'), description: T(lang, 'hub.lead'), main: main(lang, inner) }) }];
@@ -348,8 +349,8 @@ ${latest.length ? `<section aria-labelledby="h-latest"><h2 id="h-latest" class="
       out.push(...articles(lang, w.pages, { parents: [hub, { label: title, href: w.base }], backLabel: title, byPosition: true }));
     }
 
-    out.push(...datedSection(lang, { base: '/hub/research/', key: 'hub.research', list: content.research, parent: hub }));
-    out.push(...datedSection(lang, { base: '/hub/journey/', key: 'hub.journey', list: content.journey, parent: hub }));
+    out.push(...datedSection(lang, { base: C.research.base, key: 'hub.research', list: content.research, parent: hub }));
+    out.push(...datedSection(lang, { base: C.journey.base, key: 'hub.journey', list: content.journey, parent: hub }));
     return out;
   };
 
@@ -359,14 +360,14 @@ ${latest.length ? `<section aria-labelledby="h-latest"><h2 id="h-latest" class="
     const guides = content.guides;
     const inner = `${pageHead(lang, T(lang, 'res.title'), T(lang, 'res.lead'))}
 <div class="cards cards--2">
-${cardLink(lang, { href: '/resources/downloads/', iconId: 'i-gift', title: T(lang, 'res.downloads'), text: T(lang, 'res.downloads.lead'), meta: `${dls.length} ${T(lang, 'dl.count')}` })}
-${cardLink(lang, { href: '/resources/guides/', iconId: 'i-book', title: T(lang, 'res.guides'), text: T(lang, 'res.guides.lead'), meta: `${guides.length} ${T(lang, 'dl.count')}` })}
+${cardLink(lang, { href: C.downloads.base, iconId: 'i-gift', title: T(lang, 'res.downloads'), text: T(lang, 'res.downloads.lead'), meta: `${dls.length} ${T(lang, 'dl.count')}` })}
+${cardLink(lang, { href: C.guides.base, iconId: 'i-book', title: T(lang, 'res.guides'), text: T(lang, 'res.guides.lead'), meta: `${guides.length} ${T(lang, 'dl.count')}` })}
 </div>`;
     const out = [{ path: '/resources/', html: layout({ lang, path: '/resources/', title: T(lang, 'res.title'), description: T(lang, 'res.lead'), main: main(lang, inner) }) }];
-    out.push(...datedSection(lang, { base: '/resources/guides/', key: 'res.guides', list: guides, parent: resources }));
+    out.push(...datedSection(lang, { base: C.guides.base, key: 'res.guides', list: guides, parent: resources }));
 
     // downloads
-    const base = '/resources/downloads/';
+    const base = C.downloads.base;
     const catIds = [...new Set(dls.map((d) => d.data.category).filter(Boolean))];
     const typeIds = [...new Set(dls.map((d) => d.data.type).filter(Boolean))];
     const catLabel = (id) => L(site.resourceCategories.find((c) => c.id === id)?.label, lang) || id;
