@@ -6,7 +6,6 @@ type: prompt
 format: Markdown
 version: "1.0"
 date: 2026-10-23
-featured: true
 draft: true
 url: https://example.com/replace-me
 tags: [Project controls, Reporting]

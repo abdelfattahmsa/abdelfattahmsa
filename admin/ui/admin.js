@@ -32,14 +32,17 @@
   }
   function today() { return new Date().toISOString().slice(0, 10); }
 
-  var schema = {};
-  var state = { c: null, slug: null, isNew: false, lang: 'en', langs: [], values: { en: {}, ar: {} }, bodies: { en: '', ar: '' }, slugInput: null };
+  var schema = { langs: [], defaultLang: 'en', collections: {} };
+  var state = { c: null, slug: null, isNew: false, lang: 'en', langs: [], values: {}, bodies: {}, slugInput: null };
+  function coll() { return schema.collections[state.c]; }
+  function langDir(l) { return schema.langs.filter(function (x) { return x.code === l; })[0].dir; }
+  function perLang(v) { var o = {}; schema.langs.forEach(function (l) { o[l.code] = typeof v === 'function' ? v() : v; }); return o; }
 
   /* ---------------------------------------------------------- collections + list */
   function renderCollections() {
     var nav = $('#collections'); nav.textContent = '';
-    Object.keys(schema).forEach(function (id) {
-      var b = el('button', { type: 'button', text: schema[id].label, 'aria-current': String(id === state.c) });
+    Object.keys(schema.collections).forEach(function (id) {
+      var b = el('button', { type: 'button', text: schema.collections[id].label, 'aria-current': String(id === state.c) });
       b.addEventListener('click', function () { showList(id); });
       nav.appendChild(b);
     });
@@ -48,7 +51,7 @@
   function showList(c) {
     state.c = c; renderCollections();
     $('#edit-view').hidden = true; $('#list-view').hidden = false;
-    $('#list-title').textContent = schema[c].label;
+    $('#list-title').textContent = schema.collections[c].label;
     api('GET', '/api/items?c=' + encodeURIComponent(c)).then(function (items) { cached = items; drawList(); }).catch(function (e) { toast(e.message, 'error'); });
   }
   function drawList() {
@@ -57,7 +60,8 @@
     var shown = cached.filter(function (i) { return !q || (i.title + ' ' + i.slug).toLowerCase().indexOf(q) !== -1; });
     if (!shown.length) ul.appendChild(el('li', { class: 'muted', text: 'Nothing here yet. Press New.' }));
     shown.forEach(function (i) {
-      var t = el('span', { class: 't', text: i.title || i.slug }, [i.draft ? el('span', { class: 'pill', text: 'draft' }) : null, i.langs.indexOf('ar') !== -1 ? el('span', { class: 'pill', text: 'AR' }) : null]);
+      var pills = i.langs.filter(function (l) { return l !== schema.defaultLang; }).map(function (l) { return el('span', { class: 'pill', text: l.toUpperCase() }); });
+      var t = el('span', { class: 't', text: i.title || i.slug }, [i.draft ? el('span', { class: 'pill', text: 'draft' }) : null].concat(pills));
       var m = el('span', { class: 'm', text: [i.slug, i.date].filter(Boolean).join(' · ') });
       var b = el('button', { type: 'button' }, [t, m]);
       b.addEventListener('click', function () { openEditor(i.slug, false); });
@@ -69,14 +73,15 @@
 
   /* ---------------------------------------------------------- editor */
   function openEditor(slug, isNew) {
-    state.slug = slug; state.isNew = isNew; state.lang = 'en';
-    state.values = { en: {}, ar: {} }; state.bodies = { en: '', ar: '' }; state.langs = isNew ? ['en'] : [];
+    var main = schema.defaultLang;
+    state.slug = slug; state.isNew = isNew; state.lang = main;
+    state.values = perLang(function () { return {}; }); state.bodies = perLang(''); state.langs = isNew ? [main] : [];
     $('#list-view').hidden = true; $('#edit-view').hidden = false; $('#preview').hidden = true;
-    $('#edit-title').textContent = isNew ? 'New ' + schema[state.c].label : slug;
+    $('#edit-title').textContent = isNew ? 'New ' + coll().label : slug;
     $('#save-status').textContent = '';
     $('#btn-delete').hidden = isNew;
-    if (isNew) { state.values.en = defaults(); renderForm(); renderTabs(); return; }
-    var langs = schema[state.c].bilingual ? ['en', 'ar'] : ['en'];
+    if (isNew) { state.values[main] = defaults(); renderForm(); renderTabs(); return; }
+    var langs = schema.langs.map(function (l) { return l.code; });
     Promise.all(langs.map(function (l) { return api('GET', '/api/item?c=' + encodeURIComponent(state.c) + '&slug=' + encodeURIComponent(slug) + '&lang=' + l).catch(function () { return null; }); }))
       .then(function (res) {
         res.forEach(function (r, i) { if (r) { state.langs.push(langs[i]); state.values[langs[i]] = r.data; state.bodies[langs[i]] = r.body; } });
@@ -86,19 +91,17 @@
   }
   function defaults() {
     var d = {};
-    schema[state.c].fields.forEach(function (f) {
-      if (f.type === 'date' && f.name === 'date') d.date = today();
-      if (f.type === 'select' && f.options && f.name === 'status') d.status = 'draft';
+    coll().fields.forEach(function (f) {
+      if (f.default !== undefined) d[f.name] = f.default === 'today' && f.type === 'date' ? today() : f.default;
     });
-    if (state.c === 'downloads') d.draft = true;
     return d;
   }
   function renderTabs() {
     var t = $('#lang-tabs'); t.textContent = '';
-    if (!schema[state.c].bilingual) return;
-    ['en', 'ar'].forEach(function (l) {
+    schema.langs.forEach(function (lang) {
+      var l = lang.code;
       var has = state.langs.indexOf(l) !== -1;
-      var b = el('button', { type: 'button', role: 'tab', 'aria-selected': String(state.lang === l), text: (l === 'en' ? 'English' : 'العربية') + (has ? '' : ' +') });
+      var b = el('button', { type: 'button', role: 'tab', 'aria-selected': String(state.lang === l), text: lang.label + (has ? '' : ' +') });
       b.addEventListener('click', function () {
         if (!has) {
           if (state.isNew) { toast('Save the English version first', 'error'); return; }
@@ -130,7 +133,7 @@
     if (f.type === 'tags') input.value = Array.isArray(val) ? val.join(', ') : (val || '');
     else if (f.type === 'links') input.value = (val || []).map(function (l) { return l.label + ' | ' + l.url; }).join('\n');
     else input.value = val == null ? '' : val;
-    if (lang === 'ar' && (f.type === 'text' || f.type === 'textarea')) input.dir = 'rtl';
+    if (f.type === 'text' || f.type === 'textarea') input.dir = langDir(lang);
     return el('div', { class: 'f' }, [el('label', { for: id, text: f.name + (f.required ? ' *' : '') }), input, hint]);
   }
   function fileField(f, val, hint) {
@@ -161,19 +164,19 @@
     var form = $('#form'); form.textContent = '';
     var lang = state.lang;
     var v = state.values[lang] || {};
-    if (state.isNew || lang === 'en') {
+    if (state.isNew || lang === schema.defaultLang) {
       state.slugInput = el('input', { id: 'f-slug', type: 'text', placeholder: 'url-friendly-name', value: state.slug || '' });
       if (!state.isNew) state.slugInput.disabled = true;
-      else if (state.c.indexOf('wiki-') === 0) state.slugInput.placeholder = 'url-friendly-name (or _index for the wiki landing page)';
+      else if (coll().indexSlug) state.slugInput.placeholder = 'url-friendly-name (or ' + coll().indexSlug + ' for the wiki landing page)';
       form.appendChild(el('div', { class: 'f' }, [el('label', { for: 'f-slug', text: 'slug (the page address)' }), state.slugInput, state.isNew ? el('span', { class: 'hint', text: 'Filled in from the title. Cannot be changed later.' }) : null]));
     }
-    schema[state.c].fields.forEach(function (f) {
-      if (lang === 'ar' && f.shared) return;
+    coll().fields.forEach(function (f) {
+      if (lang !== schema.defaultLang && f.shared) return;
       form.appendChild(field(f, v[f.name], lang));
     });
     var body = el('textarea', { id: 'f-body', class: 'md', 'data-body': '1' });
     body.value = state.bodies[lang] || '';
-    if (lang === 'ar') body.dir = 'rtl';
+    body.dir = langDir(lang);
     form.appendChild(el('div', { class: 'f' }, [el('label', { for: 'f-body', text: 'Content (Markdown)' }), body, el('span', { class: 'hint', text: '## Heading · **bold** · - list · [link](https://…). Raw HTML is not allowed.' })]));
     var t = $('#f-title');
     if (t && state.isNew && state.slugInput) t.addEventListener('input', function () { if (!state.slugInput.dataset.touched) state.slugInput.value = slugify(t.value); });
@@ -184,7 +187,7 @@
   function collect() {
     var lang = state.lang, out = {};
     document.querySelectorAll('#form [data-f]').forEach(function (n) {
-      var k = n.dataset.f, f = schema[state.c].fields.filter(function (x) { return x.name === k; })[0];
+      var k = n.dataset.f, f = coll().fields.filter(function (x) { return x.name === k; })[0];
       if (!f) return;
       if (f.type === 'bool') out[k] = n.checked;
       else if (f.type === 'file') out[k] = n.dataset.v || '';
@@ -202,7 +205,7 @@
     var lang = state.lang;
     if (state.isNew && !state.slug) { toast('Give it a slug (it fills in from the title)', 'error'); return; }
     var data = state.values[lang];
-    if ((lang === 'en' || state.isNew) && schema[state.c].fields.some(function (f) { return f.required && !data[f.name] && !(state.slug === '_index'); })) { toast('Fill in the required fields (*)', 'error'); return; }
+    if ((lang === schema.defaultLang || state.isNew) && state.slug !== coll().indexSlug && coll().fields.some(function (f) { return f.required && !data[f.name]; })) { toast('Fill in the required fields (*)', 'error'); return; }
     var status = $('#save-status'); status.textContent = 'Saving…';
     api('PUT', '/api/item', { c: state.c, slug: state.slug, lang: lang, data: data, body: state.bodies[lang] })
       .then(function () {
@@ -217,13 +220,14 @@
   $('#btn-preview').addEventListener('click', function () {
     var p = $('#preview'); collect();
     api('POST', '/api/preview', { body: state.bodies[state.lang] }).then(function (r) {
-      p.dir = state.lang === 'ar' ? 'rtl' : 'ltr'; p.innerHTML = r.html; p.hidden = false; p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      p.dir = langDir(state.lang); p.innerHTML = r.html; p.hidden = false; p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }).catch(function (e) { toast(e.message, 'error'); });
   });
   $('#btn-delete').addEventListener('click', function () {
-    var only = state.lang === 'ar' && state.langs.indexOf('en') !== -1;
-    dialog('Delete', el('p', { text: only ? 'Delete the Arabic version of "' + state.slug + '"?' : 'Delete "' + state.slug + '" (English and Arabic)? This removes the files; git still has history.' }), 'Delete', function () {
-      var q = '/api/item?c=' + encodeURIComponent(state.c) + '&slug=' + encodeURIComponent(state.slug) + (only ? '&lang=ar' : '');
+    var only = state.lang !== schema.defaultLang;
+    var label = schema.langs.filter(function (l) { return l.code === state.lang; })[0].label;
+    dialog('Delete', el('p', { text: only ? 'Delete the ' + label + ' version of "' + state.slug + '"?' : 'Delete "' + state.slug + '" (all languages)? This removes the files; git still has history.' }), 'Delete', function () {
+      var q = '/api/item?c=' + encodeURIComponent(state.c) + '&slug=' + encodeURIComponent(state.slug) + (only ? '&lang=' + state.lang : '');
       api('DELETE', q).then(function () { toast('Deleted'); showList(state.c); }).catch(function (e) { toast(e.message, 'error'); });
     });
   });
@@ -265,5 +269,5 @@
   });
 
   /* ---------------------------------------------------------- boot */
-  api('GET', '/api/schema').then(function (s) { schema = s; var first = Object.keys(s)[0]; showList(first); }).catch(function (e) { toast(e.message, 'error'); });
+  api('GET', '/api/schema').then(function (s) { schema = s; showList(Object.keys(s.collections)[0]); }).catch(function (e) { toast(e.message, 'error'); });
 })();
