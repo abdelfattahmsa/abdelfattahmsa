@@ -124,6 +124,30 @@
         "en": "An open guide to design techniques, by designers, for designers.",
         "ar": "دليل مفتوح لتقنيات التصميم، من المصممين وللمصممين."
       }
+    },
+    {
+      "id": "cars",
+      "icon": "car",
+      "title": {
+        "en": "Cars Wiki",
+        "ar": "ويكي السيارات"
+      },
+      "blurb": {
+        "en": "Cars I drive, fix and learn from: maintenance, buying, driving and the engineering behind them.",
+        "ar": "السيارات التي أقودها وأصلحها وأتعلم منها: الصيانة والشراء والقيادة والهندسة التي وراءها."
+      }
+    },
+    {
+      "id": "languages",
+      "icon": "languages",
+      "title": {
+        "en": "Language Learning Wiki",
+        "ar": "ويكي تعلّم اللغات"
+      },
+      "blurb": {
+        "en": "How I learn languages: methods, tools, routines and what actually works.",
+        "ar": "كيف أتعلم اللغات: الطرق والأدوات والروتين وما ينجح فعلاً."
+      }
     }
   ],
   "resourceCategories": [
@@ -214,16 +238,14 @@
     "en": [
       "Civil engineering",
       "Project management",
-      "Web design",
-      "Web development",
-      "Self development"
+      "Cars",
+      "Learning languages"
     ],
     "ar": [
       "الهندسة المدنية",
       "إدارة المشاريع",
-      "تصميم الويب",
-      "تطوير الويب",
-      "التطوير الذاتي"
+      "السيارات",
+      "تعلم اللغات"
     ]
   },
   "ventures": [
@@ -271,5 +293,11 @@
         "ar": "الشركة القابضة التي تنظّم المشاريع والشراكات طويلة الأجل."
       }
     }
-  ]
+  ],
+  "assistant": {
+    "endpoint": ""
+  },
+  "analytics": {
+    "ga4": ""
+  }
 }

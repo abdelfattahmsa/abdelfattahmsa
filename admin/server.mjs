@@ -13,6 +13,7 @@ import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { resolveSchema } from './schema.mjs';
+import { SETTINGS, readSettings, applySettings } from './settings.mjs';
 import { renderMarkdown } from '../build/lib/markdown.mjs';
 import { INDEX_SLUG, isDraft, dateOf, isoDate } from '../build/lib/content.mjs';
 import { LANGS, DEFAULT_LANG, langInfo, contentFile, parseContentFile } from '../build/lib/i18n.mjs';
@@ -180,6 +181,12 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { langs, defaultLang: DEFAULT_LANG, collections: schema });
     }
     if (req.method === 'GET' && url.pathname === '/api/items') return json(res, 200, listItems(q.get('c')));
+    if (req.method === 'GET' && url.pathname === '/api/settings') return json(res, 200, { fields: SETTINGS.map(({ key, label, hint }) => ({ key, label, hint })), values: readSettings(readJSON(path.join(dataDir, 'site.json'))) });
+    if (req.method === 'PUT' && url.pathname === '/api/settings') {
+      const file = path.join(dataDir, 'site.json');
+      fs.writeFileSync(file, JSON.stringify(applySettings(readJSON(file), await readJSONBody(req, 10 * 1024)), null, 2) + '\n');
+      return json(res, 200, { ok: true });
+    }
     if (req.method === 'GET' && url.pathname === '/api/nodes') return json(res, 200, listNodes());
     if (req.method === 'GET' && url.pathname === '/api/item') {
       const it = readItem(q.get('c'), q.get('slug'), q.get('lang') || DEFAULT_LANG);

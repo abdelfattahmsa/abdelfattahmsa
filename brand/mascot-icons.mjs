@@ -16,6 +16,9 @@ const art = {
   chat: (light) =>
     edge(BUBBLE, light) + out(BUBBLE) +
     [46, 60, 74].map((x) => `<circle cx="${x}" cy="51" r="6.5" fill="${YELLOW}" stroke="${INK}" stroke-width="4.5"/>`).join(''),
+  ask: (light) =>
+    edge(BUBBLE, light) + out(BUBBLE) +
+    `<path d="M60 31Q62.5 46 77 51Q62.5 56 60 71Q57.5 56 43 51Q57.5 46 60 31Z" fill="${YELLOW}" stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"/>`,
   call: (light) =>
     edge(HANDSET, light) + out(HANDSET) +
     `<path d="M70 30Q88 32 90 50M70 16Q102 18 106 52" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>` +

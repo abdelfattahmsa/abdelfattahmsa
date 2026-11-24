@@ -308,6 +308,20 @@
     if (v === 'ok' && onOk) { var f = onOk; onOk = null; f(); }
   });
 
+  $('#btn-settings').addEventListener('click', function () {
+    api('GET', '/api/settings').then(function (s) {
+      var inputs = {};
+      var box = el('div', { class: 'settings' }, s.fields.map(function (f) {
+        var i = el('input', { type: 'text', id: 's-' + f.key, placeholder: f.hint || '', value: s.values[f.key] || '' });
+        inputs[f.key] = i;
+        return el('div', { class: 'f' }, [el('label', { for: 's-' + f.key, text: f.label }), i]);
+      }));
+      dialog('Site settings', box, 'Save', function () {
+        var v = {}; Object.keys(inputs).forEach(function (k) { v[k] = inputs[k].value; });
+        api('PUT', '/api/settings', v).then(function () { toast('Saved. The site updates after the next deploy.'); }).catch(function (e) { toast(e.message, 'error'); });
+      });
+    }).catch(function (e) { toast(e.message, 'error'); });
+  });
   $('#btn-build').addEventListener('click', function () {
     api('POST', '/api/build').then(function (r) {
       dialog(r.ok ? 'Build passed' : 'Build failed', el('pre', { text: r.log || '(no output)' }));

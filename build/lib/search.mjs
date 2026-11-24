@@ -50,6 +50,7 @@ export function searchIndex({ lang, site, content, services, T, L }) {
   addAll('research', content.research);
   addAll('journey', content.journey);
   addAll('guide', content.guides);
+  addAll('work', content.work);
   addAll('download', content.downloads);
   add('page', '/about/', pick(content.pages.about, lang));
   const sv = services && (services[lang] || services.en);
@@ -61,6 +62,45 @@ export function searchIndex({ lang, site, content, services, T, L }) {
     add('page', '/about/#timeline', { ...v, data: { ...v.data, title: `${v.data.title}, ${v.data.org}` } }, []);
   }
 
-  const types = ['wiki', 'research', 'journey', 'guide', 'download', 'page'];
+  const types = ['wiki', 'research', 'journey', 'guide', 'work', 'download', 'page'];
   return { l: Object.fromEntries(types.map((k) => [k, T(lang, 'type.' + k)])), i: items };
+}
+
+// The assistant's passages (ask-index.json): for each page, its text cut into short passages of the original wording.
+const passages = (text, max = 12, size = 520) => {
+  const out = [];
+  for (const para of String(text || '').split(/\n+/)) {
+    let cur = '';
+    for (const sentence of para.split(/(?<=[.!?؟])\s+/)) {
+      if ((cur + ' ' + sentence).trim().length > size && cur) { out.push(cur.trim()); cur = sentence; } else cur = (cur + ' ' + sentence).trim();
+    }
+    if (cur.trim().length > 25) out.push(cur.trim());
+  }
+  return out.slice(0, max);
+};
+export function askIndex({ lang, site, content, services, L }) {
+  const items = [];
+  const add = (k, url, title, text) => {
+    const p = passages(text);
+    if (p.length) items.push({ t: title, u: u(lang, url), k, p });
+  };
+  const addAll = (k, list) => list.forEach((e) => { const v = pick(e, lang); add(k, e.url, v.data.title, `${v.data.summary || ''}\n${v.text}`); });
+  add('page', '/', L(site.name, lang), `${L(site.name, lang)}, ${L(site.suffix, lang)}. ${L(site.tagline, lang)}. ${L(site.intro, lang)} ${site.person.locality}, ${site.person.country}.`);
+  for (const w of Object.values(content.wikis)) {
+    if (w.index) add('wiki', w.base, L(w.title, lang), `${L(w.blurb, lang)}\n${pick(w.index, lang).text}`);
+    addAll('wiki', w.pages);
+  }
+  addAll('research', content.research);
+  addAll('journey', content.journey);
+  addAll('guide', content.guides);
+  addAll('work', content.work);
+  addAll('download', content.downloads);
+  for (const [slug, e] of Object.entries(content.pages)) { const v = pick(e, lang); add('page', slug === 'about' ? '/about/' : `/${slug}/`, v.data.title || slug, v.text); }
+  const sv = services && (services[lang] || services.en);
+  if (sv) add('page', '/services/', sv.title, [sv.lead, sv.about, ...sv.services.map((x) => `${x.title}. ${x.for} ${x.items.join('. ')}`), ...sv.why, sv.pricing].join('\n'));
+  for (const e of content.career) {
+    const v = pick(e, lang);
+    add('page', '/about/#timeline', `${v.data.title}, ${v.data.org}`, `${v.data.title} at ${v.data.org} (${v.data.period}). ${v.data.summary || ''}\n${v.text}`);
+  }
+  return { i: items };
 }

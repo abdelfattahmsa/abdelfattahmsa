@@ -156,6 +156,28 @@
     if (method === 'GET' && p === '/api/schema') return Promise.resolve({ langs: cfg.langs, defaultLang: cfg.defaultLang, collections: cfg.collections });
     if (method === 'GET' && p === '/api/items') return listDir(q.get('c'));
     if (method === 'GET' && p === '/api/nodes') return listNodes();
+    if (p === '/api/settings') {
+      var siteFile = 'src/data/site.json';
+      if (method === 'GET') {
+        return getFile(siteFile).then(function (f) {
+          var site = JSON.parse(f.text);
+          return { fields: cfg.settings.map(function (s) { return { key: s.key, label: s.label, hint: s.hint }; }), values: Object.fromEntries(cfg.settings.map(function (s) { return [s.key, s.path.reduce(function (o, k) { return o ? o[k] : undefined; }, site) || '']; })) };
+        });
+      }
+      if (method === 'PUT') {
+        return getFile(siteFile).then(function (f) {
+          var site = JSON.parse(f.text);
+          cfg.settings.forEach(function (s) {
+            if (!(s.key in body)) return;
+            var v = String(body[s.key] || '').trim();
+            if (v && !new RegExp(s.check).test(v)) throw err(400, s.label + ': not a valid value (example: ' + s.hint + ')');
+            var o = site; s.path.slice(0, -1).forEach(function (k) { o = o[k] = o[k] || {}; });
+            o[s.path[s.path.length - 1]] = v;
+          });
+          return gh(repoPath(siteFile), { method: 'PUT', body: { message: 'Admin: update site settings', content: b64enc(JSON.stringify(site, null, 2) + '\n'), sha: f.sha, branch: creds.branch } });
+        }).then(function () { return { ok: true }; });
+      }
+    }
     if (method === 'GET' && p === '/api/item') {
       return getFile(pathFor(q.get('c'), q.get('slug'), q.get('lang') || cfg.defaultLang)).then(function (f) { return parseMd(f.text); }, function (e) { if (e.status === 404) throw err(404, 'Not found'); throw e; });
     }

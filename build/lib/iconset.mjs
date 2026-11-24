@@ -62,6 +62,8 @@ export const ICONS = {
   lock: I('<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>', '<circle class="f" cx="12" cy="15.5" r="1.5"/>'),
   plus: I('<circle cx="12" cy="12" r="9"/>', '<path class="a" d="M12 8v8M8 12h8"/>'),
   info: I('<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/>', '<circle class="f" cx="12" cy="7.9" r="1.3"/>'),
+  car: I('<path d="M5 12l1.7-4.4A2 2 0 0 1 8.6 6h6.8a2 2 0 0 1 1.9 1.6L19 12"/><rect x="3" y="12" width="18" height="5.5" rx="2.2"/><path d="M6.5 17.5V19M17.5 17.5V19"/>', '<circle class="f" cx="7.4" cy="14.8" r="1.2"/><circle class="f" cx="16.6" cy="14.8" r="1.2"/>'),
+  languages: I('<path d="M4.5 4.5h8A1.5 1.5 0 0 1 14 6v4.5a1.5 1.5 0 0 1-1.5 1.5H8l-3 2.5V12h-.5A1.5 1.5 0 0 1 3 10.5V6a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M14 10h5.5A1.5 1.5 0 0 1 21 11.5V16a1.5 1.5 0 0 1-1.5 1.5H19V20l-3-2.5h-3.5"/>', '<path class="a" d="M6 8.2h6"/><circle class="f" cx="18" cy="13.7" r="1"/>'),
   bell: I('<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>', '<circle class="f" cx="12" cy="5" r="1.3"/>'),
 };
 
