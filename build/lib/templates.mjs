@@ -179,6 +179,7 @@ ${drawer(lang, here)}
 ${overlay}
 ${main}
 ${contactWidget(lang)}
+<button type="button" class="totop" data-totop hidden aria-label="${esc(T(lang, 'totop'))}" title="${esc(T(lang, 'totop'))}">${icon('i-up')}</button>
 </body>
 </html>`;
   }

@@ -124,5 +124,6 @@
  "widget.message": "Message me on WhatsApp",
  "widget.call": "Book a call",
  "widget.email": "Email me",
- "widget.label": "Contact options"
+ "widget.label": "Contact options",
+ "totop": "Back to top"
 }
