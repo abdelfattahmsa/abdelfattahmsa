@@ -13,6 +13,8 @@ export function createTemplates(ctx) {
   const icon = (id, cls = '') =>
     `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="${assets.sprite}#${id}"/></svg>`;
   // the mascot has a light-background variant (thin grey edge); CSS shows the one that fits the theme
+  // each part of the site has its own reaction of the mascot (poses are drawn in brand/poses.mjs)
+  const POSE_FOR = { home: 'happy', about: 'calm', hub: 'search', research: 'sketching', journey: 'sunglasses', resources: 'idea', guides: 'coding', downloads: 'launch', contact: 'wink', notFound: 'surprised' };
   const mascotIcon = (id, cls = '') => `${icon('mascot-' + id, cls + ' for-dark')}${icon('mascot-' + id + 'Light', cls + ' for-light')}`;
 
   const fmtDate = (d, lang) =>
@@ -164,6 +166,8 @@ ${main}
   const pageHead = (lang, title, lead, extra = '') =>
     `<header class="pagehead"><h1>${esc(title)}</h1>${lead ? `<p class="lead">${esc(lead)}</p>` : ''}${extra}</header>`;
 
+  const poseIcon = (part) => mascotIcon('pose-' + POSE_FOR[part], 'pagehead__mascot');
+
   const main = (lang, inner, cls = '') => `<main id="main" class="page ${cls}"><div class="container">${inner}</div>${footer(lang)}</main>`;
 
   const tagList = (tags = []) =>
@@ -235,8 +239,8 @@ ${icon('i-arrow', 'row__go flip')}</a></li>`;
       .join('')}</ul>`;
 
   // the list page of a dated section (research, journey, guides) followed by its articles
-  function datedSection(lang, { base, key, list, parent }) {
-    const inner = `${crumbs(lang, [parent, { label: T(lang, key) }])}${pageHead(lang, T(lang, key), T(lang, key + '.lead'))}${list.length ? rowList(lang, list) : emptyNote(lang)}`;
+  function datedSection(lang, { base, key, list, parent, pose }) {
+    const inner = `${crumbs(lang, [parent, { label: T(lang, key) }])}${pageHead(lang, T(lang, key), T(lang, key + '.lead'), poseIcon(pose))}${list.length ? rowList(lang, list) : emptyNote(lang)}`;
     return [
       { path: base, html: layout({ lang, path: base, title: T(lang, key), description: T(lang, key + '.lead'), main: main(lang, inner, 'page--narrow') }) },
       ...articles(lang, list, { parents: [parent, { label: T(lang, key), href: base }], backLabel: T(lang, key) }),
@@ -260,7 +264,7 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
       .join('');
     const html = `<main id="main" class="home">
   <section class="home__hero" aria-labelledby="home-name">
-    ${mascotIcon('head', 'home__mascot')}
+    ${mascotIcon('pose-' + POSE_FOR.home, 'home__mascot')}
     <a class="status" href="${u(lang, '/contact/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
@@ -301,7 +305,7 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
         return `<li><a class="venture brand-${x.id}" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><span class="venture__top">${logo}${icon('i-external', 'venture__go')}</span><span class="venture__blurb">${esc(L(x.blurb, lang))}</span></a></li>`;
       })
       .join('');
-    const inner = `${pageHead(lang, v.data.title, v.data.summary, mascotIcon('head', 'pagehead__mascot'))}${untranslatedNotice(lang, v)}
+    const inner = `${pageHead(lang, v.data.title, v.data.summary, mascotIcon('pose-' + POSE_FOR.about, 'pagehead__mascot'))}${untranslatedNotice(lang, v)}
 <div class="prose prose--page">${proseHtml(v)}</div>
 <section id="timeline" aria-labelledby="tl-h"><h2 id="tl-h">${esc(T(lang, 'about.timeline'))}</h2><p class="lead">${esc(T(lang, 'about.timeline.lead'))}</p><ol class="timeline">${timeline}</ol></section>
 <section id="ventures" aria-labelledby="vn-h"><h2 id="vn-h">${esc(T(lang, 'about.ventures'))}</h2><p class="lead">${esc(T(lang, 'about.ventures.lead'))}</p><ul class="ventures">${ventures}</ul></section>
@@ -327,7 +331,7 @@ ${socials(lang, 'socials--page')}`;
       })
       .join('');
     const latest = content.journey.slice(0, 3);
-    const inner = `${pageHead(lang, T(lang, 'hub.title'), T(lang, 'hub.lead'))}
+    const inner = `${pageHead(lang, T(lang, 'hub.title'), T(lang, 'hub.lead'), poseIcon('hub'))}
 <section aria-labelledby="h-wikis"><h2 id="h-wikis" class="eyebrow">${esc(T(lang, 'hub.wikis'))}</h2><div class="cards">${wikiCards}</div></section>
 <section aria-labelledby="h-more"><h2 id="h-more" class="eyebrow">${esc(T(lang, 'hub.research'))} · ${esc(T(lang, 'hub.journey'))}</h2><div class="cards cards--2">
 ${cardLink(lang, { href: C.research.base, iconId: 'i-file', title: T(lang, 'hub.research'), text: T(lang, 'hub.research.lead'), meta: countLabel(lang, content.research.length) })}
@@ -348,8 +352,8 @@ ${latest.length ? `<section aria-labelledby="h-latest"><h2 id="h-latest" class="
       out.push(...articles(lang, w.pages, { parents: [hub, { label: title, href: w.base }], backLabel: title, byPosition: true }));
     }
 
-    out.push(...datedSection(lang, { base: C.research.base, key: 'hub.research', list: content.research, parent: hub }));
-    out.push(...datedSection(lang, { base: C.journey.base, key: 'hub.journey', list: content.journey, parent: hub }));
+    out.push(...datedSection(lang, { base: C.research.base, key: 'hub.research', list: content.research, parent: hub, pose: 'research' }));
+    out.push(...datedSection(lang, { base: C.journey.base, key: 'hub.journey', list: content.journey, parent: hub, pose: 'journey' }));
     return out;
   };
 
@@ -357,13 +361,13 @@ ${latest.length ? `<section aria-labelledby="h-latest"><h2 id="h-latest" class="
     const resources = { label: T(lang, 'res.title'), href: '/resources/' };
     const dls = content.downloads;
     const guides = content.guides;
-    const inner = `${pageHead(lang, T(lang, 'res.title'), T(lang, 'res.lead'))}
+    const inner = `${pageHead(lang, T(lang, 'res.title'), T(lang, 'res.lead'), poseIcon('resources'))}
 <div class="cards cards--2">
 ${cardLink(lang, { href: C.downloads.base, iconId: 'i-gift', title: T(lang, 'res.downloads'), text: T(lang, 'res.downloads.lead'), meta: `${dls.length} ${T(lang, 'dl.count')}` })}
 ${cardLink(lang, { href: C.guides.base, iconId: 'i-book', title: T(lang, 'res.guides'), text: T(lang, 'res.guides.lead'), meta: `${guides.length} ${T(lang, 'dl.count')}` })}
 </div>`;
     const out = [{ path: '/resources/', html: layout({ lang, path: '/resources/', title: T(lang, 'res.title'), description: T(lang, 'res.lead'), main: main(lang, inner) }) }];
-    out.push(...datedSection(lang, { base: C.guides.base, key: 'res.guides', list: guides, parent: resources }));
+    out.push(...datedSection(lang, { base: C.guides.base, key: 'res.guides', list: guides, parent: resources, pose: 'guides' }));
 
     // downloads
     const base = C.downloads.base;
@@ -404,7 +408,7 @@ ${cardLink(lang, { href: C.guides.base, iconId: 'i-book', title: T(lang, 'res.gu
         }</div></li>`;
       })
       .join('');
-    const listInner = `${crumbs(lang, [resources, { label: T(lang, 'res.downloads') }])}${pageHead(lang, T(lang, 'res.downloads'), T(lang, 'res.downloads.lead'))}
+    const listInner = `${crumbs(lang, [resources, { label: T(lang, 'res.downloads') }])}${pageHead(lang, T(lang, 'res.downloads'), T(lang, 'res.downloads.lead'), poseIcon('downloads'))}
 ${
   dls.length
     ? `<section class="dl" data-downloads data-view="grid" data-noresults="${esc(T(lang, 'dl.noresults'))}">
@@ -465,7 +469,7 @@ ${get.href ? `<a class="btn btn--primary btn--block" href="${esc(get.href)}" ${g
 <p class="form__status" role="status" aria-live="polite" data-status></p>
 </form>
 <noscript><p class="notice">${esc(T(lang, 'contact.nojs'))}</p></noscript>`;
-    const inner = `${pageHead(lang, T(lang, 'contact.title'), T(lang, 'contact.lead'))}
+    const inner = `${pageHead(lang, T(lang, 'contact.title'), T(lang, 'contact.lead'), poseIcon('contact'))}
 <div class="contact-grid">
 <section>${form}</section>
 <aside class="contact-side">
@@ -478,7 +482,7 @@ ${socials(lang, 'socials--page')}
   };
 
   pages.notFound = (lang) => {
-    const inner = `<div class="notfound">${mascotIcon('head', 'notfound__mascot')}<h1>${esc(T(lang, '404.title'))}</h1><p class="lead">${esc(T(lang, '404.lead'))}</p><a class="btn btn--primary" href="${u(lang, '/')}">${esc(T(lang, '404.home'))}</a></div>`;
+    const inner = `<div class="notfound">${mascotIcon('pose-' + POSE_FOR.notFound, 'notfound__mascot')}<h1>${esc(T(lang, '404.title'))}</h1><p class="lead">${esc(T(lang, '404.lead'))}</p><a class="btn btn--primary" href="${u(lang, '/')}">${esc(T(lang, '404.home'))}</a></div>`;
     return [{ path: '/404/', html: layout({ lang, path: '/404/', title: T(lang, '404.title'), main: main(lang, inner, 'page--narrow'), noindex: true, switchPath: '/' }) }];
   };
 
