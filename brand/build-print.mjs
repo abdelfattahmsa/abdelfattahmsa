@@ -4,30 +4,28 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { art, INK, YELLOW } from './mascot-art.mjs';
-import { lockup as lockupDoc } from './lockup.mjs';
-import { DETAILS as D, NAME, lockupLayout, outDir, readData, svgDoc, tajawal, toPng, TRANSPARENT } from './lib.mjs';
+import { lockupSide } from './lockup.mjs';
+import { DETAILS as D, NAME, outDir, svgDoc, tajawal, toPng, TRANSPARENT } from './lib.mjs';
 
 const out = outDir('print');
-const word = readData('wordmark.json');
 const T500 = tajawal(500);
 const T700 = tajawal(700);
 const text = (font, str, x, y, size, fill) => `<path fill="${fill}" d="${font.getPath(str, x, y, size, { kerning: true }).toPathData(2)}"/>`;
 
-// head mark (sticker edge when on dark, plain print version on light) + stacked name, as a nested svg group
-function lockup({ x, y, h, ink, dark }) {
-  const head = dark ? art.head : art.headPrint;
-  const { fw, ws, gap, wh, w } = lockupLayout(head, word, h);
-  return {
-    w,
-    svg: `<svg x="${x}" y="${y}" width="${fw.toFixed(2)}" height="${h}" viewBox="${head.vb}">${head.inner}</svg><g transform="translate(${(x + fw + gap).toFixed(2)} ${(y + (h - wh) / 2).toFixed(2)}) scale(${ws.toFixed(5)})"><path fill="${ink}" d="${word.d}"/></g>`,
-  };
+// side lockup (face + stacked name) as a nested svg, h tall; ink white = dark background (white sticker edge)
+function lockup({ x, y, h, ink }) {
+  const svg = lockupSide(ink === '#ffffff' ? '#ffffff' : '#000000');
+  const [, , vw, vh] = svg.match(/viewBox="([^"]+)"/)[1].split(' ').map(Number);
+  const w = (vw / vh) * h;
+  const inner = svg.slice(svg.indexOf('</title>') + 8, svg.lastIndexOf('</svg>'));
+  return { w, svg: `<svg x="${x}" y="${y}" width="${w.toFixed(2)}" height="${h}" viewBox="0 0 ${vw} ${vh}">${inner}</svg>` };
 }
 const doc = (wmm, hmm, body, bg) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${wmm}mm" height="${hmm}mm" viewBox="0 0 ${wmm} ${hmm}" role="img" aria-label="${NAME}"><title>${NAME}</title><rect width="${wmm}" height="${hmm}" fill="${bg}"/>${body}</svg>\n`;
 
 // ---- one-colour print mascot (black on white, no edge, no yellow)
-fs.writeFileSync(path.join(out, 'am-mascot-print.svg'), svgDoc(art.bustPrint, NAME));
-fs.writeFileSync(path.join(out, 'am-mascot-head-print.svg'), svgDoc(art.headPrint, NAME));
+fs.writeFileSync(path.join(out, 'am-mascot-print.svg'), svgDoc(art.headFlat, NAME));
+fs.writeFileSync(path.join(out, 'am-mascot-print-sun.svg'), svgDoc(art.headSunFlat, NAME));
 // concentric rings (the circular-frame language): a quiet design element, no logo or mascot
 const rings = (cx, cy, radii, stroke, w = 0.3) => radii.map((r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${stroke}" stroke-width="${w}"/>`).join('');
 const clipTrim = (id, w, h) => `<clipPath id="${id}"><rect width="${w}" height="${h}"/></clipPath>`;
@@ -37,8 +35,9 @@ const W = 91, H = 61;
 {
   // side 1: black. Mascot head + stacked name, quiet rings bottom right, short yellow rule
   const hLk = 19;
-  const x0 = (W - lockupLayout(art.head, word, hLk).w) / 2, y0 = (H - hLk) / 2 - 3;
-  const l = lockup({ x: x0, y: y0, h: hLk, ink: '#ffffff', dark: true });
+  const lw = lockup({ x: 0, y: 0, h: hLk, ink: '#ffffff' }).w;
+  const x0 = (W - lw) / 2, y0 = (H - hLk) / 2 - 3;
+  const l = lockup({ x: x0, y: y0, h: hLk, ink: '#ffffff' });
   const ringsF = `<g clip-path="url(#cf)">${clipTrim('cf', W, H)}${rings(W - 4, H - 2, [14, 22, 30, 38, 46, 54], '#1c1c1c', 0.35)}</g>`;
   fs.writeFileSync(path.join(out, 'business-card-front.svg'), doc(W, H, ringsF + l.svg + `<rect x="${x0.toFixed(2)}" y="${(y0 + hLk + 5).toFixed(2)}" width="12" height="0.8" fill="${YELLOW}"/>`, '#000000'));
 
@@ -60,10 +59,10 @@ const W = 91, H = 61;
 
 // ---- A4 letterhead (210 x 297): small header lockup, faint mascot watermark, details + page number in the footer
 {
-  const l = lockup({ x: 20, y: 14, h: 9, ink: '#000000', dark: false });
+  const l = lockup({ x: 20, y: 14, h: 9, ink: '#000000' });
   let body = l.svg + `<rect x="20" y="27" width="170" height="0.25" fill="#000000"/><rect x="20" y="26.7" width="14" height="0.8" fill="${YELLOW}"/>`;
   // watermark: the mascot head, line art at 5% ink, centred in the lower half of the page
-  const hd = art.headPrint, [, , hw, hh] = hd.vb.split(' ').map(Number);
+  const hd = art.headFlat, [, , hw, hh] = hd.vb.split(' ').map(Number);
   const wh = 130, ws = wh / hh;
   body += `<svg x="${((210 - hw * ws) / 2).toFixed(2)}" y="120" width="${(hw * ws).toFixed(2)}" height="${wh}" viewBox="${hd.vb}" opacity="0.05">${hd.inner}</svg>`;
   body += `<rect x="20" y="270.2" width="14" height="0.8" fill="${YELLOW}"/><rect x="34" y="270.4" width="156" height="0.25" fill="#000000"/>`;
@@ -76,9 +75,9 @@ const W = 91, H = 61;
 
 // ---- assets for the Word letterhead (brand/build-letterhead-docx.py): padded logo, faint watermark
 {
-  const lockupPng = await sharp(Buffer.from(lockupDoc(INK)), { density: 300 }).resize({ width: 1400 }).extend({ right: 40, top: 20, bottom: 20, left: 10, background: TRANSPARENT }).png().toBuffer();
+  const lockupPng = await sharp(Buffer.from(lockupSide(INK)), { density: 300 }).resize({ width: 1400 }).extend({ right: 40, top: 20, bottom: 20, left: 10, background: TRANSPARENT }).png().toBuffer();
   fs.writeFileSync(path.join(out, 'letterhead-logo.png'), lockupPng);
-  const hd = art.headPrint;
+  const hd = art.headFlat;
   const wm = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${hd.vb}"><g opacity=".06">${hd.inner}</g></svg>`;
   await sharp(Buffer.from(wm), { density: 300 }).resize({ width: 1200 }).png().toFile(path.join(out, 'letterhead-watermark.png'));
 }

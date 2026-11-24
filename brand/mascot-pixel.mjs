@@ -1,37 +1,33 @@
-// Hand-hinted favicon pixels. K = black, W = white, . = leave the yellow disc.
-// 16 x 16 is drawn by hand; 32 x 32 is that drawing doubled, then refined by hand (brows, nose, lips).
+// Hand-hinted favicon pixels for the new face. K = black, W = white, . = leave the yellow disc.
+// 16 x 16 is drawn by hand; 32 x 32 is that drawing doubled, then refined by hand (ears, brows, nose, mouth line).
 import sharp from 'sharp';
 import { INK, PAPER, YELLOW } from './mascot-art.mjs';
 
 export const HEAD16 = [
   '................',
+  '.....KKKKKK.....',
   '....KKKKKKKK....',
-  '...KKKKKKKKKK...',
   '...KKKKKKKKKK...',
   '...KKWWWWWWKK...',
-  '...WWWWWWWWWW...',
-  '...WWKWWWWKWW...',
-  '...WWWWWWWWWW...',
   '...KWWWWWWWWK...',
-  '...KKKKKKKKKK...',
-  '...KKKKWWKKKK...',
+  '...KWWKWWKWWK...',
+  '...KWWWWWWWWK...',
+  '...KWWKKKKWWK...',
+  '...KKWWWWWWKK...',
+  '...KKKWWWWKKK...',
   '....KKKKKKKK....',
   '.....KKKKKK.....',
-  '......KKKK......',
+  '................',
   '................',
   '................',
 ];
 
 function head32() {
-  const g = HEAD16.map((r) => [...r].flatMap((c) => [c, c]));
-  const rows = g.flatMap((r) => [r.slice(), r.slice()]);
+  const rows = HEAD16.flatMap((r) => { const a = [...r].flatMap((c) => [c, c]); return [a, a.slice()]; });
   const set = (x, y, c) => { rows[y][x] = c; };
-  // brows: one pixel thick, over each eye
-  for (const x of [9, 10, 11, 12, 19, 20, 21, 22]) set(x, 10, 'K');
-  // nose: a short stroke right of centre
-  for (const y of [14, 15, 16]) set(17, y, 'K');
-  // lips: widen the gap in the beard
-  for (const x of [13, 14, 15, 16, 17, 18]) { set(x, 20, 'W'); }
+  for (const x of [11, 12, 13, 14, 17, 18, 19, 20]) set(x, 10, 'K'); // brows (one row above the eyes)
+  for (const y of [14, 15]) set(15, y, 'K'); // nose
+  for (const x of [14, 15, 16, 17]) set(x, 19, 'K'); // mouth line
   return rows.map((r) => r.join(''));
 }
 export const HEAD32 = head32();

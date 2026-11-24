@@ -1,6 +1,6 @@
 /* ==========================================================================
    Abdelfattah M. — personal site
-   Black & white. Tajawal for text, Satoshi (when present) for display.
+   Black & white. Tajawal for text and display.
    Yellow (#ffcc00) is an accent only: focus ring, current-page dot, selection,
    hover on primary actions. Never used as text colour on white.
    Logical properties throughout so Arabic (RTL) mirrors for free.
@@ -17,7 +17,7 @@
 /* ---------- tokens ---------- */
 :root{
   --ff-body:"Tajawal",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --ff-display:"Tajawal",system-ui,-apple-system,"Segoe UI",sans-serif; /* the build switches it to Satoshi when the font is present */
+  --ff-display:"Tajawal",system-ui,-apple-system,"Segoe UI",sans-serif;
   --accent:#ffcc00;
   --gutter:clamp(16px,4vw,40px);
   --ease:cubic-bezier(.2,.7,.2,1);
@@ -392,10 +392,10 @@ html:not(.js) .suggest{display:none}
 [data-theme="light"] .venture:hover .venture__text,[data-theme="light"] .venture:focus-visible .venture__text{color:var(--brand-text)}
 
 /* ---------- mascot ---------- */
-.home__mascot{display:none;inline-size:auto;block-size:clamp(84px,12vh,120px);aspect-ratio:228/232}
+.home__mascot{display:none;inline-size:auto;block-size:clamp(84px,12vh,120px);aspect-ratio:462/536}
 @media (min-height:860px){.home__mascot{display:block}}
 .pagehead{position:relative}
-.pagehead__mascot{position:absolute;inset-inline-end:0;inset-block-start:-8px;inline-size:auto;block-size:132px;aspect-ratio:228/232}
+.pagehead__mascot{position:absolute;inset-inline-end:0;inset-block-start:-8px;inline-size:auto;block-size:132px;aspect-ratio:462/536}
 @media (max-width:720px){.pagehead__mascot{display:none}}
-.notfound__mascot{inline-size:auto;block-size:150px;aspect-ratio:228/232}
+.notfound__mascot{inline-size:auto;block-size:150px;aspect-ratio:462/536}
 [data-theme="light"] .for-dark,[data-theme="dark"] .for-light{display:none}

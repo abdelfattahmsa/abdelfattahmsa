@@ -30,19 +30,6 @@ const ICONS = {
 };
 const MANIFEST = '/assets/icons/site.webmanifest';
 
-// Satoshi (display font) is licensed and never committed; the build uses it when its WOFF2 files are in
-// src/assets/fonts/: Satoshi-Variable.woff2, or static Satoshi-Regular/Medium/Bold.woff2.
-function satoshiCss(files) {
-  const W = { light: 300, regular: 400, medium: 500, bold: 700, black: 900 };
-  let css = '\n/* ---- generated: Satoshi display font ---- */\n';
-  for (const file of files) {
-    const key = Object.keys(W).find((k) => new RegExp(k, 'i').test(file));
-    const weight = /variable/i.test(file) ? '300 900' : W[key || 'regular'];
-    css += `@font-face{font-family:"Satoshi";src:url("/assets/fonts/${file}") format("woff2");font-weight:${weight};font-style:normal;font-display:swap}\n`;
-  }
-  return css + ':root{--ff-display:"Satoshi","Tajawal",system-ui,sans-serif}\n';
-}
-
 export function build({ outDir = 'dist', drafts = false } = {}) {
   const t0 = Date.now();
   const dist = path.join(root, outDir);
@@ -64,13 +51,10 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   // browsers ask for /favicon.ico by default
   fs.copyFileSync(path.join(src, 'assets/icons/favicon.ico'), path.join(dist, 'favicon.ico'));
 
-  const fontDir = path.join(src, 'assets/fonts');
-  const satoshi = fs.readdirSync(fontDir).filter((f) => /^satoshi.*\.woff2$/i.test(f) && !/italic/i.test(f));
   let css = fs.readFileSync(path.join(src, 'assets/css/main.css'), 'utf8');
   css += '\n/* ---- generated: brand colours ---- */\n';
   for (const v of site.ventures) css += `.brand-${v.id}{--brand:${v.color};--brand-text:${v.colorText}}\n`;
   css += '\n/* ---- generated: header logo proportions ---- */\n' + logoCss(brand);
-  if (satoshi.length) css += satoshiCss(satoshi);
   const cssName = `main.${hash(css)}.css`;
   writeFile(path.join(dist, 'assets', cssName), css);
 
@@ -136,7 +120,6 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
       favicon16: ICONS.png16,
       favicon32: ICONS.png32,
       appleIcon: ICONS.apple,
-      displayFont: satoshi.length ? `/assets/fonts/${satoshi[0]}` : null,
     },
   });
 
@@ -159,7 +142,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   writeFile(path.join(dist, '.nojekyll'), '');
   if (fs.existsSync(path.join(root, 'CNAME'))) fs.copyFileSync(path.join(root, 'CNAME'), path.join(dist, 'CNAME'));
 
-  console.log(`built ${urls.length} pages (${drafts ? 'with' : 'without'} drafts)${satoshi.length ? ' · Satoshi: ' + satoshi.length + ' file(s)' : ' · Satoshi: not found, using Tajawal'} in ${Date.now() - t0}ms`);
+  console.log(`built ${urls.length} pages (${drafts ? 'with' : 'without'} drafts) in ${Date.now() - t0}ms`);
   return { dist, pageCount: urls.length };
 }
 

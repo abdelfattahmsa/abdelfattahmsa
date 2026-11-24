@@ -145,7 +145,6 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="apple-touch-icon" href="${assets.appleIcon}">
 <link rel="manifest" href="${assets.manifest}">
 <link rel="preload" href="/assets/fonts/tajawal-${langInfo(lang).fontSubset}-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-${assets.displayFont ? `<link rel="preload" href="${assets.displayFont}" as="font" type="font/woff2" crossorigin>` : ''}
 <link rel="stylesheet" href="${assets.css}">
 <script>${ctx.themeInit}</script>
 <script src="${assets.js}" defer></script>
@@ -261,7 +260,7 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
       .join('');
     const html = `<main id="main" class="home">
   <section class="home__hero" aria-labelledby="home-name">
-    ${mascotIcon('bust', 'home__mascot')}
+    ${mascotIcon('head', 'home__mascot')}
     <a class="status" href="${u(lang, '/contact/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
@@ -302,7 +301,7 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
         return `<li><a class="venture brand-${x.id}" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><span class="venture__top">${logo}${icon('i-external', 'venture__go')}</span><span class="venture__blurb">${esc(L(x.blurb, lang))}</span></a></li>`;
       })
       .join('');
-    const inner = `${pageHead(lang, v.data.title, v.data.summary, mascotIcon('bust', 'pagehead__mascot'))}${untranslatedNotice(lang, v)}
+    const inner = `${pageHead(lang, v.data.title, v.data.summary, mascotIcon('head', 'pagehead__mascot'))}${untranslatedNotice(lang, v)}
 <div class="prose prose--page">${proseHtml(v)}</div>
 <section id="timeline" aria-labelledby="tl-h"><h2 id="tl-h">${esc(T(lang, 'about.timeline'))}</h2><p class="lead">${esc(T(lang, 'about.timeline.lead'))}</p><ol class="timeline">${timeline}</ol></section>
 <section id="ventures" aria-labelledby="vn-h"><h2 id="vn-h">${esc(T(lang, 'about.ventures'))}</h2><p class="lead">${esc(T(lang, 'about.ventures.lead'))}</p><ul class="ventures">${ventures}</ul></section>
@@ -479,7 +478,7 @@ ${socials(lang, 'socials--page')}
   };
 
   pages.notFound = (lang) => {
-    const inner = `<div class="notfound">${mascotIcon('bust', 'notfound__mascot')}<h1>${esc(T(lang, '404.title'))}</h1><p class="lead">${esc(T(lang, '404.lead'))}</p><a class="btn btn--primary" href="${u(lang, '/')}">${esc(T(lang, '404.home'))}</a></div>`;
+    const inner = `<div class="notfound">${mascotIcon('head', 'notfound__mascot')}<h1>${esc(T(lang, '404.title'))}</h1><p class="lead">${esc(T(lang, '404.lead'))}</p><a class="btn btn--primary" href="${u(lang, '/')}">${esc(T(lang, '404.home'))}</a></div>`;
     return [{ path: '/404/', html: layout({ lang, path: '/404/', title: T(lang, '404.title'), main: main(lang, inner, 'page--narrow'), noindex: true, switchPath: '/' }) }];
   };
 

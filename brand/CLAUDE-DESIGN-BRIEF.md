@@ -40,34 +40,39 @@ UI language for the website, which the brand should also use: **circular frames 
 
 ## 3. The brand as it exists now: a mascot of the owner
 
-**Concept.** A flat, sticker-style portrait of Abdelfattah, drawn from a photo and a sticker reference the owner supplied: short dark hair, thick brows, calm eyes, a **short beard joined to the mustache**, dark suit, a **yellow tie** as the only colour. Thick black outline, white "sticker" edge. The mascot is the primary mark; the stacked name (**Abdelfattah** over **Aboulfoutoh**, Satoshi Bold, outlined) sits beside it as the lockup. The earlier "AM" badge in `logo/` is kept only as a secondary monogram.
+**Concept.** A flat, sticker-style **face-only** portrait of Abdelfattah, front view, traced from the owner's own reference: dark swept hair, thick brows, calm eyes, nose, mustache and a short mouth line, and a thick beard band that joins the hairline through the sideburns. Black and white only, thick black outline, white "sticker" edge, **yellow `#ffcc00`** as the brand background. There is a **sunglasses version** of every mascot file. The earlier 3/4 view and the bust were discarded. All text is **Tajawal** (English and Arabic).
 
-**Source of truth.** `brand/mascot-art.mjs` (all shapes, one 240-unit grid) and `brand/build-mascot.mjs` (regenerates every file: `npm run brand`). The default expression is *calm*; the pose set is defined in `brand/poses.mjs` and written by `brand/build-poses.mjs` (`npm run brand:poses`).
+**Source of truth.** `brand/mascot-art.mjs` (face and sunglasses), `brand/lockup.mjs` (every logo layout and its use case), `brand/build-mascot.mjs` (regenerates `mascot/`, `logos/`, site icons and the social image: `npm run brand`). The pose set is `brand/poses.mjs`, written by `brand/build-poses.mjs` (`npm run brand:poses`).
+
+**The logo set (`logos/`, open `logos/index.html`).** Each logo has its own job; each exists in English and Arabic (right to left) and as SVG + 1600 px PNG.
+
+| Logo | Files | Use |
+|---|---|---|
+| Mascot mark | `mascot/am-mascot*.svg`, `am-avatar*.svg`, `am-icon*.svg` | Avatars, app and site icons, stickers, anywhere a small square or circle is needed |
+| Side lockup | `am-side-black/white(.ar).svg` | Website header, email signature, letterhead header, slide footers: one wide, short line |
+| Name under the face | `am-under-yellow/white/black(.ar).svg` | Vertical formats: posters, covers, profile cards, banners, packaging |
+| Mascot lettering | `am-lettering-yellow/white/black(.ar).svg` | Loud and friendly: video thumbnails, stickers, merch, stories. Name in the mascot's outline style: white fill, thick black outline, **black offset on light and yellow backgrounds, white offset on dark** |
+| Sunglasses | `am-under-sun-yellow.svg`, `am-lettering-sun-yellow.svg`, `mascot/am-*-sun*.svg` | Relaxed or celebratory moments: social posts, launches, thumbnails. Never on formal documents |
+| One-colour print | `print/am-mascot-print.svg`, `am-mascot-print-sun.svg` | Business card, letterhead, stamps: black on white, no edge, no yellow |
 
 **Files in `mascot/`**
 
 | File | Use |
 |---|---|
-| `am-mascot.svg`, `am-mascot-mono.svg` | Full bust with white sticker edge (page art, 404, OG); mono = tie in black |
-| `am-mascot-head.svg` | Head only with sticker edge: **site header mark**, small uses |
-| `am-avatar.svg` | Head and shoulders on a yellow disc: social avatars |
-| `am-icon-maskable.svg` | Android **maskable** icon: full-bleed yellow, head inside the 80% safe zone (192/512 PNG; used by the site manifest) |
-| `png/favicon.ico` | **.ico bundle**: 16 and 32 hand-hinted, 48 vector (served at `/favicon.ico`) |
-| `am-icon.svg` | Simplified head on a yellow disc (no ears, brows, nose, mouth): favicon and app icon. The **16 and 32 px PNGs are hand-hinted pixel drawings** (`mascot-pixel.mjs`), not scaled vectors |
-| `am-lockup.svg`, `am-lockup-white.svg` | Head + stacked name, horizontal lockup (black ink / white ink) |
-| `am-lockup-ar.svg`, `am-lockup-ar-white.svg` | **Arabic lockup**: name on the left (عبدالفتاح over أبو الفتوح, Tajawal Bold, shaped with HarfBuzz), head on the right. The Arabic pages of the site use the same head and Arabic name in the header |
-| `am-mascot-light.svg`, `am-mascot-head-light.svg` | **For white / light backgrounds**: same art with a thin grey ring outside the white sticker edge (the site uses these in the light theme) |
-| `png/` | Exports: bust, head, avatar 1024; lockups 2000; icons 16/32/48/180/192/512; OG 1200x630 |
-| `tests.html`, `png/mascot-test-sheet.png` | Test sheet |
-| `poses/` | **Twenty poses** on one shared canvas, in five groups: *core* (calm, smile, wave, thinking, builder, searching, building, thumbs-up, idea, glasses), *design* (sketching with a pencil, colour palette, drawing a vector curve on a tablet), *research* (reading, data chart, notes clipboard), *engineering* (blueprint, schedule) and *developer* (coding, launch). SVG + 1024 px PNG each, `poses.html` contact sheet, `poses.json` names and uses. **Brand library only, not used on the website** |
-| `exploration/` | The first six directions and the photo-based round, for context |
+| `am-mascot.svg` | Face with white sticker edge: dark backgrounds and transparent use. `-light` has a thin grey ring for white backgrounds (the site uses it in the light theme); `-flat` has no edge (yellow backgrounds, print). `-sun`, `-sun-light`, `-sun-flat` are the sunglasses versions |
+| `am-avatar.svg`, `am-avatar-sun.svg` | Face on a yellow disc: social avatars |
+| `am-icon.svg` | Simplified face on a yellow disc: favicon and app icon. The **16 and 32 px PNGs are hand-hinted pixel drawings** (`mascot-pixel.mjs`), not scaled vectors |
+| `am-icon-maskable.svg` | Android **maskable** icon: full-bleed yellow, face inside the 80% safe zone (192/512 PNG) |
+| `png/favicon.ico` | 16 and 32 hand-hinted, 48 vector (served at `/favicon.ico`) |
+| `png/am-og-1200x630.png` | Open Graph image: side lockup on yellow |
+| `poses/` | **Twelve poses** on one shared canvas, face only: *reactions* (calm, happy, wink, surprised, angry), *style* (sunglasses) and *work* (builder with hard hat, idea lightbulb, search magnifier, coding headphones, sketching pencil, launch rocket). SVG + 1024 px PNG each, `poses.html` contact sheet, `poses.json` names and uses. **Brand library only, not used on the website** |
 
 **Print and downloads**
 
 | Folder | Contents |
 |---|---|
 | `print/` | `am-mascot-print.svg` and `am-mascot-head-print.svg` (**one colour**, black on white, no sticker edge, no yellow). **Business card, two sides** (85 x 55 mm, 3 mm bleed, 5 mm safe margin, SVG + PDF + PNG): *front* is black with the mascot head and stacked name and a quiet ring pattern; *back* is white with name (Abdelfattah M. Aboulfoutoh, MSc.), title (Engineer & entrepreneur), phone, email, web (abdelfattah.site \| Kyberia.tech) and address (Maadi, Cairo, Egypt) over a faint ring pattern; **no logo or mascot in the pattern**. **A4 letterhead**: small header lockup, faint mascot watermark, footer with email, web, phone, address and page number; SVG + PDF + PNG, plus an **editable Word file** (`letterhead-a4.docx`, built by `brand/build-letterhead-docx.py`) where the header, watermark and footer repeat on every page and the page number is a live field. Text is outlined in the SVG and PDF |
-| `covers/` | **Download-thumbnail system**: 1200 x 900 (4:3), black, a circular glyph frame with one yellow dot, the category name in Satoshi Bold, a matching pose at the bottom right. One cover per resource category (Claude, Notion, Spreadsheets, Website templates, CV and cover letters, Other) plus a blank "Your title here" template. Brand library only |
+| `covers/` | **Download-thumbnail system**: 1200 x 900 (4:3), black, a circular glyph frame with one yellow dot, the category name in Tajawal Bold, a matching pose at the bottom right. One cover per resource category (Claude, Notion, Spreadsheets, Website templates, CV and cover letters, Other) plus a blank "Your title here" template. Brand library only |
 
 **Testing results (honest).**
 
@@ -87,9 +92,9 @@ UI language for the website, which the brand should also use: **circular frames 
 | Role | Font | Notes |
 |---|---|---|
 | All text (UI, body, Arabic and Latin) | **Tajawal** (400 / 500 / 700) | Open Font License, self-hosted. Supports Arabic and Latin. |
-| Display / headings / name / logo | **Satoshi** | Free from fontshare.com (Indian Type Foundry licence). Used on the live site for headings and the name, and for the logo. Satoshi is Latin-only, so Arabic display text stays **Tajawal Bold**. |
+| Display / headings / name / logo | **Tajawal** (700 / 800) | The same family for display, the name and the logo lettering (outlined in the files). Arabic and Latin share one design. |
 
-Related brand (for context only): the **Kyberia** guidelines use Spline Sans (display), Satoshi (reading), Spline Sans Mono (labels) and IBM Plex Sans Arabic. The personal brand deliberately differs: black and white, Tajawal + Satoshi.
+Related brand (for context only): the **Kyberia** guidelines use Spline Sans (display), Satoshi (reading), Spline Sans Mono (labels) and IBM Plex Sans Arabic. The personal brand deliberately differs: black and white with yellow, Tajawal only.
 
 ## 5. Colour
 
@@ -122,7 +127,7 @@ Icons: 24-px grid, 1.75 stroke, round caps and joins, filled brand glyphs only f
 
 **B. Assets**
 
-1. Final logo suite (SVG + PNG): wordmark in **English and Arabic**, AM badge, one-colour, reversed; outlined text (no font dependencies). Offer a single-line (horizontal) variant if one is useful.
+1. Final logo suite (SVG + PNG): every logo in the set in **English and Arabic**, one-colour, reversed; outlined text (no font dependencies). Offer a single-line (horizontal) variant if one is useful.
 2. Favicon / app icon set including a **hand pixel-hinted 16×16 and 32×32** (the current auto-scaled one is soft at 16 px), `apple-touch-icon` 180, Android 192/512, maskable variants.
 3. Social: avatars (LinkedIn, GitHub, X, Instagram, Behance, Medium, ResearchGate), banners (LinkedIn 1584×396, X 1500×500), GitHub social preview 1280×640, **Open Graph 1200×630** (a basic one exists), email signature.
 4. Stationery: business card (85×55), letterhead, CV header block, cover-letter header, slide master (16:9) with title / section / content layouts, Notion page cover + icon set.

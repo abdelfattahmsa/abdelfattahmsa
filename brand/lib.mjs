@@ -26,19 +26,13 @@ export function outDir(rel) {
   return dir;
 }
 
-// ---- fonts: Tajawal is bundled (npm); Satoshi Bold is used for display when it is in brand/fonts/
+// ---- fonts: Tajawal (bundled with npm, Latin and Arabic) is the one brand font
 function loadFont(file) {
   const b = fs.readFileSync(file);
   return opentype.parse(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength));
 }
 export const tajawal = (weight) => loadFont(path.join(root, `node_modules/@fontsource/tajawal/files/tajawal-latin-${weight}-normal.woff`));
-export function displayFont() {
-  const dir = path.join(brandDir, 'fonts');
-  const satoshi = fs.existsSync(dir) ? fs.readdirSync(dir).find((n) => /satoshi.*bold(?!.*italic).*\.(otf|ttf|woff)$/i.test(n)) : null;
-  return satoshi
-    ? { font: loadFont(path.join(dir, satoshi)), name: 'Satoshi Bold' }
-    : { font: tajawal(700), name: 'Tajawal Bold (interim; add Satoshi-Bold to brand/fonts/ and re-run)' };
-}
+export const displayFont = () => ({ font: tajawal(700), name: 'Tajawal Bold' });
 
 // ---- output
 export const svgDoc = (a, title) =>

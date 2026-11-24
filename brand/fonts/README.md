@@ -1,3 +1,3 @@
-# Logo font
+# Fonts
 
-Put `Satoshi-Bold.otf` here (git-ignored, licence forbids committing it) and run `node brand/build-logo.mjs` to draw the logo in Satoshi. Without it the script uses the bundled Tajawal Bold. Do not include font files in anything shared externally.
+The brand uses Tajawal only (SIL Open Font License). The build scripts read the files in `src/assets/fonts/`. The logo and lettering files have the text outlined, so they need no font.

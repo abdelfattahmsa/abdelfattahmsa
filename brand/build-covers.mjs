@@ -24,7 +24,7 @@ const GLYPH = {
   career: STROKE.file,
   other: STROKE.gift,
 };
-const POSE = { claude: 'idea', notion: 'clipboard', spreadsheets: 'chart', web: 'code', career: 'thumbs-up', other: 'smile' };
+const POSE = { claude: 'idea', notion: 'sketching', spreadsheets: 'search', web: 'coding', career: 'builder', other: 'happy' };
 
 function cover({ title, eyebrow = 'FREE DOWNLOAD', glyph, pose }) {
   const W = 1200, H = 900;
@@ -57,7 +57,7 @@ const items = site.resourceCategories.map((c) => {
   if (!GLYPH[c.id] || !POSE[c.id]) throw new Error(`build-covers.mjs: add a glyph and a pose for the new category "${c.id}"`);
   return { id: c.id, title: c.label.en, glyph: GLYPH[c.id], pose: POSE[c.id] };
 });
-items.push({ id: 'blank', title: 'Your title here', glyph: STROKE.download, pose: 'smile' });
+items.push({ id: 'blank', title: 'Your title here', glyph: STROKE.download, pose: 'happy' });
 for (const it of items) {
   const svg = cover(it);
   fs.writeFileSync(path.join(out, `cover-${it.id}.svg`), svg);
