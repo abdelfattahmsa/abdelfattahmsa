@@ -62,3 +62,7 @@ dialog::backdrop{background:#000a}
 .chip:hover{border-color:var(--text)}
 .chip--on{background:var(--surface);}
 .chips--pick .chip{color:var(--muted)}
+.dlg__box label{font-size:.9rem;color:var(--muted)}
+.dlg__box input[type=text],.dlg__box input[type=password]{width:100%}
+.btn[hidden]{display:none}
+a.btn{display:inline-block;text-align:center;text-decoration:none;color:inherit}

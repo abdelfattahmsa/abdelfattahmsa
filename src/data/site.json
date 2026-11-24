@@ -4,20 +4,24 @@
     "en": "Abdelfattah M. Aboulfoutoh",
     "ar": "عبدالفتاح محمد سمير أبو الفتوح"
   },
+  "suffix": {
+    "en": "MSc.",
+    "ar": "MSc."
+  },
   "short": {
     "en": "Abdelfattah M.",
     "ar": "عبدالفتاح م."
   },
   "tagline": {
-    "en": "Engineer. System Builder. Product Architect.",
-    "ar": "مهندس. بنّاء أنظمة. مهندس منتجات."
+    "en": "Engineer, Entrepreneur, Creative",
+    "ar": "مهندس، رائد أعمال، مبدع"
   },
   "intro": {
     "en": "Bridging physical infrastructure with digital solutions: designing structured, scalable systems for life, work, and technology.",
     "ar": "أربط البنية التحتية المادية بالحلول الرقمية: أصمم أنظمة منظّمة وقابلة للتوسع للحياة والعمل والتقنية."
   },
   "person": {
-    "jobTitle": "Civil Engineer, Project Controls Engineer, Founder",
+    "jobTitle": "Engineer, Entrepreneur, Creative",
     "locality": "Cairo",
     "country": "EG"
   },
