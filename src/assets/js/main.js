@@ -351,4 +351,26 @@
     doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); fab.focus(); } });
   })();
 
+  /* ------------------------------------------------------------ back to top */
+  (function () {
+    var b = $('[data-totop]');
+    if (!b) return;
+    var shown = false, ticking = false;
+    function update() {
+      ticking = false;
+      var want = (window.pageYOffset || root.scrollTop) > 480;
+      if (want !== shown) { shown = want; b.hidden = !want; }
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    b.addEventListener('click', function () {
+      var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
+      var skip = $('.skip');
+      if (skip) { skip.focus({ preventScroll: true }); skip.blur(); }
+    });
+    update();
+  })();
+
 })();

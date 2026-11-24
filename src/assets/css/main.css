@@ -499,3 +499,11 @@ html.js .views[data-view="map"] [data-view-panel="items"],html:not(.js) [data-vi
   .prevnext .pn{text-align:center}
   .status{justify-self:center}
 }
+/* ---------- back to top: bottom left, beside the contact mascot ---------- */
+.totop{position:fixed;left:calc(max(10px,env(safe-area-inset-left)) + 76px);bottom:max(24px,calc(env(safe-area-inset-bottom) + 8px));z-index:35;display:grid;place-items:center;inline-size:48px;block-size:48px;border-radius:50%;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,.35);transition:border-color .15s,transform .2s var(--ease),background-color .15s,color .15s}
+.totop .icon{inline-size:22px;block-size:22px}
+.totop:hover,.totop:focus-visible{background:var(--text);color:var(--bg);transform:translateY(-3px)}
+.totop:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.totop:not([hidden]){animation:contact-in .25s var(--ease) both}}
+@media (max-width:480px){.totop{left:calc(max(10px,env(safe-area-inset-left)) + 68px);inline-size:44px;block-size:44px;bottom:max(22px,calc(env(safe-area-inset-bottom) + 6px))}}
+@media print{.totop{display:none}}
