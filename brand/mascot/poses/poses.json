@@ -1,121 +1,73 @@
 [
  {
   "name": "calm",
-  "group": "Core",
+  "group": "Reactions",
   "title": "Calm",
-  "note": "Default. Closed mouth, steady eyes. Headers, About, serious pages."
+  "note": "Default. Steady eyes. Headers, About, serious pages."
  },
  {
-  "name": "smile",
-  "group": "Core",
-  "title": "Smile",
+  "name": "happy",
+  "group": "Reactions",
+  "title": "Happy",
   "note": "Friendly. Welcome states, success messages, social avatars."
  },
  {
-  "name": "wave",
-  "group": "Core",
-  "title": "Wave",
-  "note": "Hello. Greetings, onboarding, newsletter sign-off."
+  "name": "wink",
+  "group": "Reactions",
+  "title": "Wink",
+  "note": "Playful. Tips, asides, newsletter sign-offs."
  },
  {
-  "name": "thinking",
-  "group": "Core",
-  "title": "Thinking",
-  "note": "Working it out. Research, guides, \"how it works\" sections."
+  "name": "surprised",
+  "group": "Reactions",
+  "title": "Surprised",
+  "note": "Surprise. Announcements, \"did you know\", new releases."
+ },
+ {
+  "name": "angry",
+  "group": "Reactions",
+  "title": "Angry",
+  "note": "Frustration. Errors, warnings, \"what not to do\" posts."
+ },
+ {
+  "name": "sunglasses",
+  "group": "Style",
+  "title": "Sunglasses",
+  "note": "Cool and relaxed. Social posts, launches, weekends, thumbnails."
  },
  {
   "name": "builder",
-  "group": "Core",
+  "group": "Work",
   "title": "Builder",
   "note": "Hard hat on. Engineering wiki, project controls, construction content."
  },
  {
-  "name": "searching",
-  "group": "Core",
-  "title": "Searching",
-  "note": "Looking closely. Search, empty results, research pages."
- },
- {
-  "name": "laptop",
-  "group": "Core",
-  "title": "Building",
-  "note": "At the keyboard. Developer wiki, build guides, behind-the-scenes posts."
- },
- {
-  "name": "thumbs-up",
-  "group": "Core",
-  "title": "Thumbs up",
-  "note": "Approved. Success, confirmations, \"good to go\"."
- },
- {
   "name": "idea",
-  "group": "Core",
+  "group": "Work",
   "title": "Idea",
   "note": "Lightbulb moment. Tips, announcements, new resources."
  },
  {
-  "name": "glasses",
-  "group": "Core",
-  "title": "Glasses",
-  "note": "Glasses on (they appear in the reference photo). Reading, detail work."
+  "name": "search",
+  "group": "Work",
+  "title": "Search",
+  "note": "Looking closely. Search, empty results, research pages."
  },
  {
-  "name": "pencil",
-  "group": "Design",
-  "title": "Sketching",
-  "note": "Pencil up. Design wiki, drafts, \"first idea\" posts."
- },
- {
-  "name": "palette",
-  "group": "Design",
-  "title": "Colour",
-  "note": "Choosing colours. Design wiki, brand and colour posts."
- },
- {
-  "name": "tablet",
-  "group": "Design",
-  "title": "Drawing",
-  "note": "Vector curve on a tablet. Design wiki, UI and logo posts."
- },
- {
-  "name": "reading",
-  "group": "Research",
-  "title": "Reading",
-  "note": "Deep in a paper. Research page, literature notes."
- },
- {
-  "name": "chart",
-  "group": "Research",
-  "title": "Data",
-  "note": "Showing results. Charts, project-controls and findings posts."
- },
- {
-  "name": "clipboard",
-  "group": "Research",
-  "title": "Notes",
-  "note": "Checklist in hand. Methods, schedules, \"how I check it\" posts."
- },
- {
-  "name": "blueprint",
-  "group": "Engineering",
-  "title": "Blueprint",
-  "note": "Reading the drawings. Civil and construction wiki, design reviews."
- },
- {
-  "name": "schedule",
-  "group": "Engineering",
-  "title": "Schedule",
-  "note": "Planning the programme. Project-controls wiki, baselines, critical path."
- },
- {
-  "name": "code",
-  "group": "Developer",
+  "name": "coding",
+  "group": "Work",
   "title": "Coding",
-  "note": "Writing code. Developer wiki, tooling and automation guides."
+  "note": "Headphones on. Developer wiki, tooling and automation guides."
+ },
+ {
+  "name": "sketching",
+  "group": "Work",
+  "title": "Sketching",
+  "note": "Pencil behind the ear. Design wiki, drafts, \"first idea\" posts."
  },
  {
   "name": "launch",
-  "group": "Developer",
+  "group": "Work",
   "title": "Launch",
   "note": "Shipped. Releases, new tools, \"it is live\" announcements."
  }

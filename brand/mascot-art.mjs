@@ -1,116 +1,78 @@
-// The mascot, drawn once. 240 x 240 design grid, flat shapes, 5-unit black outline, yellow tie.
-// The brand scripts (build-mascot, build-poses, build-print) build every mascot file from these strings.
+// The mascot, drawn once: a face-only front view. The hair, ears, brows, eyes, nose, mustache, mouth line and the glasses frame are
+// traced vectors (mascot-shapes.json, in the reference's pixel space: the head is 425 wide, 495 tall); the face base, the beard band
+// (its sideburns start inside the hair so hair and beard read as one mass), the expressions and the sunglasses lenses are drawn here
+// to the same proportions. The brand scripts build every mascot file from these strings.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 export const YELLOW = '#ffcc00';
 export const INK = '#000000';
 export const PAPER = '#ffffff';
+const S = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'mascot-shapes.json'), 'utf8'));
+const k = (d, fill = INK) => `<path d="${d}" fill-rule="evenodd" fill="${fill}"/>`;
 
-// shapes (shared by the artwork and by the white "sticker" edge)
-const SUIT = 'M18 246C18 208 56 194 100 190H140C184 194 222 208 222 246Z';
-const NECK = 'M98 160V190L120 214L142 190V160Z';
-const HEAD = 'M64 100C64 58 88 40 120 40C152 40 176 58 176 100V124C176 160 152 184 120 184C88 184 64 160 64 124Z';
-const HAIR = 'M62 104C54 56 86 30 124 32C160 34 186 58 178 106C174 84 160 72 138 68C118 76 84 74 62 104Z';
-// beard and mustache are one shape: sideburns run down the jaw and meet the mustache; the lip patch is cut out
-const BEARD_OUTER =
-  'M63 112L64 124C64 160 88 184 120 184C152 184 176 160 176 124L177 112' +
-  'C176 130 162 142 146 144C138 136 128 137 120 141C112 137 102 136 94 144C78 142 64 130 63 112Z';
-const PATCH = {
-  calm: 'M101 153C108 151 113 152 120 152C127 152 132 151 139 153C139 160 131 163 120 163C109 163 101 160 101 153Z',
-  smile: 'M97 151C104 148 112 150 120 150C128 150 136 148 143 151C144 165 133 172 120 172C107 172 96 165 97 151Z',
+// the head's own box, and the box with room for the sticker edge
+export const BOX = { x: 208, y: 386, w: 438, h: 512 };
+export const VB = '196 374 462 536';
+
+const FACE = 'M286 540H572V742C572 812 500 862 427 862C354 862 286 812 286 742Z';
+const BEARD = 'M254 640C254 680 266 706 277 730V780C300 850 360 888 427 888C494 888 554 850 577 780V730C588 706 602 680 602 640H564V690C564 780 510 852 427 852C344 852 294 780 294 690V640Z';
+const EARS_WHITE = '<ellipse cx="256" cy="732" rx="29" ry="53" fill="#fff"/><ellipse cx="598" cy="732" rx="29" ry="53" fill="#fff"/>';
+const SUN_LENSES =
+  '<path d="M312 684H392Q404 684 404 698V742Q404 762 384 762H322Q304 762 304 742V698Q304 684 312 684Z"/>' +
+  '<path d="M462 684H542Q552 684 552 698V742Q552 762 532 762H472Q452 762 452 742V698Q452 684 462 684Z"/>';
+
+// ---- expressions: eyes and brows (the mouth line and mustache stay)
+const stroke = (d, w = 17) => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${w}" stroke-linecap="round"/>`;
+export const eyes = {
+  calm: () => k(S.eyeL) + k(S.eyeR),
+  happy: () => stroke('M334 730Q358 686 382 730M474 730Q498 686 522 730'),
+  wink: () => k(S.eyeL) + stroke('M474 716Q498 740 522 716'),
+  surprised: () => [358, 498].map((x) => `<circle cx="${x}" cy="716" r="34" fill="${PAPER}" stroke="${INK}" stroke-width="12"/><circle cx="${x}" cy="716" r="13" fill="${INK}"/>`).join(''),
 };
-const BEARD = BEARD_OUTER + PATCH.calm;
-const EARS = [[60, 120], [180, 120]];
-// hard hat: crown, brim
-export const HAT = ['M54 82C54 38 84 16 120 16C156 16 186 38 186 82Z', 'M42 82H198V94H42Z'];
-
-export const line = `stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
-
-// opts: mouth calm|smile, eyes normal|up|happy, brows normal|raised, glasses, hat
-export const face = (o = {}) => {
-  const { mouth = 'calm', eyes = 'normal', brows = 'normal', glasses = false, hat = false } = o;
-  const beard = BEARD_OUTER + PATCH[mouth];
-  const eyeEls =
-    eyes === 'happy'
-      ? `<path d="M90 113Q98 103 106 113M134 113Q142 103 150 113" fill="none" stroke-width="5"/>`
-      : `<ellipse cx="98" cy="${eyes === 'up' ? 106 : 110}" rx="5" ry="4.5" fill="${INK}" stroke="none"/><ellipse cx="142" cy="${eyes === 'up' ? 106 : 110}" rx="5" ry="4.5" fill="${INK}" stroke="none"/>`;
-  const browEls = brows === 'raised' ? 'M82 86Q98 76 114 85M126 82Q142 72 158 84' : 'M82 92Q98 82 114 91M126 91Q142 82 158 92';
-  const mouthEl =
-    mouth === 'smile'
-      ? `<path d="M102 156Q120 168 138 156" fill="none" stroke-width="3.5"/>`
-      : `<path d="M109 157Q120 160 131 157" fill="none" stroke-width="3.5"/>`;
-  const gl = glasses
-    ? `<rect x="76" y="96" width="42" height="30" rx="12" fill="none" stroke-width="5"/><rect x="122" y="96" width="42" height="30" rx="12" fill="none" stroke-width="5"/><path d="M118 108H122M76 106L63 102M164 106L177 102" fill="none" stroke-width="5"/>`
-    : '';
-  const hatEl = hat
-    ? `${HAT.map((d) => `<path d="${d}" fill="${YELLOW}"/>`).join('')}<path d="M104 18V40M136 18V40" fill="none" stroke-width="4"/>`
-    : '';
-  return `
-<g ${line}>
-  ${EARS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11" fill="${PAPER}"/>`).join('')}
-  <path d="${HEAD}" fill="${PAPER}"/>
-  <path d="${HAIR}" fill="${INK}"/>
-  <path d="${beard}" fill="${INK}" fill-rule="evenodd" stroke-width="3"/>
-  <path d="${browEls}" fill="none" stroke-width="7"/>
-  ${eyeEls}
-  <path d="M121 108Q113 128 126 129" fill="none" stroke-width="4.5"/>
-  ${mouthEl}
-  ${gl}
-  ${hatEl}
-</g>`;
+const browG = (d, rot, dy, cx, cy) => `<g transform="translate(0 ${dy}) rotate(${rot} ${cx} ${cy})">${k(d)}</g>`;
+export const brows = {
+  calm: () => k(S.browL) + k(S.browR),
+  raised: () => browG(S.browL, -4, -16, 358, 648) + browG(S.browR, 4, -16, 497, 648),
+  angry: () => browG(S.browL, 17, 6, 358, 648) + browG(S.browR, -17, 6, 497, 648),
 };
+const sunglasses = () => `<g fill="${INK}">${SUN_LENSES}</g>${k(S.frame)}<path d="M322 698L342 698L326 722Z M472 698L492 698L476 722Z" fill="${PAPER}"/>`;
 
-export const body = (tie = YELLOW) => `
-<g ${line}>
-  <path d="${SUIT}" fill="${INK}"/>
-  <path d="${NECK}" fill="${PAPER}"/>
-  <path d="M100 186L120 226L140 186Z" fill="${PAPER}" stroke-width="4"/>
-  <path d="M100 186L108 202L96 208ZM140 186L132 202L144 208Z" fill="${PAPER}" stroke-width="3"/>
-  <path d="M114 200H126L124 210H116Z" fill="${tie}" stroke-width="3.5"/>
-  <path d="M116 210H124L130 240H110Z" fill="${tie}" stroke-width="3.5"/>
-</g>`;
+// the face, no edge and no background
+export function face({ eye = 'calm', brow = 'calm', sun = false } = {}) {
+  return (
+    EARS_WHITE + k(S.earL) + k(S.earR) + k(S.earInL) + k(S.earInR) +
+    `<path d="${FACE}" fill="${PAPER}"/><path d="${BEARD}" fill="${INK}"/>` +
+    brows[brow]() + (sun ? '' : eyes[eye]()) + k(S.nose) + k(S.mustache) + k(S.lip) +
+    (sun ? sunglasses() : '') + k(S.hair)
+  );
+}
 
-// white sticker edge: every outer shape drawn fat in white, underneath
-export const edge = (parts, w = 18) =>
-  `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="${w}" stroke-linejoin="round">${parts}</g>`;
-export const headParts = `<path d="${HEAD}"/><path d="${HAIR}"/>${EARS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11"/>`).join('')}`;
-export const bustParts = `<path d="${SUIT}"/><path d="${NECK}"/>${headParts}`;
+// ---- the sticker edge round the whole head: dark backgrounds get white, light ones a white edge with a thin grey ring
+const silhouette = (fill, stroke, w) =>
+  `<g fill="${fill}" stroke="${stroke}" stroke-width="${w}" stroke-linejoin="round" fill-rule="evenodd">` +
+  `<path d="${S.hair}"/><path d="${S.earL}"/><path d="${S.earR}"/><path d="${FACE}"/><path d="${BEARD}"/>${EARS_WHITE.replace(/fill="#fff"/g, '')}</g>`;
+export const edge = (w = 26) => silhouette(PAPER, PAPER, w);
+export const edgeLight = (w = 26) => silhouette('#cfcfcf', '#cfcfcf', w + 5) + silhouette(PAPER, PAPER, w);
 
-// light-background edge: the white sticker edge gets a thin grey ring so it still reads on white
-export const edgeLight = (parts) =>
-  `<g fill="#cfcfcf" stroke="#cfcfcf" stroke-width="21.5" stroke-linejoin="round">${parts}</g>` + edge(parts);
-
-// simplified head (no ears, brows, nose or mouth) so it survives 16 px
-const smallHead = (transform) => `<g transform="${transform}">
-  <path d="${HEAD}" fill="${PAPER}"/>
-  <path d="${HAIR}" fill="${INK}"/>
-  <path d="${BEARD}" fill="${INK}" fill-rule="evenodd"/>
-  <ellipse cx="98" cy="108" rx="9" ry="9" fill="${INK}"/><ellipse cx="142" cy="108" rx="9" ry="9" fill="${INK}"/>
-</g>`;
+// ---- simplified head (no ears, brows, nose, lip) so it survives small sizes
+const small = (transform) => `<g transform="${transform}"><path d="${FACE}" fill="${PAPER}"/><path d="${BEARD}" fill="${INK}"/>${k(S.eyeL)}${k(S.eyeR)}${k(S.mustache)}${k(S.hair)}</g>`;
+const place = (cx, cy, s) => `translate(${cx - 427 * s} ${cy - 640 * s}) scale(${s})`;
 
 export const art = {
   // viewBoxes include the sticker edge
-  head: { vb: '36 16 168 184', inner: edge(headParts) + face() },
-  bust: { vb: '6 14 228 232', inner: edge(bustParts) + body() + face() },
-  // for white / light backgrounds: same artwork, thin grey ring outside the white edge
-  headLight: { vb: '36 16 168 184', inner: edgeLight(headParts) + face() },
-  bustLight: { vb: '6 14 228 232', inner: edgeLight(bustParts) + body() + face() },
-  // print: one colour (black on white), no sticker edge, no yellow
-  headPrint: { vb: '40 20 160 172', inner: face() },
-  bustPrint: { vb: '12 20 216 226', inner: body(INK) + face() },
-  // single colour version (tie in ink)
-  bustMono: { vb: '6 14 228 232', inner: edge(bustParts) + body(INK) + face() },
-  // circular avatar: yellow disc, bust bleeding off the bottom, no edge
-  avatar: { vb: '0 0 240 240', inner: `<clipPath id="av"><circle cx="120" cy="120" r="120"/></clipPath><circle cx="120" cy="120" r="120" fill="${YELLOW}"/><g clip-path="url(#av)">${body(INK)}${face()}</g>` },
+  head: { vb: VB, inner: edge() + face() }, // dark backgrounds and transparent use
+  headLight: { vb: VB, inner: edgeLight() + face() }, // white backgrounds
+  headFlat: { vb: VB, inner: face() }, // yellow or white backgrounds, print (black on white)
+  headSun: { vb: VB, inner: edge() + face({ sun: true }) },
+  headSunLight: { vb: VB, inner: edgeLight() + face({ sun: true }) },
+  headSunFlat: { vb: VB, inner: face({ sun: true }) },
+  // circular avatar: yellow disc, the head fills it, no edge
+  avatar: { vb: '0 0 240 240', inner: `<clipPath id="av"><circle cx="120" cy="120" r="120"/></clipPath><circle cx="120" cy="120" r="120" fill="${YELLOW}"/><g clip-path="url(#av)"><g transform="${place(120, 128, 0.4)}">${face()}</g></g>` },
+  avatarSun: { vb: '0 0 240 240', inner: `<clipPath id="av"><circle cx="120" cy="120" r="120"/></clipPath><circle cx="120" cy="120" r="120" fill="${YELLOW}"/><g clip-path="url(#av)"><g transform="${place(120, 128, 0.4)}">${face({ sun: true })}</g></g>` },
   // favicon
-  icon: {
-    vb: '0 0 64 64',
-    inner: `<circle cx="32" cy="32" r="32" fill="${YELLOW}"/>
-${smallHead('translate(32 33) scale(.34) translate(-120 -112)')}`,
-  },
+  icon: { vb: '0 0 64 64', inner: `<circle cx="32" cy="32" r="32" fill="${YELLOW}"/>${small(place(32, 33, 0.098))}` },
 };
-
 // Android maskable icon: full-bleed yellow square, head kept inside the central safe zone (80% circle)
-export const maskable = {
-  vb: '0 0 64 64',
-  inner: `<rect width="64" height="64" fill="${YELLOW}"/>
-${smallHead('translate(32 33.5) scale(.255) translate(-120 -112)')}`,
-};
+export const maskable = { vb: '0 0 64 64', inner: `<rect width="64" height="64" fill="${YELLOW}"/>${small(place(32, 33.5, 0.074))}` };

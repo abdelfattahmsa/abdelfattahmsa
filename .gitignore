@@ -5,9 +5,6 @@ dist/
 .claude/settings.local.json
 .dev-dist/
 
-# Satoshi (ITF Free Font License forbids distributing the font files via a public repository).
-# Kept local and supplied to CI through secrets; see SITE.md.
-src/assets/fonts/Satoshi*
 brand/fonts/*.otf
 brand/fonts/*.ttf
 brand/fonts/*.woff

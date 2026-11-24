@@ -39,9 +39,9 @@
       "selfHosted": true
     },
     "display": {
-      "family": "Satoshi",
-      "status": "files not yet added; falls back to Tajawal",
-      "license": "ITF Free Font License (fontshare.com)"
+      "family": "Tajawal",
+      "status": "same family as text; 700 and 800 for the name and logo lettering",
+      "license": "SIL OFL 1.1"
     }
   },
   "radius": {
@@ -71,12 +71,12 @@
     "reducedMotion": "respected"
   },
   "logo": {
-    "type": "stacked name wordmark (Abdelfattah / Aboulfoutoh) + AM badge",
-    "font": "Tajawal Bold now, Satoshi Bold when available",
+    "type": "face-only mascot + stacked name (Abdelfattah / Aboulfoutoh); side, under-face and lettering lockups, English and Arabic",
+    "font": "Tajawal Bold and ExtraBold, outlined",
     "clearSpace": "1 cap-height",
     "minSizePx": {
       "wordmark": 26,
-      "badge": 16
+      "mascot": 16
     },
     "leading": "1.2x cap height"
   },

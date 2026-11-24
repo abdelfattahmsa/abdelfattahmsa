@@ -1,196 +1,68 @@
-// The mascot's poses, built on mascot-art.mjs. Brand library only (not used on the website):
-// written out by build-poses.mjs and drawn on the download covers by build-covers.mjs.
-import { face, body, edge, bustParts, line, HAT, INK, PAPER, YELLOW } from './mascot-art.mjs';
+// The mascot's poses: the approved face with other eyes and brows, sunglasses, or a prop on or beside the head.
+// Written out by build-poses.mjs and drawn on the download covers by build-covers.mjs. Brand library only (not on the website).
+import { face, edge, INK, PAPER, YELLOW, BOX } from './mascot-art.mjs';
 
-// shared canvas for every pose, sticker edge included, so poses line up and swap without shifting
-export const VB = '-12 -62 276 314';
-const GREY = '#a6a6a6';
+// one canvas for every pose (room above and to the right for props), so poses swap without the head moving
+export const VB = '176 190 520 722';
 
-// ---- arms: a round-capped black sleeve with a white sticker edge, a white shirt cuff at the wrist, then a hand
-const P = (x1, y1, x2, y2) => `M${x1} ${y1}L${x2} ${y2}`;
-const lerp = (a, b, t) => a + (b - a) * t;
-function arm(x1, y1, x2, y2) {
-  // edge (wide white), sleeve (black), cuff (black ring + white band) near the hand
-  const d = P(x1, y1, x2, y2);
-  const c0 = [lerp(x1, x2, 0.8), lerp(y1, y2, 0.8)], c1 = [lerp(x1, x2, 0.9), lerp(y1, y2, 0.9)];
-  const cuff = P(c0[0], c0[1], c1[0], c1[1]);
-  return {
-    edge: `<path d="${d}" fill="none" stroke="${PAPER}" stroke-width="44" stroke-linecap="round"/>`,
-    ink: `<path d="${d}" fill="none" stroke="${INK}" stroke-width="26" stroke-linecap="round"/><path d="${cuff}" fill="none" stroke="${INK}" stroke-width="30"/><path d="${cuff}" fill="none" stroke="${PAPER}" stroke-width="20"/>`,
-  };
-}
-// ---- hands: palm + fingers + thumb, drawn in local units (palm 28 wide) and scaled by r / 15
-// kinds: open (fingers up, waving), fist (knuckles + thumb across), thumb (fist with the thumb up)
-const FING = [[-10.5, 16], [-3.5, 19], [3.5, 17], [10.5, 13]];
-const handShapes = (kind) => {
-  if (kind === 'open') {
-    return {
-      back: FING.map(([cx, h]) => `<rect x="${cx - 3.2}" y="${-8 - h + 3}" width="6.4" height="${h + 6}" rx="3.2"/>`).join(''),
-      palm: '<rect x="-14" y="-8" width="28" height="24" rx="9"/>',
-      front: '<rect x="-3.5" y="-14" width="7" height="17" rx="3.5" transform="translate(-12 9) rotate(-42)"/>',
-      lines: '',
-    };
-  }
-  return {
-    back: kind === 'thumb' ? '<rect x="-8" y="-27" width="15" height="22" rx="7.5"/>' : '',
-    palm: '<rect x="-14" y="-10" width="28" height="25" rx="9"/>',
-    front: '<rect x="-13" y="2" width="18" height="8.5" rx="4.25"/>',
-    lines: '<path d="M-5 -10v7M0 -10v8M5 -10v7" fill="none" stroke-width="2.6"/>',
-  };
+// props: a black outline, with a white sticker edge behind them so they read on dark backgrounds too
+const outline = (inner, w = 11) => `<g stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round">${inner}</g>`;
+const sticker = (inner, w = 26) => `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round">${inner}</g>`;
+// a prop drawn as: sticker edge shape(s) first, then its coloured art
+const prop = (shapes, art) => ({ under: sticker(shapes), over: art });
+
+const HAT = {
+  shapes: '<path d="M236 566C236 424 324 366 427 366C530 366 618 424 618 566Z"/><path d="M204 566H650Q650 590 626 590H228Q204 590 204 566Z"/>',
+  art: outline(`<path d="M236 566C236 424 324 366 427 366C530 366 618 424 618 566Z" fill="${YELLOW}"/><path d="M204 566H650Q650 590 626 590H228Q204 590 204 566Z" fill="${YELLOW}"/><path d="M398 372V560M456 372V560" fill="none" stroke-width="8"/>`),
 };
-const handG = (x, y, r, rot, inner) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${(r / 15).toFixed(3)})">${inner}</g>`;
-// white sticker edge for a hand: the same shapes, fat and white
-const handEdge = (x, y, r = 15, kind = 'fist', rot = 0) => {
-  const h = handShapes(kind);
-  return handG(x, y, r, rot, `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="${(18 / (r / 15)).toFixed(1)}" stroke-linejoin="round">${h.back}${h.palm}${h.front}</g>`);
+const BULB = {
+  shapes: '<circle cx="427" cy="322" r="40"/><rect x="408" y="356" width="38" height="26" rx="6"/>',
+  art: outline(`<circle cx="427" cy="322" r="40" fill="${YELLOW}"/><rect x="408" y="356" width="38" height="26" rx="6" fill="${PAPER}"/>`, 9) +
+    `<path d="M427 262V282M370 282L384 296M484 282L470 296M350 330H368M486 330H504" stroke="${YELLOW}" stroke-width="9" stroke-linecap="round" fill="none"/>`,
 };
-function hand(x, y, kind = 'fist', r = 15, rot = 0) {
-  const h = handShapes(kind);
-  return handG(x, y, r, rot, `<g stroke="${INK}" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" fill="${PAPER}">${h.back}${h.palm}${h.lines}${h.front}</g>`);
-}
-const R_SHOULDER = [204, 218];
-const L_SHOULDER = [38, 224];
-
-// ---- props held in front of the chest: drawn on the suit, no extra sticker edge needed
-const page = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${PAPER}"/>`;
-const bar = (x, y, w, h, c = INK) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" stroke="none"/>`;
-const hands2 = (y = 246) => hand(64, y, 'fist', 14, 8) + hand(176, y, 'fist', 14, -8);
+const LENS = { cx: 358, cy: 704, r: 74 };
+const MAGNIFIER = {
+  shapes: `<circle cx="${LENS.cx}" cy="${LENS.cy}" r="${LENS.r}"/><path d="M308 758L246 836" stroke-width="40"/>`,
+  art: `<circle cx="${LENS.cx}" cy="${LENS.cy}" r="${LENS.r}" fill="${YELLOW}" fill-opacity=".28"/>` +
+    outline(`<circle cx="${LENS.cx}" cy="${LENS.cy}" r="${LENS.r}" fill="none" stroke-width="15"/><path d="M308 758L246 836" stroke-width="26" fill="none"/>`) +
+    `<path d="M308 758L246 836" stroke="${YELLOW}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M318 660Q338 646 362 648" stroke="${PAPER}" stroke-width="10" stroke-linecap="round" fill="none"/>`,
+};
+const PHONES = {
+  shapes: '<path d="M240 700C226 520 322 422 427 422C532 422 628 520 614 700" fill="none" stroke-width="34"/><rect x="204" y="650" width="58" height="124" rx="26"/><rect x="592" y="650" width="58" height="124" rx="26"/>',
+  art: `<path d="M240 700C226 520 322 422 427 422C532 422 628 520 614 700" fill="none" stroke="${INK}" stroke-width="30" stroke-linecap="round"/><path d="M240 700C226 520 322 422 427 422C532 422 628 520 614 700" fill="none" stroke="${YELLOW}" stroke-width="14" stroke-linecap="round"/>` +
+    outline(`<rect x="204" y="650" width="58" height="124" rx="26" fill="${YELLOW}"/><rect x="592" y="650" width="58" height="124" rx="26" fill="${YELLOW}"/>`, 10),
+};
+const PENCIL = {
+  shapes: '<g transform="rotate(-24 640 640)"><rect x="628" y="520" width="26" height="170" rx="6"/><path d="M628 690H654L641 722Z"/></g>',
+  art: `<g transform="rotate(-24 640 640)">` + outline(`<rect x="628" y="520" width="26" height="150" fill="${YELLOW}"/><rect x="628" y="506" width="26" height="22" rx="6" fill="${PAPER}"/><path d="M628 670H654L641 704Z" fill="${PAPER}"/><path d="M636 692H646L641 704Z" fill="${INK}" stroke="none"/>`, 8) + '</g>',
+};
+const ROCKET = (() => {
+  const body = 'M0 -92C32 -50 34 14 20 56H-20C-34 14 -32 -50 0 -92Z';
+  const fins = 'M-20 28L-46 64L-20 56ZM20 28L46 64L20 56Z';
+  return {
+    shapes: `<g transform="translate(600 300) rotate(34)"><path d="${body}"/><path d="${fins}"/><path d="M-11 60L0 104L11 60Z"/></g>`,
+    art: `<g transform="translate(600 300) rotate(34)">` + outline(`<path d="${fins}" fill="${YELLOW}"/><path d="${body}" fill="${PAPER}"/><circle cx="0" cy="-30" r="14" fill="${YELLOW}" stroke-width="8"/><path d="M-11 60L0 104L11 60Z" fill="${YELLOW}" stroke-width="8"/>`, 10) + '</g>',
+  };
+})();
 
 export const POSES = [
-  { name: 'calm', group: 'Core', title: 'Calm', note: 'Default. Closed mouth, steady eyes. Headers, About, serious pages.', face: {} },
-  { name: 'smile', group: 'Core', title: 'Smile', note: 'Friendly. Welcome states, success messages, social avatars.', face: { mouth: 'smile', eyes: 'happy' } },
-  {
-    name: 'wave', group: 'Core', title: 'Wave', note: 'Hello. Greetings, onboarding, newsletter sign-off.', face: { mouth: 'smile' },
-    build: () => { const a = arm(...R_SHOULDER, 224, 138); return { edge: a.edge + handEdge(226, 120, 18, 'open', 14), ink: a.ink + hand(226, 120, 'open', 18, 14) + `<path d="M243 102q8 12 0 26M251 96q12 18 0 38" fill="none" stroke="${YELLOW}" stroke-width="5" stroke-linecap="round"/>` }; },
-  },
-  {
-    name: 'thinking', group: 'Core', title: 'Thinking', note: 'Working it out. Research, guides, "how it works" sections.', face: { eyes: 'up', brows: 'raised' },
-    build: () => { const a = arm(...L_SHOULDER, 96, 192); return { edge: a.edge + handEdge(110, 178, 19, 'fist', -12), ink: a.ink + hand(110, 178, 'fist', 19, -12) + `<g fill="${YELLOW}" ${line}><circle cx="208" cy="40" r="7" stroke-width="3"/><circle cx="226" cy="16" r="11" stroke-width="3"/></g>` }; },
-  },
-  { name: 'builder', group: 'Core', title: 'Builder', note: 'Hard hat on. Engineering wiki, project controls, construction content.', face: { hat: true, mouth: 'smile' } },
-  {
-    name: 'searching', group: 'Core', title: 'Searching', note: 'Looking closely. Search, empty results, research pages.', face: { eyes: 'up', brows: 'raised' },
-    build: () => {
-      const a = arm(216, 240, 208, 214);
-      const handle = P(184, 172, 204, 204);
-      return {
-        edge: a.edge + `<circle cx="158" cy="146" r="38" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/><path d="${handle}" stroke="${PAPER}" stroke-width="30" stroke-linecap="round"/>` + handEdge(205, 207, 15, 'fist', 25),
-        ink: a.ink + `<path d="${handle}" stroke="${INK}" stroke-width="12" stroke-linecap="round"/><g ${line}><circle cx="158" cy="146" r="36" fill="none" stroke-width="6"/><path d="M140 138Q144 126 158 122" fill="none" stroke="${YELLOW}" stroke-width="5"/></g>` + hand(205, 207, 'fist', 15, 25),
-      };
-    },
-  },
-  {
-    name: 'laptop', group: 'Core', title: 'Building', note: 'At the keyboard. Developer wiki, build guides, behind-the-scenes posts.', face: { mouth: 'smile' },
-    build: () => ({ edge: '', ink: `<g ${line}>${page(60, 190, 120, 70)}<circle cx="120" cy="222" r="11" fill="${YELLOW}" stroke-width="4"/></g>${hands2(250)}` }),
-  },
-  {
-    name: 'thumbs-up', group: 'Core', title: 'Thumbs up', note: 'Approved. Success, confirmations, "good to go".', face: { mouth: 'smile', eyes: 'happy' },
-    build: () => {
-      const a = arm(...R_SHOULDER, 210, 172);
-      return { edge: a.edge + handEdge(210, 160, 19, 'thumb', 6), ink: a.ink + hand(210, 160, 'thumb', 19, 6) };
-    },
-  },
-  {
-    name: 'idea', group: 'Core', title: 'Idea', note: 'Lightbulb moment. Tips, announcements, new resources.', face: { mouth: 'smile', brows: 'raised' },
-    build: () => ({
-      edge: `<circle cx="120" cy="-14" r="20" fill="${PAPER}" stroke="${PAPER}" stroke-width="12"/>`,
-      ink: `<g stroke-linecap="round"><path d="M84 -12l-14 -4M156 -12l14 -4M92 -40l-8 -10M148 -40l8 -10M120 -50v-10" fill="none" stroke="${YELLOW}" stroke-width="5"/></g><g ${line}><circle cx="120" cy="-14" r="18" fill="${YELLOW}"/><rect x="110" y="2" width="20" height="10" rx="3" fill="${PAPER}" stroke-width="4"/></g>`,
-    }),
-  },
-  { name: 'glasses', group: 'Core', title: 'Glasses', note: 'Glasses on (they appear in the reference photo). Reading, detail work.', face: { glasses: true, mouth: 'smile' } },
-
-  {
-    name: 'pencil', group: 'Design', title: 'Sketching', note: 'Pencil up. Design wiki, drafts, "first idea" posts.', face: { mouth: 'smile', eyes: 'up' },
-    build: () => {
-      const a = arm(...R_SHOULDER, 216, 168);
-      const pencil = `<g transform="rotate(13 218 150)"><rect x="211" y="62" width="14" height="96" fill="${YELLOW}"/><rect x="211" y="52" width="14" height="12" rx="4" fill="${PAPER}"/><path d="M211 158h14l-7 20z" fill="${PAPER}"/><path d="M215.5 170h5l-2.5 8z" fill="${INK}" stroke="none"/></g>`;
-      const pencilEdge = `<g transform="rotate(13 218 150)"><rect x="211" y="52" width="14" height="108" rx="4" fill="${PAPER}" stroke="${PAPER}" stroke-width="18"/><path d="M211 158h14l-7 20z" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/></g>`;
-      return { edge: a.edge + pencilEdge + handEdge(214, 162, 17, 'fist', 22), ink: a.ink + `<g ${line}>${pencil}</g>` + hand(214, 162, 'fist', 17, 22) };
-    },
-  },
-  {
-    name: 'palette', group: 'Design', title: 'Colour', note: 'Choosing colours. Design wiki, brand and colour posts.', face: { mouth: 'smile' },
-    build: () => {
-      const a = arm(...L_SHOULDER, 50, 232);
-      const pal = `<path d="M30 168C30 140 62 124 96 128C128 132 130 156 112 164C100 169 104 182 114 186C124 192 112 212 80 212C48 212 30 196 30 168Z"/>`;
-      const T = 'translate(2 78) scale(.85)';
-      return {
-        edge: a.edge + `<g transform="${T}" fill="${PAPER}" stroke="${PAPER}" stroke-width="21" stroke-linejoin="round">${pal}</g>` + handEdge(48, 238, 14, 'fist', -10),
-        ink: a.ink + `<g transform="${T}" ${line}><g fill="${PAPER}">${pal}</g><circle cx="50" cy="156" r="7" fill="${YELLOW}" stroke-width="3"/><circle cx="72" cy="146" r="7" fill="${INK}" stroke-width="3"/><circle cx="96" cy="148" r="7" fill="${GREY}" stroke-width="3"/><circle cx="104" cy="170" r="7" fill="${PAPER}" stroke-width="3"/></g>` + hand(48, 240, 'fist', 14, -10),
-      };
-    },
-  },
-  {
-    name: 'tablet', group: 'Design', title: 'Drawing', note: 'Vector curve on a tablet. Design wiki, UI and logo posts.', face: { mouth: 'smile' },
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}>${page(56, 188, 128, 72)}<path d="M72 244C92 200 118 252 152 206" fill="none" stroke-width="4.5"/><path d="M72 244L92 214M152 206L170 218" fill="none" stroke="${GREY}" stroke-width="2.5"/><rect x="68" y="240" width="9" height="9" fill="${YELLOW}" stroke-width="3"/><rect x="148" y="202" width="9" height="9" fill="${YELLOW}" stroke-width="3"/></g>${hands2(252)}`,
-    }),
-  },
-
-  {
-    name: 'reading', group: 'Research', title: 'Reading', note: 'Deep in a paper. Research page, literature notes.', face: { eyes: 'up', brows: 'raised' },
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}><path d="M120 200Q86 190 52 200V258Q86 248 120 258Z" fill="${PAPER}"/><path d="M120 200Q154 190 188 200V258Q154 248 120 258Z" fill="${PAPER}"/><path d="M62 214Q88 208 110 214M62 226Q88 220 110 226M130 214Q152 208 178 214M130 226Q152 220 178 226" fill="none" stroke="${GREY}" stroke-width="3"/></g>${hands2(254)}`,
-    }),
-  },
-  {
-    name: 'chart', group: 'Research', title: 'Data', note: 'Showing results. Charts, project-controls and findings posts.', face: { mouth: 'smile' },
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}>${page(58, 188, 124, 72)}<path d="M74 204V246H170" fill="none" stroke-width="3.5"/></g>${bar(84, 226, 14, 20)}${bar(106, 216, 14, 30)}${bar(128, 232, 14, 14)}${bar(150, 208, 14, 38, YELLOW)}${hands2(256)}`,
-    }),
-  },
-  {
-    name: 'clipboard', group: 'Research', title: 'Notes', note: 'Checklist in hand. Methods, schedules, "how I check it" posts.', face: {},
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}>${page(70, 186, 100, 76)}<rect x="104" y="180" width="32" height="14" rx="5" fill="${YELLOW}" stroke-width="4"/><path d="M84 214l5 5 9-10M84 236l5 5 9-10" fill="none" stroke-width="4"/><path d="M106 214h50M106 236h50" fill="none" stroke="${GREY}" stroke-width="4"/></g>${hands2(252)}`,
-    }),
-  },
-
-  {
-    name: 'blueprint', group: 'Engineering', title: 'Blueprint', note: 'Reading the drawings. Civil and construction wiki, design reviews.', face: { eyes: 'up', brows: 'raised' },
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}>${page(56, 186, 128, 74)}<path d="M72 208h58v34H72z" fill="none" stroke-width="3.5"/><path d="M100 208v34M72 224h28M130 218h26v24h-26" fill="none" stroke-width="3"/><path d="M138 242a10 10 0 0 1-10-10" fill="none" stroke="${GREY}" stroke-width="2.5"/><path d="M72 250h84M72 246v8M156 246v8" fill="none" stroke="${GREY}" stroke-width="2.5"/><rect x="160" y="196" width="12" height="12" rx="3" fill="${YELLOW}" stroke-width="3"/></g>${hands2(254)}`,
-    }),
-  },
-  {
-    name: 'schedule', group: 'Engineering', title: 'Schedule', note: 'Planning the programme. Project-controls wiki, baselines, critical path.', face: { mouth: 'smile' },
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}>${page(56, 186, 128, 74)}<path d="M70 200V250" fill="none" stroke="${GREY}" stroke-width="3"/></g>${bar(76, 202, 40, 8)}${bar(92, 216, 46, 8, YELLOW)}${bar(124, 230, 34, 8, YELLOW)}${bar(100, 244, 28, 8)}<path d="M138 224h4v6M116 210h4v6" fill="none" stroke="${INK}" stroke-width="2.5"/>${hands2(256)}`,
-    }),
-  },
-
-  {
-    name: 'code', group: 'Developer', title: 'Coding', note: 'Writing code. Developer wiki, tooling and automation guides.', face: { mouth: 'smile' },
-    build: () => ({
-      edge: '',
-      ink: `<g ${line}>${page(60, 190, 120, 70)}<path d="M96 212l-14 14 14 14M144 212l14 14-14 14" fill="none" stroke-width="6"/><path d="M126 208l-12 36" fill="none" stroke="${YELLOW}" stroke-width="6"/></g>${hands2(250)}`,
-    }),
-  },
-  {
-    name: 'launch', group: 'Developer', title: 'Launch', note: 'Shipped. Releases, new tools, "it is live" announcements.', face: { mouth: 'smile', eyes: 'happy', brows: 'raised' },
-    build: () => {
-      const rocket = `<path d="M0 -40C14 -22 14 6 8 24H-8C-14 6 -14 -22 0 -40Z"/><path d="M-8 12L-20 28L-8 24ZM8 12L20 28L8 24Z"/>`;
-      return {
-        edge: `<g transform="translate(222 34) rotate(35)" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round">${rocket}<path d="M-5 26L0 46L5 26Z"/></g>`,
-        ink: `<g transform="translate(222 34) rotate(35)" ${line}><path d="M-8 12L-20 28L-8 24ZM8 12L20 28L8 24Z" fill="${YELLOW}" stroke-width="4"/><path d="M0 -40C14 -22 14 6 8 24H-8C-14 6 -14 -22 0 -40Z" fill="${PAPER}" stroke-width="4"/><circle cx="0" cy="-12" r="6" fill="${YELLOW}" stroke-width="3.5"/><path d="M-5 26L0 46L5 26Z" fill="${YELLOW}" stroke-width="3.5"/></g>`,
-      };
-    },
-  },
+  { name: 'calm', group: 'Reactions', title: 'Calm', note: 'Default. Steady eyes. Headers, About, serious pages.', face: {} },
+  { name: 'happy', group: 'Reactions', title: 'Happy', note: 'Friendly. Welcome states, success messages, social avatars.', face: { eye: 'happy', brow: 'raised' } },
+  { name: 'wink', group: 'Reactions', title: 'Wink', note: 'Playful. Tips, asides, newsletter sign-offs.', face: { eye: 'wink' } },
+  { name: 'surprised', group: 'Reactions', title: 'Surprised', note: 'Surprise. Announcements, "did you know", new releases.', face: { eye: 'surprised', brow: 'raised' } },
+  { name: 'angry', group: 'Reactions', title: 'Angry', note: 'Frustration. Errors, warnings, "what not to do" posts.', face: { brow: 'angry' } },
+  { name: 'sunglasses', group: 'Style', title: 'Sunglasses', note: 'Cool and relaxed. Social posts, launches, weekends, thumbnails.', face: { sun: true } },
+  { name: 'builder', group: 'Work', title: 'Builder', note: 'Hard hat on. Engineering wiki, project controls, construction content.', face: {}, ...prop(HAT.shapes, HAT.art) },
+  { name: 'idea', group: 'Work', title: 'Idea', note: 'Lightbulb moment. Tips, announcements, new resources.', face: { eye: 'happy', brow: 'raised' }, ...prop(BULB.shapes, BULB.art) },
+  { name: 'search', group: 'Work', title: 'Search', note: 'Looking closely. Search, empty results, research pages.', face: { brow: 'raised' }, ...prop(MAGNIFIER.shapes, MAGNIFIER.art) },
+  { name: 'coding', group: 'Work', title: 'Coding', note: 'Headphones on. Developer wiki, tooling and automation guides.', face: {}, ...prop(PHONES.shapes, PHONES.art) },
+  { name: 'sketching', group: 'Work', title: 'Sketching', note: 'Pencil behind the ear. Design wiki, drafts, "first idea" posts.', face: { eye: 'wink' }, ...prop(PENCIL.shapes, PENCIL.art) },
+  { name: 'launch', group: 'Work', title: 'Launch', note: 'Shipped. Releases, new tools, "it is live" announcements.', face: { eye: 'happy', brow: 'raised' }, ...prop(ROCKET.shapes, ROCKET.art) },
 ];
 
-// the artwork of one pose (everything inside its <svg>)
+// the artwork of one pose (everything inside its <svg>): the sticker edge round the head and the prop, the face, the prop
 export function poseInner(p) {
-  const built = p.build ? p.build() : { edge: '', ink: '' };
-  const stick = edge(bustParts, 18) + built.edge;
-  const hatEdge = p.face.hat ? HAT.map((d) => `<path d="${d}" fill="${PAPER}" stroke="${PAPER}" stroke-width="18" stroke-linejoin="round"/>`).join('') : '';
-  return stick + hatEdge + body(YELLOW) + face(p.face) + built.ink;
+  return edge() + (p.under || '') + face(p.face) + (p.over || '');
 }
-
 export const poseSvg = (p) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB}" role="img" aria-label="Abdelfattah mascot: ${p.title}"><title>Abdelfattah mascot: ${p.title}</title>${poseInner(p)}</svg>\n`;
