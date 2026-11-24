@@ -114,15 +114,16 @@ export function createTemplates(ctx) {
   function contactWidget(lang) {
     const c = site.contact;
     const payload = Buffer.from(JSON.stringify({ w: c.whatsapp || '', m: (c.inbox || []).join('@').toLowerCase(), c: c.calendly || '' })).toString('base64');
+    // icons only: the name of each is its tooltip (data-tip) and its accessible label
     const item = (kind, key, id, extra = '') =>
-      `<li><a class="contact__item" data-contact-kind="${kind}" href="#"${extra}>${mascotIcon('mk-' + id, 'contact__icon')}<span>${esc(T(lang, key))}</span></a></li>`;
+      `<li><a class="contact__item" data-contact-kind="${kind}" data-tip="${esc(T(lang, key))}" aria-label="${esc(T(lang, key))}" href="#"${extra}>${mascotIcon('mk-' + id, 'contact__icon')}</a></li>`;
     return `<div class="contact" data-contact-widget data-c="${payload}">
+<button type="button" class="contact__fab" aria-expanded="false" aria-controls="contact-menu" aria-label="${esc(T(lang, 'widget.open'))}" title="${esc(T(lang, 'widget.open'))}">${mascotIcon('head', 'contact__face')}</button>
 <ul class="contact__menu" id="contact-menu" aria-label="${esc(T(lang, 'widget.label'))}" hidden>
 ${item('chat', 'widget.message', 'chat', ' target="_blank" rel="noopener noreferrer"')}
 ${c.calendly ? item('call', 'widget.call', 'call', ' target="_blank" rel="noopener noreferrer"') : ''}
 ${item('mail', 'widget.email', 'mail')}
 </ul>
-<button type="button" class="contact__fab" aria-expanded="false" aria-controls="contact-menu" aria-label="${esc(T(lang, 'widget.open'))}" title="${esc(T(lang, 'widget.open'))}">${mascotIcon('head', 'contact__face')}</button>
 </div>`;
   }
 
@@ -352,6 +353,7 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
     ${mascotIcon('pose-' + POSE_FOR.home, 'home__mascot')}
     <a class="status" href="${u(lang, '/services/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
+    <p class="home__suffix" dir="ltr">${esc(L(site.suffix, lang))}</p>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
     <p class="home__intro">${esc(L(site.intro, lang))}</p>
     ${socials(lang, 'socials--home')}
