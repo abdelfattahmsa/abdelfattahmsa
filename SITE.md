@@ -51,6 +51,10 @@ The hub and every wiki home page show the wikis as a 3D network, with a switch f
 - **Built for thousands.** The build lays the map out in 3D (`build/lib/graph.mjs`), so the browser only draws it (`src/assets/js/map.js`, plain WebGL, no library). The layout is kept in `src/data/graph-layout.json`: pages that are already in it keep their place and new ones settle next to what they bond to, so the map grows instead of reshuffling. Commit that file with your content (the admin's Publish does). Tested at 6,000 pages: the first layout takes seconds, later builds well under a second.
 - **List and Grid** show 30 pages per area and a "Show more" button that reads the rest from the same graph file.
 
+## Services page
+
+`/services/` (and `/ar/services/`) lists what you offer, why to work with you, how to engage and a pricing note: prices are agreed on contact and depend on the scope. The "Open for collaboration" pill on the home page links to it. Its text, in English and Arabic, is in `src/data/services.json` (services, "why work with me", engagement types and terms, pricing note, button). The page is built by `pages.services` in `build/lib/templates.mjs`, is in the search and the sitemap, and is not in the main menu.
+
 ## Contact mascot
 
 A small sticky mascot sits on the left of every page. Clicking it opens message (WhatsApp), call (Calendly) and email, drawn in the mascot's style (`brand/mascot-icons.mjs`, files in `brand/mascot/contact/`). The links are put together in the browser from one encoded value, like the contact form's inbox. Set the number, inbox and the Calendly link in `src/data/site.json` under `contact` (`whatsapp`, `inbox`, `calendly`). While `calendly` is empty the call button is not shown.

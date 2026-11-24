@@ -48,6 +48,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
     kyberia: readJSON(path.join(dataDir, 'kyberia.json')),
   };
   const content = loadAll(site, { drafts });
+  const services = readJSON(path.join(dataDir, 'services.json'));
 
   // the knowledge map: one graph for both languages; positions are kept in src/data/graph-layout.json
   // so the map grows instead of reshuffling (commit that file with your content)
@@ -122,6 +123,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
     site,
     i18n,
     content,
+    services,
     graph,
     kyberia: brand.kyberia,
     cv,
@@ -144,13 +146,13 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
 
   const urls = [];
   for (const lang of LANGS) {
-    for (const key of ['home', 'about', 'hub', 'resources', 'contact']) {
+    for (const key of ['home', 'about', 'services', 'hub', 'resources', 'contact']) {
       for (const page of pages[key](lang)) {
         writeFile(path.join(dist, u(lang, page.path), 'index.html'), page.html);
         urls.push(u(lang, page.path));
       }
     }
-    writeFile(path.join(dist, u(lang, '/search-index.json')), JSON.stringify(searchIndex({ lang, site, content, T, L })));
+    writeFile(path.join(dist, u(lang, '/search-index.json')), JSON.stringify(searchIndex({ lang, site, content, services, T, L })));
   }
   // GitHub Pages serves /404.html for every missing URL
   writeFile(path.join(dist, '404.html'), pages.notFound('en')[0].html);

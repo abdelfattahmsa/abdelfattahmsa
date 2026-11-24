@@ -113,7 +113,7 @@ for (const [a, b] of [['am-icon-16.png', 'favicon-16.png'], ['am-icon-32.png', '
 }
 fs.copyFileSync(path.join(mascotPng, 'am-og-1200x630.png'), path.join(root, 'src/assets/img/og.png'));
 // the poses the website shows (each page part has its own reaction: build/lib/templates.mjs, POSE_FOR)
-const SITE_POSES = ['happy', 'calm', 'search', 'idea', 'sketching', 'sunglasses', 'coding', 'launch', 'wink', 'surprised'];
+const SITE_POSES = ['happy', 'calm', 'search', 'idea', 'sketching', 'sunglasses', 'coding', 'launch', 'wink', 'surprised', 'builder'];
 const sitePoses = {};
 for (const n of SITE_POSES) {
   const p = POSES.find((x) => x.name === n);

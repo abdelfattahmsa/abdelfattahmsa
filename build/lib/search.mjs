@@ -20,7 +20,7 @@ export const NORMALISE_MARKER = /\/\* @normalise[^*]*\*\//;
 // The search index for one language: { l: type labels, i: items }. Each item is
 // t title, s summary, u URL, k type, and the normalised fields matched against
 // (a title, b tags, c summary, d start of the text), in order of weight.
-export function searchIndex({ lang, site, content, T, L }) {
+export function searchIndex({ lang, site, content, services, T, L }) {
   const items = [];
   const add = (type, url, v, tags = []) =>
     items.push({
@@ -52,6 +52,10 @@ export function searchIndex({ lang, site, content, T, L }) {
   addAll('guide', content.guides);
   addAll('download', content.downloads);
   add('page', '/about/', pick(content.pages.about, lang));
+  const sv = services && (services[lang] || services.en);
+  if (sv) {
+    add('page', '/services/', { data: { title: sv.title, summary: sv.lead }, text: sv.services.map((x) => `${x.title}. ${x.for} ${x.items.join('. ')}`).join(' ') }, []);
+  }
   for (const e of content.career) {
     const v = pick(e, lang);
     add('page', '/about/#timeline', { ...v, data: { ...v.data, title: `${v.data.title}, ${v.data.org}` } }, []);
