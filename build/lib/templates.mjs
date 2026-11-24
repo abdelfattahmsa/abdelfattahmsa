@@ -83,7 +83,10 @@ export function createTemplates(ctx) {
     const cvBtn = ctx.cv ? `<a class="btn btn--sm btn--cv" href="${esc(ctx.cv.href)}" download aria-label="${esc(T(lang, 'a11y.cv'))}">${icon('i-download')}<span class="btn__label">${esc(T(lang, 'cv.download'))}</span></a>` : '';
     const langBtn = `<a class="circle circle--text" href="${u(other, switchPath)}" hreflang="${other}" lang="${other}" aria-label="${esc(T(lang, 'a11y.lang'))}">${esc(T(other, 'lang.short'))}</a>`;
     const themeBtn = `<button type="button" class="circle" data-theme-toggle aria-label="${esc(T(lang, 'a11y.theme'))}">${icon('i-sun', 'theme-sun')}${icon('i-moon', 'theme-moon')}</button>`;
-    const logo = lang === 'ar' ? icon('logo-ar', 'brandlink__mark brandlink__mark--ar') : icon('logo', 'brandlink__mark');
+    // the name in the mascot's lettering; CSS shows the offset that suits the theme (white on dark, black on light)
+    const logoId = lang === 'ar' ? 'logo-ar' : 'logo';
+    const logoCls = lang === 'ar' ? 'brandlink__mark brandlink__mark--ar' : 'brandlink__mark';
+    const logo = `${icon(logoId + '-dark', logoCls + ' for-dark')}${icon(logoId + '-light', logoCls + ' for-light')}`;
     return `<header class="topbar">
   <div class="topbar__start">
     <button type="button" class="circle" id="hub-toggle" aria-controls="hub-drawer" aria-expanded="false" aria-label="${esc(T(lang, 'a11y.hub'))}">${icon('i-hub', 'flip')}</button>
@@ -179,6 +182,7 @@ ${drawer(lang, here)}
 ${overlay}
 ${main}
 ${contactWidget(lang)}
+<button type="button" class="totop" data-totop hidden aria-label="${esc(T(lang, 'totop'))}" title="${esc(T(lang, 'totop'))}">${icon('i-up')}</button>
 </body>
 </html>`;
   }

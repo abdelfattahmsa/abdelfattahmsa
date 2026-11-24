@@ -105,10 +105,10 @@ h3{font-size:1.2rem}
 .topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;min-block-size:var(--topbar-h);padding:14px var(--gutter);position:relative;z-index:5}
 .topbar__start,.topbar__end{display:flex;align-items:center;gap:10px}
 .topbar__end{justify-self:end}
-.brandlink{display:inline-flex;align-items:center;gap:10px;padding:4px 10px 4px 4px;border-radius:999px}
+.brandlink{display:inline-flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px}
 .brandlink__face{inline-size:auto;block-size:46px;flex:none}
-.brandlink__mark{inline-size:auto;block-size:34px}
-.brandlink__mark--ar{block-size:38px}
+.brandlink__mark{inline-size:auto;block-size:48px}
+.brandlink__mark--ar{block-size:48px}
 .topnav ul{display:flex;gap:clamp(4px,1.6vw,18px);align-items:center}
 .topnav a{position:relative;display:inline-block;padding:8px 14px;border-radius:999px;font-weight:500;color:var(--muted);transition:color .15s}
 .topnav a:hover,.topnav a[aria-current="page"]{color:var(--text)}
@@ -118,10 +118,12 @@ h3{font-size:1.2rem}
 .burger__close,.burger[aria-expanded="true"] .burger__open{display:none}
 .burger[aria-expanded="true"] .burger__close{display:block}
 .tools-wide{display:contents}
-@media (max-width:820px){
-  .topbar{grid-template-columns:1fr auto}
-  .topbar__start{grid-column:1}
-  .topbar__end{grid-column:2}
+@media (max-width:1024px){
+  .topbar{grid-template-columns:1fr auto 1fr}
+  .topbar__start{display:contents}
+  #hub-toggle{grid-column:1;justify-self:start}
+  .brandlink{grid-column:2;justify-self:center;padding-inline:4px}
+  .topbar__end{grid-column:3}
   .tools-wide{display:none}
   .burger{display:inline-grid}
   .topnav{position:absolute;inset-inline:var(--gutter);inset-block-start:calc(100% - 4px);z-index:30;padding:10px;border:1px solid var(--line-strong);border-radius:28px;background:var(--surface);box-shadow:0 18px 40px -12px rgba(0,0,0,.5);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s var(--ease),transform .2s var(--ease),visibility 0s .2s}
@@ -195,7 +197,7 @@ html:not(.js) .search,html:not(.js) [data-search-open]{display:none}
 .socials--page{justify-content:flex-start;margin-block-start:40px}
 @media (max-height:780px){.home .footer{padding-block:6px 10px}}
 @media (max-height:560px){.home__intro{display:none}}
-@media (max-width:480px){.brandlink__mark{block-size:24px}.brandlink__mark--ar{block-size:30px}.brandlink__face{block-size:38px}.brandlink{gap:6px;padding-inline:2px}.topbar__start,.topbar__end{gap:6px}.socials{gap:8px}.socials .circle{--s:40px}.topbar .circle{--s:40px}.topbar{padding-block:8px}}
+@media (max-width:480px){.brandlink__mark,.brandlink__mark--ar{block-size:38px}.brandlink__face{block-size:36px}.brandlink{gap:6px;padding-inline:2px}.topbar__start,.topbar__end{gap:6px}.socials{gap:8px}.socials .circle{--s:40px}.topbar .circle{--s:40px}.topbar{padding-block:8px}}
 
 /* ---------- inner pages ---------- */
 .page{flex:1;display:flex;flex-direction:column}
@@ -395,7 +397,7 @@ html:not(.js) .suggest{display:none}
 .home__mascot{inline-size:auto;block-size:clamp(84px,14vh,170px);aspect-ratio:520/722}
 .pagehead{position:relative}
 .pagehead__mascot{position:absolute;inset-inline-end:0;inset-block-start:-8px;inline-size:auto;block-size:176px;aspect-ratio:520/722}
-@media (max-width:720px){.pagehead__mascot{position:static;order:-1;justify-self:start;block-size:112px}}
+@media (max-width:1024px){.pagehead__mascot{position:static;order:-1;justify-self:center;block-size:112px}}
 .notfound__mascot{inline-size:auto;block-size:230px;aspect-ratio:520/722}
 [data-theme="light"] .for-dark,[data-theme="dark"] .for-light{display:none}
 
@@ -485,3 +487,23 @@ html.js .views[data-view="map"] [data-view-panel="items"],html:not(.js) [data-vi
 @keyframes contact-in{from{opacity:0;transform:translateY(10px) scale(.96)}}
 @media (max-width:480px){.contact__fab{inline-size:56px;block-size:56px}.contact__face{inline-size:40px}}
 @media print{.contact{display:none}}
+
+/* ---------- mobile and tablet: titles, links and buttons are centred (paragraphs and article text are not) ---------- */
+@media (max-width:1024px){
+  .pagehead h1,.article__head h1,.notfound h1,.container section>h2,.eyebrow{text-align:center}
+  .pagehead .badge,.article__head .badge{margin-inline:auto}
+  .crumbs ol,.tags,.socials,.suggest,.linkrow,.views__bar,.kmap__bar,.kmap__areas{justify-content:center}
+  .article__head .meta{text-align:center}
+  .notfound{justify-items:center;text-align:center}
+  .form .btn,.views [data-more]{justify-self:center}
+  .prevnext .pn{text-align:center}
+  .status{justify-self:center}
+}
+/* ---------- back to top: bottom left, beside the contact mascot ---------- */
+.totop{position:fixed;left:calc(max(10px,env(safe-area-inset-left)) + 76px);bottom:max(24px,calc(env(safe-area-inset-bottom) + 8px));z-index:35;display:grid;place-items:center;inline-size:48px;block-size:48px;border-radius:50%;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,.35);transition:border-color .15s,transform .2s var(--ease),background-color .15s,color .15s}
+.totop .icon{inline-size:22px;block-size:22px}
+.totop:hover,.totop:focus-visible{background:var(--text);color:var(--bg);transform:translateY(-3px)}
+.totop:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.totop:not([hidden]){animation:contact-in .25s var(--ease) both}}
+@media (max-width:480px){.totop{left:calc(max(10px,env(safe-area-inset-left)) + 68px);inline-size:44px;block-size:44px;bottom:max(22px,calc(env(safe-area-inset-bottom) + 6px))}}
+@media print{.totop{display:none}}

@@ -11,6 +11,7 @@ export const STROKE = {
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9S9.4 5.6 12 3z"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/>',
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  up: '<path d="M12 19V5M6 11l6-6 6 6"/>',
   external: '<path d="M7 17L17 7M8.5 7H17v8.5"/>',
   download: '<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
@@ -51,8 +52,11 @@ export function buildSprite({ socials, brand }) {
     sym.push(`<g id="k-${arm}-suffix" fill="currentColor"><path d="${v.suffix}"/></g>`);
   }
   for (const [id, a] of Object.entries(brand.mascot)) sym.push(`<symbol id="mascot-${id}" viewBox="${a.vb}">${a.inner}</symbol>`);
-  for (const [id, w] of [['logo', brand.wordmark], ['logo-ar', brand.wordmarkAr]]) {
-    sym.push(`<symbol id="${id}" viewBox="0 0 ${w.w} ${w.h}"><path fill="currentColor" d="${w.d}"/></symbol>`);
+  // the name in the mascot's lettering (outline and offset): white offset for the dark theme, black for the light one
+  for (const [lang, l] of Object.entries(brand.lettering)) {
+    const id = lang === 'ar' ? 'logo-ar' : 'logo';
+    sym.push(`<symbol id="${id}-dark" viewBox="${l.vb}">${l.dark}</symbol>`);
+    sym.push(`<symbol id="${id}-light" viewBox="${l.vb}">${l.light}</symbol>`);
   }
   return `<svg xmlns="http://www.w3.org/2000/svg">${sym.join('')}</svg>`;
 }
@@ -63,7 +67,7 @@ export function logoCss(brand) {
   const [, , hw, hh] = brand.mascot.head.vb.split(' ');
   return [
     `.brandlink__face{aspect-ratio:${hw}/${hh}}`,
-    `.brandlink__mark{aspect-ratio:${brand.wordmark.w}/${brand.wordmark.h}}`,
-    `.brandlink__mark--ar{aspect-ratio:${brand.wordmarkAr.w}/${brand.wordmarkAr.h}}`,
+    `.brandlink__mark{aspect-ratio:${brand.lettering.en.vb.split(' ').slice(2).join('/')}}`,
+    `.brandlink__mark--ar{aspect-ratio:${brand.lettering.ar.vb.split(' ').slice(2).join('/')}}`,
   ].join('\n') + '\n';
 }

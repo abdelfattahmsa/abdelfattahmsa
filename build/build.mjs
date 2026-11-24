@@ -43,6 +43,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   const brand = {
     wordmark: readJSON(path.join(dataDir, 'wordmark.json')),
     wordmarkAr: readJSON(path.join(dataDir, 'wordmark-ar.json')),
+    lettering: readJSON(path.join(dataDir, 'wordmark-lettering.json')),
     mascot: readJSON(path.join(dataDir, 'mascot.json')),
     kyberia: readJSON(path.join(dataDir, 'kyberia.json')),
   };

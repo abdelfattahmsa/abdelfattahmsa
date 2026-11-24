@@ -49,7 +49,8 @@ UI language for the website, which the brand should also use: **circular frames 
 | Logo | Files | Use |
 |---|---|---|
 | Mascot mark | `mascot/am-mascot*.svg`, `am-avatar*.svg`, `am-icon*.svg` | Avatars, app and site icons, stickers, anywhere a small square or circle is needed |
-| Side lockup | `am-side-black/white(.ar).svg` | Website header, email signature, letterhead header, slide footers: one wide, short line |
+| Side lockup | `am-side-black/white(.ar).svg` | Email signature, letterhead header, slide footers: one wide, short line |
+| Side lockup, lettering | `am-side-lettering-black/white(.ar).svg` | **The website header**: the name in the mascot's style (white letters, thick black outline, offset) beside the face. Black offset for light backgrounds, white offset for dark ones |
 | Name under the face | `am-under-yellow/white/black(.ar).svg` | Vertical formats: posters, covers, profile cards, banners, packaging |
 | Mascot lettering | `am-lettering-yellow/white/black(.ar).svg` | Loud and friendly: video thumbnails, stickers, merch, stories. Name in the mascot's outline style: white fill, thick black outline, **black offset on light and yellow backgrounds, white offset on dark** |
 | Sunglasses | `am-under-sun-yellow.svg`, `am-lettering-sun-yellow.svg`, `mascot/am-*-sun*.svg` | Relaxed or celebratory moments: social posts, launches, thumbnails. Never on formal documents |
