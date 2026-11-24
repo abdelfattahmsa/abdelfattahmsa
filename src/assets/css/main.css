@@ -516,14 +516,13 @@ html.js .views[data-view="map"] [data-view-panel="items"],html:not(.js) [data-vi
   .prevnext .pn{text-align:center}
   .status{justify-self:center}
 }
-/* ---------- back to top: bottom left, above the contact mascot ---------- */
-.totop{position:fixed;left:calc(max(10px,env(safe-area-inset-left)) + 8px);bottom:calc(max(16px,env(safe-area-inset-bottom)) + 76px);z-index:34;display:grid;place-items:center;inline-size:48px;block-size:48px;border-radius:50%;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,.35);transition:border-color .15s,transform .2s var(--ease),background-color .15s,color .15s}
+/* ---------- back to top: bottom right corner ---------- */
+.totop{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:34;display:grid;place-items:center;inline-size:48px;block-size:48px;border-radius:50%;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,.35);transition:border-color .15s,transform .2s var(--ease),background-color .15s,color .15s}
 .totop .icon{inline-size:22px;block-size:22px}
 .totop:hover,.totop:focus-visible{background:var(--text);color:var(--bg);transform:translateY(-3px)}
 .totop:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media (prefers-reduced-motion:no-preference){.totop:not([hidden]){animation:contact-up .25s var(--ease) both}}
-@media (max-width:1024px){.contact.is-open~.totop{visibility:hidden}}
-@media (max-width:480px){.totop{left:calc(max(10px,env(safe-area-inset-left)) + 6px);inline-size:44px;block-size:44px;bottom:calc(max(16px,env(safe-area-inset-bottom)) + 68px)}}
+@media (max-width:480px){.totop{right:max(12px,env(safe-area-inset-right));inline-size:44px;block-size:44px}}
 @media print{.totop{display:none}}
 
 /* ---------- services page ---------- */
