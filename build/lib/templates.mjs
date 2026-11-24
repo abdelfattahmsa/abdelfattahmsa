@@ -2,10 +2,11 @@ import { esc } from './util.mjs';
 import { pick, isDraft, isoDate, collections } from './content.mjs';
 import { normalise } from './search.mjs';
 import { DEFAULT_LANG, langInfo, otherLang, translator, u } from './i18n.mjs';
+import { TAG, connectionsOf } from './graph.mjs';
 
 // HTML for every page. Each pages.<name>(lang) returns [{ path, html }].
 export function createTemplates(ctx) {
-  const { site, assets, content } = ctx;
+  const { site, assets, content, graph } = ctx;
   const { T, L } = translator(ctx.i18n);
   const abs = (lang, p) => site.url + u(lang, p);
   const C = collections(site);
@@ -104,6 +105,24 @@ export function createTemplates(ctx) {
 </header>`;
   }
 
+
+  // the sticky mascot on the left: message (WhatsApp), call (Calendly) and email. The links are put together
+  // by main.js from this one encoded value, the same way the contact form hides the inbox.
+  function contactWidget(lang) {
+    const c = site.contact;
+    const payload = Buffer.from(JSON.stringify({ w: c.whatsapp || '', m: (c.inbox || []).join('@').toLowerCase(), c: c.calendly || '' })).toString('base64');
+    const item = (kind, key, id, extra = '') =>
+      `<li><a class="contact__item" data-contact-kind="${kind}" href="#"${extra}>${mascotIcon('mk-' + id, 'contact__icon')}<span>${esc(T(lang, key))}</span></a></li>`;
+    return `<div class="contact" data-contact-widget data-c="${payload}">
+<ul class="contact__menu" id="contact-menu" aria-label="${esc(T(lang, 'widget.label'))}" hidden>
+${item('chat', 'widget.message', 'chat', ' target="_blank" rel="noopener noreferrer"')}
+${c.calendly ? item('call', 'widget.call', 'call', ' target="_blank" rel="noopener noreferrer"') : ''}
+${item('mail', 'widget.email', 'mail')}
+</ul>
+<button type="button" class="contact__fab" aria-expanded="false" aria-controls="contact-menu" aria-label="${esc(T(lang, 'widget.open'))}" title="${esc(T(lang, 'widget.open'))}">${mascotIcon('head', 'contact__face')}</button>
+</div>`;
+  }
+
   function footer(lang) {
     return `<footer class="footer">
   <p>&copy; <span data-year>${new Date().getFullYear()}</span> ${esc(L(site.short, lang))} · ${esc(T(lang, 'footer.rights'))}</p>
@@ -111,7 +130,7 @@ export function createTemplates(ctx) {
   }
 
   // ---------------------------------------------------------------- layout
-  function layout({ lang, path: here, title, description, main, bodyClass = '', isHome = false, ogType = 'website', noindex = false, jsonld = '', switchPath }) {
+  function layout({ lang, path: here, title, description, main, bodyClass = '', isHome = false, ogType = 'website', noindex = false, jsonld = '', switchPath, mapPage = false }) {
     const fullTitle = isHome ? `${L(site.short, lang)} — ${L(site.tagline, lang)}` : `${title} · ${L(site.short, lang)}`;
     const desc = description || L(site.intro, lang);
     const other = otherLang(lang);
@@ -150,6 +169,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="stylesheet" href="${assets.css}">
 <script>${ctx.themeInit}</script>
 <script src="${assets.js}" defer></script>
+${mapPage ? `<script src="${assets.mapJs}" defer></script>` : ''}
 ${jsonld ? `<script type="application/ld+json">${jsonld}</script>` : ''}
 </head>
 <body class="${bodyClass}" data-lang="${lang}" data-search-index="${u(lang, '/search-index.json')}" data-i18n-search-hint="${esc(T(lang, 'search.hint'))}">
@@ -158,6 +178,7 @@ ${header(lang, here, isHome, switchPath)}
 ${drawer(lang, here)}
 ${overlay}
 ${main}
+${contactWidget(lang)}
 </body>
 </html>`;
   }
@@ -178,7 +199,66 @@ ${main}
       .map((c) => (c.href ? `<li><a href="${u(lang, c.href)}">${esc(c.label)}</a></li>` : `<li aria-current="page">${esc(c.label)}</li>`))
       .join('')}</ol></nav>`;
 
-  function articlePage({ lang, entry, v, crumbList, prev, next, backLabel }) {
+
+  // ---------------------------------------------------------------- knowledge map pieces
+  const CAP = 30; // pages listed before "Show more" (the rest come from the graph file)
+  const chipOrText = (lang) => (c) => (c.url ? `<li><a href="${u(lang, c.url)}">${esc(c.label)}</a></li>` : `<li>${esc(c.label)}</li>`);
+  // "Connected": the topics a page has and the pages it is bonded to
+  function connected(lang, nodeId) {
+    if (!graph || !nodeId) return '';
+    const all = connectionsOf(graph, nodeId, lang).filter((c) => c.type !== 0);
+    if (!all.length) return '';
+    const topics = all.filter((c) => c.type === TAG);
+    const pages = all.filter((c) => c.type !== TAG);
+    const group = (title, list) => (list.length ? `<h2 class="eyebrow">${esc(title)}</h2><ul class="tags tags--links">${list.slice(0, 60).map(chipOrText(lang)).join('')}${list.length > 60 ? `<li>+${list.length - 60}</li>` : ''}</ul>` : '');
+    return `<section class="connected" aria-label="${esc(T(lang, 'connected.title'))}">${group(T(lang, 'connected.topics'), topics)}${group(T(lang, 'connected.pages'), pages)}</section>`;
+  }
+
+  const viewSwitcher = (lang) =>
+    `<div class="viewswitch" role="radiogroup" aria-label="${esc(T(lang, 'view.label'))}">${[['map', 'network'], ['grid', 'grid'], ['list', 'list']]
+      .map(([v, ic]) => `<button type="button" role="radio" aria-checked="${v === 'map'}" data-view-btn="${v}" class="viewswitch__btn">${icon('i-' + ic)}<span>${esc(T(lang, 'view.' + v))}</span></button>`)
+      .join('')}</div>`;
+
+  const MAP_KEYS = ['map.search', 'map.open', 'map.type.area', 'map.type.tag', 'map.type.post', 'map.connections', 'map.none', 'map.loading', 'map.nowebgl', 'map.error', 'map.close', 'map.empty', 'map.noresult'];
+  function mapBox(lang, { area = '', chips = false } = {}) {
+    const tt = Object.fromEntries(MAP_KEYS.map((k) => [k, T(lang, k)]));
+    const wikis = Object.values(content.wikis);
+    const chipRow = chips
+      ? `<div class="kmap__areas" role="group" aria-label="${esc(T(lang, 'map.type.area'))}"><button type="button" class="chip" data-area-chip="-1" aria-pressed="true">${esc(T(lang, 'map.all'))}</button>${wikis
+          .map((w, i) => `<button type="button" class="chip" data-area-chip="${i}" aria-pressed="false">${esc(L(w.title, lang))}</button>`)
+          .join('')}</div>`
+      : '';
+    return `<div class="kmap" data-kmap data-src="${assets.graph}" data-area="${esc(area)}" data-lang="${lang}" data-prefix="${u(lang, '')}" data-t="${esc(JSON.stringify(tt))}">
+<div class="kmap__bar">
+<div class="kmap__find"><span class="search__icon">${icon('i-search')}</span><input class="kmap__search" type="search" autocomplete="off" spellcheck="false" aria-label="${esc(T(lang, 'map.search'))}" placeholder="${esc(T(lang, 'map.search'))}"><ul class="kmap__results" hidden></ul></div>
+${chipRow}
+<button type="button" class="btn btn--ghost btn--sm kmap__reset">${esc(T(lang, 'map.reset'))}</button>
+</div>
+<div class="kmap__stage"><canvas class="kmap__gl" aria-hidden="true"></canvas><canvas class="kmap__lbl" tabindex="0" role="application" aria-label="${esc(T(lang, 'map.label'))}. ${esc(T(lang, 'map.help'))}"></canvas><p class="kmap__status" role="status">${esc(T(lang, 'map.loading'))}</p><aside class="kmap__panel" hidden></aside></div>
+<p class="kmap__help">${esc(T(lang, 'map.help'))}</p>
+</div>`;
+  }
+
+  // the pages of one wiki as list or grid items (the same markup, shown either way by CSS)
+  function itemList(lang, w, areaIdx) {
+    const posts = w.pages.filter((p) => p.data.node !== 'tag');
+    if (!posts.length) return emptyNote(lang);
+    const li = posts
+      .slice(0, CAP)
+      .map((e) => {
+        const v = pick(e, lang);
+        const badge = draftBadge(lang, v.data);
+        return `<li><a class="item" href="${u(lang, e.url)}"><span class="item__main"><strong class="item__title">${esc(v.data.title)}${badge ? ' ' + badge : ''}</strong>${v.data.summary ? `<span class="item__sum">${esc(v.data.summary)}</span>` : ''}</span>${icon('i-arrow', 'item__go flip')}</a></li>`;
+      })
+      .join('');
+    const more =
+      posts.length > CAP
+        ? `<button type="button" class="btn btn--ghost btn--sm" data-more="${areaIdx}" data-shown="${CAP}" data-total="${posts.length}" data-src="${assets.graph}" data-prefix="${u(lang, '')}" data-lang="${lang}">${esc(T(lang, 'list.more'))}</button>`
+        : '';
+    return `<ul class="items">${li}</ul>${more}`;
+  }
+
+  function articlePage({ lang, entry, v, crumbList, prev, next, backLabel, nodeId }) {
     const d = v.data;
     const toc =
       v.toc.length > 1
@@ -205,6 +285,7 @@ ${tagList(d.tags)}
 ${untranslatedNotice(lang, v)}
 <div class="prose">${proseHtml(v)}</div>
 ${links}
+${connected(lang, nodeId)}
 ${prev || next ? `<nav class="prevnext" aria-label="${esc(backLabel)}">${pn(prev, 'pn--prev', T(lang, 'hub.prev'))}${pn(next, 'pn--next', T(lang, 'hub.next'))}</nav>` : ''}
 </article>
 ${toc}
@@ -214,14 +295,14 @@ ${toc}
 
   // One article page per item. Lists in reading order ("position") link forwards;
   // dated lists are newest first, so their "previous" is the next item down.
-  function articles(lang, list, { parents, backLabel, byPosition = false }) {
+  function articles(lang, list, { parents, backLabel, byPosition = false, wikiId = '' }) {
     const step = byPosition ? 1 : -1;
     const link = (q) => (q ? { href: q.url, title: pick(q, lang).data.title } : null);
     return list.map((e, i) => {
       const v = pick(e, lang);
       return {
         path: e.url,
-        html: articlePage({ lang, entry: e, v, crumbList: [...parents, { label: v.data.title }], prev: link(list[i - step]), next: link(list[i + step]), backLabel }),
+        html: articlePage({ lang, entry: e, v, crumbList: [...parents, { label: v.data.title }], prev: link(list[i - step]), next: link(list[i + step]), backLabel, nodeId: wikiId ? `${wikiId}/${e.slug}` : '' }),
       };
     });
   }
@@ -331,25 +412,41 @@ ${socials(lang, 'socials--page')}`;
       })
       .join('');
     const latest = content.journey.slice(0, 3);
+    const itemsByArea = wikis
+      .map((w, i) => `<section class="views__area" aria-labelledby="va-${w.id}"><h2 id="va-${w.id}" class="eyebrow"><a href="${u(lang, w.base)}">${esc(L(w.title, lang))}</a> · ${esc(countLabel(lang, w.pages.length))}</h2>${itemList(lang, w, i)}</section>`)
+      .join('');
     const inner = `${pageHead(lang, T(lang, 'hub.title'), T(lang, 'hub.lead'), poseIcon('hub'))}
+<div class="views" data-views data-default="map" data-view="map">
+<div class="views__bar">${viewSwitcher(lang)}</div>
+<div data-view-panel="map">${mapBox(lang, { chips: true })}</div>
+<div data-view-panel="items">${itemsByArea}</div>
+</div>
 <section aria-labelledby="h-wikis"><h2 id="h-wikis" class="eyebrow">${esc(T(lang, 'hub.wikis'))}</h2><div class="cards">${wikiCards}</div></section>
 <section aria-labelledby="h-more"><h2 id="h-more" class="eyebrow">${esc(T(lang, 'hub.research'))} · ${esc(T(lang, 'hub.journey'))}</h2><div class="cards cards--2">
 ${cardLink(lang, { href: C.research.base, iconId: 'i-file', title: T(lang, 'hub.research'), text: T(lang, 'hub.research.lead'), meta: countLabel(lang, content.research.length) })}
 ${cardLink(lang, { href: C.journey.base, iconId: 'i-compass', title: T(lang, 'hub.journey'), text: T(lang, 'hub.journey.lead'), meta: countLabel(lang, content.journey.length) })}
 </div></section>
 ${latest.length ? `<section aria-labelledby="h-latest"><h2 id="h-latest" class="eyebrow">${esc(T(lang, 'hub.journey'))}</h2>${rowList(lang, latest)}</section>` : ''}`;
-    const out = [{ path: '/hub/', html: layout({ lang, path: '/hub/', title: T(lang, 'hub.title'), description: T(lang, 'hub.lead'), main: main(lang, inner) }) }];
+    const out = [{ path: '/hub/', html: layout({ lang, path: '/hub/', title: T(lang, 'hub.title'), description: T(lang, 'hub.lead'), main: main(lang, inner, 'page--map'), mapPage: true }) }];
 
-    for (const w of wikis) {
+    for (const [wi, w] of wikis.entries()) {
       const title = L(w.title, lang);
       const idx = w.index ? pick(w.index, lang) : null;
       const intro = idx ? `<div class="prose prose--intro">${proseHtml(idx)}</div>` : '';
-      const list = w.pages.length ? rowList(lang, w.pages, { showDate: false }) : emptyNote(lang);
+      const topics = w.pages.filter((p) => p.data.node === 'tag');
+      const topicRow = topics.length
+        ? `<ul class="tags tags--links" aria-label="${esc(T(lang, 'list.topics'))}">${topics.map((p) => `<li><a href="${u(lang, p.url)}">${esc(pick(p, lang).data.title)}</a></li>`).join('')}</ul>`
+        : '';
       const badge = w.index ? draftBadge(lang, w.index.data) : '';
       const inner2 = `${crumbs(lang, [hub, { label: title }])}
-<header class="pagehead"><h1>${esc(title)} ${badge}</h1><p class="lead">${esc(L(w.blurb, lang))}</p></header>${intro}${list}`;
-      out.push({ path: w.base, html: layout({ lang, path: w.base, title, description: L(w.blurb, lang), main: main(lang, inner2, 'page--narrow') }) });
-      out.push(...articles(lang, w.pages, { parents: [hub, { label: title, href: w.base }], backLabel: title, byPosition: true }));
+<header class="pagehead"><h1>${esc(title)} ${badge}</h1><p class="lead">${esc(L(w.blurb, lang))}</p></header>${intro}
+<div class="views" data-views data-default="map" data-view="map">
+<div class="views__bar">${viewSwitcher(lang)}</div>
+<div data-view-panel="map">${mapBox(lang, { area: w.id })}</div>
+<div data-view-panel="items">${topicRow}${itemList(lang, w, wi)}</div>
+</div>`;
+      out.push({ path: w.base, html: layout({ lang, path: w.base, title, description: L(w.blurb, lang), main: main(lang, inner2, 'page--map'), mapPage: true }) });
+      out.push(...articles(lang, w.pages, { parents: [hub, { label: title, href: w.base }], backLabel: title, byPosition: true, wikiId: w.id }));
     }
 
     out.push(...datedSection(lang, { base: C.research.base, key: 'hub.research', list: content.research, parent: hub, pose: 'research' }));

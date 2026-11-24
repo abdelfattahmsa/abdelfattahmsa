@@ -224,6 +224,43 @@
         "type": "textarea"
       },
       {
+        "name": "node",
+        "type": "select",
+        "shared": true,
+        "hideOnIndex": true,
+        "required": false,
+        "default": "post",
+        "options": [
+          {
+            "value": "post",
+            "label": "Page: a wiki page (small node on the map)"
+          },
+          {
+            "value": "tag",
+            "label": "Topic: a medium node that pages are tagged with"
+          }
+        ],
+        "hint": "What this is on the knowledge map. Knowledge areas are the wikis themselves (their landing page)."
+      },
+      {
+        "name": "tags",
+        "type": "tags",
+        "suggest": "topics",
+        "hint": "Topics this page belongs to. Each one becomes a medium node on the map and bonds to this page. Write them in the same order in every language so they stay one node."
+      },
+      {
+        "name": "aliases",
+        "type": "tags",
+        "shared": true,
+        "hint": "Topics only: other names for this topic, so pages tagged with them connect here."
+      },
+      {
+        "name": "connections",
+        "type": "nodes",
+        "shared": true,
+        "hint": "Bonds to other nodes, chosen by hand. This is the only way pages connect to each other (besides shared topics). Type to search; works from either end."
+      },
+      {
         "name": "order",
         "type": "number",
         "shared": true,

@@ -38,7 +38,7 @@ const schema = (() => {
     for (const [cid, def] of entries) {
       const fields = (typeof def.fields === 'string' ? raw.fieldSets[def.fields] : def.fields).map((f) => {
         if (f.source) return { ...f, options: site[f.source].map((x) => ({ value: x.id, label: x.label[DEFAULT_LANG] })) };
-        if (f.options) return { ...f, options: f.options.map((v) => ({ value: v, label: v })) };
+        if (f.options) return { ...f, options: f.options.map((v) => (typeof v === 'string' ? { value: v, label: v } : v)) };
         return f;
       });
       out[cid] = { label: def.label, fields, indexSlug: COLLECTIONS[cid].index ? INDEX_SLUG : null };
@@ -76,12 +76,30 @@ function listItems(c) {
       const { data } = matter(fs.readFileSync(path.join(dir, f), 'utf8'));
       e.title = data.title || (name.slug === indexSlug ? '(Wiki landing page)' : name.slug);
       e.draft = isDraft(data);
+      e.node = data.node === 'tag' ? 'tag' : 'post';
+      e.tags = Array.isArray(data.tags) ? data.tags : [];
       const date = dateOf(data[dateField]);
       e.date = date ? isoDate(date) : '';
     }
     map.set(name.slug, e);
   }
   return [...map.values()].sort((a, b) => (b.date || '').localeCompare(a.date || '') || a.slug.localeCompare(b.slug));
+}
+
+// Every node a page can be bonded to: the wikis (areas), tag pages, pages, and the topics written on pages.
+function listNodes() {
+  const nodes = site.wikis.map((w) => ({ id: `area:${w.id}`, label: w.title[DEFAULT_LANG], type: 'area' }));
+  const topics = new Map();
+  for (const w of site.wikis) {
+    for (const it of listItems(`wiki-${w.id}`)) {
+      if (it.slug === INDEX_SLUG) continue;
+      nodes.push({ id: `${w.id}/${it.slug}`, label: it.title || it.slug, type: it.node, area: w.id });
+      for (const t of it.tags || []) topics.set(t, (topics.get(t) || 0) + 1);
+    }
+  }
+  const named = new Set(nodes.filter((n) => n.type === 'tag').map((n) => n.label.toLowerCase()));
+  for (const [t, count] of topics) if (!named.has(t.toLowerCase())) nodes.push({ id: `tag:${slugify(t)}`, label: t, type: 'topic', count });
+  return { nodes, topics: [...topics.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t).slice(0, 40) };
 }
 
 function readItem(c, slug, lang) {
@@ -100,7 +118,9 @@ function cleanData(c, data, lang) {
     let v = data[f.name];
     if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length) || v === false) continue;
     if (f.type === 'number') v = Number(v);
-    if (f.type === 'tags') v = (Array.isArray(v) ? v : String(v).split(',')).map((x) => String(x).trim()).filter(Boolean);
+    if (f.type === 'tags' || f.type === 'nodes') v = (Array.isArray(v) ? v : String(v).split(',')).map((x) => String(x).trim().slice(0, 120)).filter(Boolean);
+    if (f.type === 'nodes') v = [...new Set(v)];
+    if (f.type === 'select' && f.options && !f.options.some((o) => o.value === v)) throw httpError(400, `${f.name} must be one of: ${f.options.map((o) => o.value).join(', ')}`);
     if (f.type === 'links') v = v.filter((l) => l && l.label && isUrl(l.url)).map((l) => ({ label: String(l.label), url: String(l.url) }));
     if (f.type === 'file' && !String(v).startsWith(DOWNLOADS_URL)) throw httpError(400, `${f.name} must point into ${DOWNLOADS_URL}`);
     if (f.type === 'url' && !isUrl(v)) throw httpError(400, `${f.name} must start with https://`);
@@ -176,6 +196,7 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { langs, defaultLang: DEFAULT_LANG, collections: schema });
     }
     if (req.method === 'GET' && url.pathname === '/api/items') return json(res, 200, listItems(q.get('c')));
+    if (req.method === 'GET' && url.pathname === '/api/nodes') return json(res, 200, listNodes());
     if (req.method === 'GET' && url.pathname === '/api/item') {
       const it = readItem(q.get('c'), q.get('slug'), q.get('lang') || DEFAULT_LANG);
       return it ? json(res, 200, it) : json(res, 404, { error: 'Not found' });
