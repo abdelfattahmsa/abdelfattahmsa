@@ -1,17 +1,18 @@
 // Mascot v2 concept: more like the owner (short curly hair, full neat beard joined to the mustache, big ears, black irises with
-// highlights), drawn in the bold flat style of the references, with a retro reaction set (eyes and brows only: no mouth).
+// highlights), drawn in the bold flat style of the references, with a retro reaction set (a few eye reactions; no mouth).
 // Concept only: nothing here is used by the site or the brand library yet.
 export const YELLOW = '#ffcc00', INK = '#000000', PAPER = '#ffffff', GREY = '#a6a6a6';
 const L = `stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
 
 // ---- shapes shared by the artwork and the white sticker edge
-// slicked-back hair, shown by its shape alone: a tight combed silhouette with a small lift at the front (it sits behind the
-// face; the face edge is the hairline, receding at the temples with a widow's peak)
-const HAIR_SHAPE = '<path d="M58 134C49 98 62 66 88 50C102 42 112 35 132 37C160 40 178 60 182 92C185 108 184 122 182 134Z"/>';
+// hair like the orange reference: a swept, tufted mass with pointed tufts on top and stepped tufts on the sides. It sits behind the
+// face; the face edge is the hairline (a lobe hangs on the left, a wave across the middle, a straight edge on the right)
+const HAIR_SHAPE = '<path d="M58 138L58 122Q47 116 45 107Q55 108 61 101Q49 93 49 80Q59 85 67 81Q65 62 82 52Q96 44 113 46Q121 40 125 33Q135 30 133 22Q146 33 152 42Q170 44 182 58Q193 66 191 80Q197 91 188 101L186 138Z"/>';
 // round, wide face; the top edge is the hairline
-const FACE = 'M60 128V114C62 98 70 86 82 76C92 81 104 86 120 87C136 86 148 81 158 76C170 86 178 98 180 114V136C180 172 154 194 120 194C86 194 60 172 60 136Z';
-// short full beard on the lower face: thin sideburns, mustache and chin, one shape
-const BEARD = 'M58 132C58 176 88 204 120 204C152 204 182 176 182 132C180 142 170 148 158 150C148 146 132 144 120 150C108 144 92 146 82 150C70 148 60 142 58 132Z';
+const FACE = 'M62 130V110C62 101 72 96 82 100C92 104 98 92 112 90C126 88 136 94 150 90C160 87 170 85 178 87V136C178 172 154 194 120 194C86 194 62 172 62 136Z';
+// beard on the cheeks and jaw joined to the mustache; the mouth area and chin are left as clean skin (open at the bottom, so it
+// reads as skin and not as a mouth)
+const BEARD = 'M58 132C58 160 70 182 92 196L98 190C98 176 96 164 100 158C110 154 130 154 140 158C144 164 142 176 142 190L148 196C170 182 182 160 182 132C180 142 170 148 158 150C148 146 132 144 120 150C108 144 92 146 82 150C70 148 60 142 58 132Z';
 const EAR = (x) => `<ellipse cx="${x}" cy="130" rx="12" ry="16"/>`;
 const SUIT = 'M8 252C8 222 40 208 90 204L150 204C200 208 232 222 232 252Z';
 
@@ -35,10 +36,11 @@ export const brows = {
   angry: () => brow('M82 98L112 109') + brow('M158 98L128 109'),
   worried: () => brow('M82 109L112 98') + brow('M158 109L128 98'),
 };
+const sunglasses = () => `<g ${L} stroke-width="6"><path d="M74 100H166" fill="none"/><path d="M76 104H114Q119 104 119 110V120Q119 132 106 132H90Q76 132 76 120Z" fill="${INK}"/><path d="M164 104H126Q121 104 121 110V120Q121 132 134 132H150Q164 132 164 120Z" fill="${INK}"/><path d="M119 108Q120 105 121 108" fill="none"/><path d="M74 102L58 108M166 102L182 108" fill="none"/></g><g fill="${PAPER}" stroke="none"><path d="M82 110L92 110L85 124Z"/><path d="M130 110L140 110L133 124Z"/></g>`;
 const glasses = () => `<g fill="none" ${L} stroke-width="7"><rect x="78" y="100" width="36" height="30" rx="12"/><rect x="126" y="100" width="36" height="30" rx="12"/><path d="M114 112H126M78 110L62 106M162 110L178 106"/></g>`;
 
 // ---- the head and the bust
-export function head({ eye = 'wide', brow: b = 'normal', glass = false, edge = true } = {}) {
+export function head({ eye = 'wide', brow: b = 'normal', glass = false, sun = false, edge = true } = {}) {
   const parts = `<g>${HAIR_SHAPE}</g>`;
   const ears = [50, 190];
   const sticker = edge
@@ -49,10 +51,10 @@ export function head({ eye = 'wide', brow: b = 'normal', glass = false, edge = t
     `<g ${L}>${ears.map((x) => `<g><ellipse cx="${x}" cy="130" rx="12" ry="16" fill="${PAPER}"/><path d="M${x - 2} 122q${x < 120 ? -5 : 5} 10 1 20" fill="none" stroke-width="3"/></g>`).join('')}` +
     `<g fill="${INK}">${HAIR_SHAPE}</g>` +
     `<path d="${FACE}" fill="${PAPER}"/>` +
-    `<path d="${BEARD}" fill="${INK}" stroke-width="3"/></g>` +
-    brows[b]() + eyes[eye]() +
+    `<path d="${BEARD}" fill="${INK}" fill-rule="evenodd" stroke-width="3"/></g>` +
+    brows[b]() + (sun ? '' : eyes[eye]()) +
     `<path d="M112 132Q120 141 128 132" fill="none" ${L}/>` +
-    (glass ? glasses() : '')
+    (glass ? glasses() : '') + (sun ? sunglasses() : '')
   );
 }
 export function bust(opts = {}) {
@@ -66,14 +68,8 @@ export function bust(opts = {}) {
 export const presets = [
   ['Calm', { eye: 'wide', brow: 'normal' }],
   ['Happy', { eye: 'happy', brow: 'raised' }],
-  ['Content', { eye: 'content', brow: 'normal' }],
   ['Wink', { eye: 'wink', brow: 'normal' }],
   ['Surprised', { eye: 'surprised', brow: 'raised' }],
-  ['Side-eye', { eye: 'side', brow: 'normal' }],
-  ['Sleepy', { eye: 'sleepy', brow: 'normal' }],
-  ['Worried', { eye: 'wide', brow: 'worried' }],
   ['Angry', { eye: 'wide', brow: 'angry' }],
-  ['Cool', { eye: 'wide', brow: 'normal', glass: true }],
-  ['Retro', { eye: 'pie', brow: 'raised' }],
-  ['Hearts', { eye: 'hearts', brow: 'raised' }],
 ];
+export const shades = ['Sunglasses', { sun: true, brow: 'normal' }];
