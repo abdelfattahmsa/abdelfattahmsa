@@ -72,10 +72,42 @@ export function lockupLettering({ bg = YELLOW, ar = false, sun = false } = {}) {
   return svgOpen(W + pad * 2, pad + HH + gap + h + pad + off, ar, bg) + face(pad, pad, W, HH, bg, sun) + svg + '</svg>\n';
 }
 
+
+// ---- the name alone in the mascot's lettering style (the website header uses it): white letters, thick black
+// outline, hard offset copy (white on dark backgrounds, black on light ones). Returns { vb, inner }.
+export function nameLettering({ ar = false, dark = false } = {}) {
+  const width = ar ? 300 : 416, pad = 16, off = 8;
+  const offsetColor = dark ? PAPER : INK;
+  const paint = (b, s) => {
+    const sw = (ar ? 4 : 3.6) / s;
+    const o = (off / s).toFixed(2);
+    const shadow = `<g transform="translate(${o} ${o})" fill="${offsetColor}" stroke="${offsetColor}" stroke-width="${sw * 2}" stroke-linejoin="round">${b}</g>`;
+    const main = `<g fill="${PAPER}" stroke="${INK}" stroke-width="${sw * 2}" stroke-linejoin="round" paint-order="stroke">${b}</g>`;
+    return shadow + main;
+  };
+  const { svg, h } = centred({ ar, weight: 'w800', width, x: pad + width / 2, y: pad, paint, leadScale: 1.22 });
+  return { vb: `0 0 ${(width + pad * 2 + off).toFixed(1)} ${(h + pad * 2 + off).toFixed(1)}`, inner: svg };
+}
+
+// ---- side lockup in the lettering style (face left, name right; Arabic mirrored). ink: INK = for light backgrounds
+// (black offset), PAPER = for dark ones (white offset)
+export function lockupSideLettering(ink, ar = false) {
+  const H = 200, dark = ink === PAPER;
+  const fw = HW * (H / HH), gap = H * 0.08;
+  const n = nameLettering({ ar, dark });
+  const [, , nw, nh] = n.vb.split(' ').map(Number);
+  const k = (H * 0.84) / nh, w = nw * k, y = (H - nh * k) / 2;
+  const name = (x) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${k.toFixed(4)})">${n.inner}</g>`;
+  const bg = dark ? INK : PAPER;
+  return ar
+    ? svgOpen(w + gap + fw, H, true, null) + name(0) + face(w + gap, 0, fw, H, bg, false) + '</svg>\n'
+    : svgOpen(fw + gap + w, H, false, null) + face(0, 0, fw, H, bg, false) + name(fw + gap) + '</svg>\n';
+}
+
 // ---- what each logo is for (read by the brand book, the brief and the contact sheet)
 export const LOGOS = [
   { id: 'mark', title: 'Mascot mark', use: 'Avatars, app and site icons, stickers, anywhere a small square or circle is needed.' },
-  { id: 'side', title: 'Side lockup', use: 'The website header, email signature, letterhead header, slide footers: one wide, short line.' },
+  { id: 'side', title: 'Side lockup', use: 'Email signature, letterhead header, slide footers: one wide, short line. The lettering version (am-side-lettering-*) is the website header: the name in the mascot style with an offset.' },
   { id: 'under', title: 'Name under the face', use: 'Vertical formats: posters, covers, profile cards, banners, packaging, anything taller than wide.' },
   { id: 'lettering', title: 'Mascot lettering', use: 'Loud and friendly: video thumbnails, stickers, merch, stories, event badges. Black offset on light, white on dark.' },
   { id: 'sun', title: 'Sunglasses version', use: 'Relaxed or celebratory moments: social posts, launches, weekends, thumbnails. Never on formal documents.' },

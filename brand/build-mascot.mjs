@@ -10,7 +10,7 @@ import { art, maskable, INK, PAPER, YELLOW } from './mascot-art.mjs';
 import { png as pixelPng, HEAD16, HEAD32 } from './mascot-pixel.mjs';
 import { POSES, VB as POSE_VB, poseInner, poseInnerLight } from './poses.mjs';
 import { ICONS } from './mascot-icons.mjs';
-import { lockupSide, lockupUnder, lockupLettering, LOGOS } from './lockup.mjs';
+import { lockupSide, lockupSideLettering, lockupUnder, lockupLettering, nameLettering, LOGOS } from './lockup.mjs';
 import { NAME, outDir, root, siteIcons, svgDoc, toPng, writeData, TRANSPARENT } from './lib.mjs';
 
 const mascot = outDir('mascot');
@@ -46,6 +46,10 @@ const LOGO_FILES = {};
 for (const ink of ['black', 'white']) {
   LOGO_FILES[`am-side-${ink}`] = lockupSide(ink === 'black' ? INK : PAPER);
   LOGO_FILES[`am-side-ar-${ink}`] = lockupSide(ink === 'black' ? INK : PAPER, true);
+}
+for (const ink of ['black', 'white']) {
+  LOGO_FILES[`am-side-lettering-${ink}`] = lockupSideLettering(ink === 'black' ? INK : PAPER);
+  LOGO_FILES[`am-side-lettering-ar-${ink}`] = lockupSideLettering(ink === 'black' ? INK : PAPER, true);
 }
 for (const [bgName, bg] of Object.entries(BG)) {
   for (const ar of [false, true]) {
@@ -126,5 +130,10 @@ for (const [id, a] of Object.entries(ICONS)) {
   siteIcons2[`mk-${id}`] = { vb: a.vb, inner: a.inner };
   siteIcons2[`mk-${id}Light`] = { vb: a.vb, inner: a.innerLight };
 }
+// the name in the lettering style, for the website header (light theme = black offset, dark theme = white offset)
+writeData('wordmark-lettering.json', Object.fromEntries([false, true].map((ar) => {
+  const dark = nameLettering({ ar, dark: true }), light = nameLettering({ ar, dark: false });
+  return [ar ? 'ar' : 'en', { vb: dark.vb, dark: dark.inner, light: light.inner }];
+})));
 writeData('mascot.json', { head: art.head, headLight: art.headLight, ...sitePoses, ...siteIcons2 });
 console.log('mascot and logo set built:', Object.keys(FACES).length, 'mascot files,', Object.keys(LOGO_FILES).length, 'logos');

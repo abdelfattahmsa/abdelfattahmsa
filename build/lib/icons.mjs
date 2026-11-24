@@ -51,8 +51,11 @@ export function buildSprite({ socials, brand }) {
     sym.push(`<g id="k-${arm}-suffix" fill="currentColor"><path d="${v.suffix}"/></g>`);
   }
   for (const [id, a] of Object.entries(brand.mascot)) sym.push(`<symbol id="mascot-${id}" viewBox="${a.vb}">${a.inner}</symbol>`);
-  for (const [id, w] of [['logo', brand.wordmark], ['logo-ar', brand.wordmarkAr]]) {
-    sym.push(`<symbol id="${id}" viewBox="0 0 ${w.w} ${w.h}"><path fill="currentColor" d="${w.d}"/></symbol>`);
+  // the name in the mascot's lettering (outline and offset): white offset for the dark theme, black for the light one
+  for (const [lang, l] of Object.entries(brand.lettering)) {
+    const id = lang === 'ar' ? 'logo-ar' : 'logo';
+    sym.push(`<symbol id="${id}-dark" viewBox="${l.vb}">${l.dark}</symbol>`);
+    sym.push(`<symbol id="${id}-light" viewBox="${l.vb}">${l.light}</symbol>`);
   }
   return `<svg xmlns="http://www.w3.org/2000/svg">${sym.join('')}</svg>`;
 }
@@ -63,7 +66,7 @@ export function logoCss(brand) {
   const [, , hw, hh] = brand.mascot.head.vb.split(' ');
   return [
     `.brandlink__face{aspect-ratio:${hw}/${hh}}`,
-    `.brandlink__mark{aspect-ratio:${brand.wordmark.w}/${brand.wordmark.h}}`,
-    `.brandlink__mark--ar{aspect-ratio:${brand.wordmarkAr.w}/${brand.wordmarkAr.h}}`,
+    `.brandlink__mark{aspect-ratio:${brand.lettering.en.vb.split(' ').slice(2).join('/')}}`,
+    `.brandlink__mark--ar{aspect-ratio:${brand.lettering.ar.vb.split(' ').slice(2).join('/')}}`,
   ].join('\n') + '\n';
 }
