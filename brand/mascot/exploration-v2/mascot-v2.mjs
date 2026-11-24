@@ -5,13 +5,11 @@ export const YELLOW = '#ffcc00', INK = '#000000', PAPER = '#ffffff', GREY = '#a6
 const L = `stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
 
 // ---- shapes shared by the artwork and the white sticker edge
-const HAIR_BLOB = '<ellipse cx="120" cy="80" rx="60" ry="36"/>';
-const curls = [198, 216, 234, 252, 270, 288, 306, 324, 342].map((a) => {
-  const r = (a * Math.PI) / 180;
-  return `<circle cx="${(120 + 62 * Math.cos(r)).toFixed(1)}" cy="${(80 + 39 * Math.sin(r)).toFixed(1)}" r="12"/>`;
-}).join('') + '<circle cx="62" cy="100" r="9"/><circle cx="178" cy="100" r="9"/>';
+// slick, brushed-back hair: one smooth shape (it sits behind the face; the face edge is the hairline) plus brush lines
+const HAIR_SHAPE = '<path d="M58 134C48 88 66 50 108 42C142 36 174 52 182 88C186 106 184 120 182 134Z"/>';
+const HAIR_LINES = `<g fill="none" stroke="${PAPER}" stroke-width="3" stroke-linecap="round" opacity=".92"><path d="M82 90C78 74 84 60 98 51"/><path d="M104 86C102 70 106 56 118 46"/><path d="M128 86C130 70 138 56 150 48"/><path d="M152 90C156 76 162 64 170 58"/></g>`;
 // round, wide face; the top edge is the hairline
-const FACE = 'M60 128V108C62 94 76 86 88 88C100 90 108 84 120 87C132 84 140 90 152 88C164 86 178 94 180 108V136C180 172 154 194 120 194C86 194 60 172 60 136Z';
+const FACE = 'M60 128V114C62 100 76 91 94 88C104 86 112 85 120 85C128 85 136 86 146 88C164 91 178 100 180 114V136C180 172 154 194 120 194C86 194 60 172 60 136Z';
 // short full beard on the lower face: thin sideburns, mustache and chin, one shape
 const BEARD = 'M58 132C58 176 88 204 120 204C152 204 182 176 182 132C180 142 170 148 158 150C148 146 132 144 120 150C108 144 92 146 82 150C70 148 60 142 58 132Z';
 const EAR = (x) => `<ellipse cx="${x}" cy="130" rx="12" ry="16"/>`;
@@ -50,7 +48,7 @@ const glasses = () => `<g fill="none" ${L} stroke-width="7"><rect x="78" y="100"
 
 // ---- the head and the bust
 export function head({ eye = 'wide', brow: b = 'normal', mouth = 'smile', glass = false, edge = true } = {}) {
-  const parts = `<g>${HAIR_BLOB}${curls}</g>`;
+  const parts = `<g>${HAIR_SHAPE}</g>`;
   const ears = [50, 190];
   const sticker = edge
     ? `<g fill="${PAPER}" stroke="${PAPER}" stroke-width="16" stroke-linejoin="round">${parts}<path d="${BEARD}"/><path d="${FACE}"/>${ears.map(EAR).join('')}</g>`
@@ -58,9 +56,9 @@ export function head({ eye = 'wide', brow: b = 'normal', mouth = 'smile', glass 
   return (
     sticker +
     `<g ${L}>${ears.map((x) => `<g><ellipse cx="${x}" cy="130" rx="12" ry="16" fill="${PAPER}"/><path d="M${x - 2} 122q${x < 120 ? -5 : 5} 10 1 20" fill="none" stroke-width="3"/></g>`).join('')}` +
-    `<g fill="${INK}">${HAIR_BLOB}${curls}</g>` +
+    `<g fill="${INK}">${HAIR_SHAPE}</g>` +
     `<path d="${FACE}" fill="${PAPER}"/>` +
-    `<path d="${BEARD}" fill="${INK}" stroke-width="3"/></g>` +
+    `<path d="${BEARD}" fill="${INK}" stroke-width="3"/></g>` + HAIR_LINES +
     brows[b]() + eyes[eye]() +
     `<path d="M112 132Q120 141 128 132" fill="none" ${L}/>` +
     `<g transform="translate(12 21) scale(.9)">${mouths[mouth]()}</g>` + (glass ? glasses() : '')

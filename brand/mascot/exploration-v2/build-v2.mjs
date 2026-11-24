@@ -11,7 +11,7 @@ const html = `<!doctype html><meta charset="utf-8"><title>Mascot v2 concept</tit
 h1{margin:0 0 4px;font-size:26px}.sub{color:#a6a6a6;margin:0 0 24px}.top{display:flex;gap:24px;align-items:flex-end;margin-bottom:30px}
 .big{background:#0b0b0b;border:1px solid #252525;border-radius:28px;padding:16px;text-align:center}.big svg,.big img{height:330px;width:auto}.big b{display:block;margin-top:8px}
 .g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px}.c{background:#0b0b0b;border:1px solid #252525;border-radius:24px;padding:12px;text-align:center}.h svg{width:100%;height:230px}.c b{display:block;margin-top:4px}</style>
-<h1>Mascot v2: concept</h1><p class="sub">Drawn from your photo and your references: curly hair, full beard joined to the mustache, big ears, black irises with highlights. Open collar like the photo, with the yellow as a pocket square.</p>
+<h1>Mascot v2: concept</h1><p class="sub">Drawn from your photo and your references: slick, brushed-back hair, full beard joined to the mustache, big ears, black irises with highlights. Open collar like the photo, with the yellow as a pocket square.</p>
 <div class="top"><div class="big"><img src="../am-mascot.svg" alt=""><b>Current</b></div><div class="big">${svg(bust(presets[0][1]))}<b>New (calm)</b></div><div class="big">${svg(bust(presets[1][1]))}<b>New (happy)</b></div></div>
 <h1 style="font-size:20px">Reactions</h1><div class="g">${cards}</div>`;
 fs.writeFileSync(path.join(here, 'concept-v2.html'), html);
