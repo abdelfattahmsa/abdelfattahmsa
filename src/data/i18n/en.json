@@ -173,5 +173,6 @@
  "ask.lead": "From “{t}”:",
  "ask.related": "Related in the wikis:",
  "ask.read": "Read the full page",
- "ask.areas": "Knowledge areas"
+ "ask.areas": "Knowledge areas",
+ "ask.minimize": "Minimize"
 }

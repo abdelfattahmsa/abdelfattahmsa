@@ -547,10 +547,10 @@ html.js .views[data-view="map"] [data-view-panel="items"],html:not(.js) [data-vi
 @media (max-width:1024px){.svc-cta .eyebrow{text-align:center}.svc-cta__row{justify-self:center}}
 
 /* ---------- Ask AM!: the assistant panel above the sticky mascot ---------- */
-.ask{position:absolute;inset-inline-start:0;inset-block-end:calc(100% + 14px);inline-size:min(400px,calc(100vw - 20px));max-block-size:min(560px,calc(100vh - 120px));display:flex;flex-direction:column;border:1px solid var(--line-strong);border-radius:28px;background:var(--bg);box-shadow:0 18px 50px rgba(0,0,0,.45);overflow:hidden;z-index:2}
+.ask{position:fixed;inset-inline-end:max(16px,env(safe-area-inset-right));inset-block-end:0;inset-inline-start:auto;inline-size:min(370px,calc(100vw - 24px));block-size:min(540px,calc(100dvh - 96px));display:flex;flex-direction:column;border:1px solid var(--line-strong);border-block-end:0;border-radius:22px 22px 0 0;background:var(--bg);box-shadow:0 0 40px rgba(0,0,0,.45);overflow:hidden;z-index:50}
 .ask[hidden]{display:none}
 .ask{text-align:start;font-weight:400}
-.ask__head{display:flex;align-items:center;gap:10px;padding:12px 14px 12px 16px;border-block-end:1px solid var(--line);background:var(--surface)}
+.ask__head{display:flex;align-items:center;gap:8px;padding:10px 10px 10px 16px;border-block-end:1px solid var(--line);background:var(--surface);cursor:pointer;user-select:none}
 .ask__face{inline-size:30px;block-size:35px;flex:none}
 .ask__title{font-family:var(--ff-display);font-weight:700;font-size:1.1rem;flex:1}
 .ask__log{flex:1;overflow:auto;padding:14px 16px;display:grid;gap:10px;align-content:start;min-block-size:140px}
@@ -566,8 +566,7 @@ html.js .views[data-view="map"] [data-view-panel="items"],html:not(.js) [data-vi
 .ask__form input{flex:1;min-inline-size:0;padding:10px 16px;border-radius:999px;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);font:inherit}
 .ask__send{background:var(--accent);color:#000;border-color:#000}
 .ask__note{padding:0 16px 12px;font-size:.76rem;color:var(--muted)}
-@media (max-width:1024px){.ask{inset-block-end:calc(100% + 14px)}}
-@media (max-width:520px){.contact .ask{position:fixed;inset-inline:10px;inset-block-end:calc(max(16px,env(safe-area-inset-bottom)) + 76px);inline-size:auto}}
+@media (max-width:520px){.ask{inset-inline:0;inline-size:100%;block-size:min(72dvh,560px);border-inline:0;border-radius:22px 22px 0 0}}
 html.ask-open .totop{visibility:hidden}
 @media print{.ask{display:none}}
 
@@ -589,3 +588,14 @@ html.ask-open .totop{visibility:hidden}
 .quotes blockquote{padding:clamp(20px,3vw,28px);border:1px solid var(--line);border-radius:28px;background:var(--surface);display:grid;gap:14px}
 .quotes footer{color:var(--muted);font-size:.9rem}
 @media print{.consent,.subscribe{display:none}}
+
+/* minimized: only the title bar stays, docked at the bottom */
+.ask.is-min{block-size:auto}
+.ask.is-min .ask__log,.ask.is-min .ask__suggest,.ask.is-min .ask__form,.ask.is-min .ask__note{display:none}
+.ask.is-min .ask__head{border-block-end:0}
+.ask__min .icon{transition:transform .2s var(--ease)}
+.ask.is-min .ask__min .icon{transform:rotate(180deg)}
+.ask__title{pointer-events:none}
+@media (prefers-reduced-motion:no-preference){.ask:not([hidden]){animation:ask-in .22s var(--ease) both}}
+@keyframes ask-in{from{opacity:0;transform:translateY(24px)}}
+@media (max-width:520px){.ask.is-min{inset-inline:84px 10px;inline-size:auto}}
