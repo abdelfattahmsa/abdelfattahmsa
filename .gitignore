@@ -10,3 +10,4 @@ brand/fonts/*.ttf
 brand/fonts/*.woff
 brand/fonts/*.woff2
 .secrets/
+brand/package/

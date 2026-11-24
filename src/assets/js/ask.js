@@ -1,6 +1,6 @@
-/* Ask AM!: the assistant behind the sticky mascot. It answers from this site's own pages (ask-index.json).
-   Without an endpoint it shows the best matching passages with links (no server, nothing leaves the page).
-   With site.assistant.endpoint set, it sends the question and those passages to the worker in worker/ and shows its answer. */
+/* Ask AM!: a search that answers in chat form. It runs entirely in the browser over this site's own text
+   (ask-index.json: the wikis plus the about, services and career pages). There is no server and no AI service:
+   every reply is a passage from the wikis, put into a short chat message with a link to the full page. */
 (function () {
   'use strict';
   var doc = document, panel = doc.querySelector('[data-ask]');
@@ -8,13 +8,21 @@
   /* @normalise: the build inserts the Arabic-aware normalise() here */
   var $ = function (s, c) { return (c || doc).querySelector(s); };
   var S = {};
-  try { S = JSON.parse(panel.dataset.i); } catch (e) { /* defaults below */ }
+  try { S = JSON.parse(panel.dataset.i); } catch (e) { return; }
   var log = $('.ask__log', panel), form = $('.ask__form', panel), input = $('input', form), sugg = $('.ask__suggest', panel);
-  var endpoint = panel.dataset.endpoint || '', lang = doc.body.dataset.lang || 'en';
-  var history = [], idx = null, loading = null, busy = false, greeted = false;
+  var idx = null, loading = null, greeted = false, queue = [];
 
-  var STOP = /^(the|and|for|are|was|you|your|what|who|how|why|when|where|with|about|can|does|did|is|am|a|an|of|to|in|on|at|it|me|my|i|do|من|في|على|عن|ما|ماذا|كيف|هل|هو|هي|ان|إن|الى|إلى|مع)$/;
+  var STOP = /^(the|and|for|are|was|you|your|what|who|how|why|when|where|with|about|can|does|did|is|am|a|an|of|to|in|on|at|it|me|my|i|do|tell|please|من|في|على|عن|ما|ماذا|كيف|هل|هو|هي|ان|الى|مع)$/;
+  var RX = {
+    greet: /^(hi|hello|hey|hola|salam|good (morning|evening|afternoon)|مرحبا|اهلا|السلام|صباح|مساء)/,
+    thanks: /(thank|thanks|cheers|شكرا)/,
+    more: /^(more|next|continue|go on|tell me more|المزيد|كمل|تابع|زيدني)/,
+    who: /(who are you|who is abdel|about you|about him|about abdel|tell me about yourself|من انت|من هو|عن نفسك|تعريف)/,
+    contact: /(contact|e-?mail|reach you|call you|whatsapp|talk to you|تواصل|اتصل|ايميل|بريد|واتساب)/,
+    services: /(services?|pricing|price|rates|hire you|work with you|خدمات|خدمه|سعر|اسعار|تكلف)/,
+  };
 
+  function track(name, params) { if (window.amTrack) window.amTrack(name, params); }
   function load() {
     if (!loading) loading = fetch(panel.dataset.index, { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (j) {
       idx = j.i.map(function (it) { return { t: it.t, u: it.u, k: it.k, nt: normalise(it.t), p: it.p.map(function (x) { return { x: x, n: normalise(x) }; }) }; });
@@ -22,6 +30,8 @@
     }).catch(function () { idx = []; return idx; });
     return loading;
   }
+
+  // the best passages for a question, at most one per page, best first
   function retrieve(q, max) {
     var tokens = normalise(q).split(/[^\p{L}\p{N}]+/u).filter(function (t) { return t.length > 1 && !STOP.test(t); });
     if (!tokens.length || !idx) return [];
@@ -31,56 +41,76 @@
     idx.forEach(function (it) {
       var best = null;
       it.p.forEach(function (p) {
-        var s = 0;
+        var s = 0, hit = 0;
         tokens.forEach(function (t) {
           var w = Math.log(1 + N / (1 + (df[t] || 0)));
-          if (p.n.indexOf(t) !== -1) s += w;
-          if (it.nt.indexOf(t) !== -1) s += w * 1.5;
+          if (p.n.indexOf(t) !== -1) { s += w; hit++; }
+          if (it.nt.indexOf(t) !== -1) { s += w * 1.5; hit++; }
         });
+        s *= 1 + hit / (2 * tokens.length); // passages that match more of the question rank higher
         if (s > 0 && (!best || s > best.s)) best = { s: s, x: p.x };
       });
-      if (best) out.push({ s: best.s, t: it.t, u: it.u, x: best.x });
+      if (best) out.push({ s: best.s * (it.k === 'page' ? 0.75 : 1.25), t: it.t, u: it.u, x: best.x }); // the wikis come first
     });
     out.sort(function (a, b) { return b.s - a.s; });
-    return out.slice(0, max || 4);
+    return out.slice(0, max || 6);
   }
 
-  function msg(role, text, sources) {
+  /* ---- messages */
+  function link(text, href) { var a = doc.createElement('a'); a.href = href; a.textContent = text; a.addEventListener('click', function () { track('ask_source_click', { page: href }); }); return a; }
+  // text: paragraphs split by newline; links: [{t,u}]; more: show a "More" button
+  function msg(role, text, o) {
+    o = o || {};
     var m = doc.createElement('div'); m.className = 'ask__msg ask__msg--' + role;
-    var p = doc.createElement('p'); p.textContent = text; m.appendChild(p);
-    if (sources && sources.length) {
+    String(text).split('\n').forEach(function (line) { var p = doc.createElement('p'); p.textContent = line; m.appendChild(p); });
+    if (o.links && o.links.length) {
       var ul = doc.createElement('ul'); ul.className = 'ask__src';
-      sources.forEach(function (s) {
-        var li = doc.createElement('li'), a = doc.createElement('a');
-        a.href = s.u; a.textContent = s.t; a.addEventListener('click', function () { track('ask_source_click', { page: s.u }); });
-        li.appendChild(a);
-        if (s.x) { var sp = doc.createElement('span'); sp.textContent = s.x.length > 170 ? s.x.slice(0, 167) + '…' : s.x; li.appendChild(sp); }
-        ul.appendChild(li);
-      });
+      o.links.forEach(function (l) { var li = doc.createElement('li'); li.appendChild(link(l.t, l.u)); ul.appendChild(li); });
       m.appendChild(ul);
+    }
+    if (o.related && o.related.length) {
+      var h = doc.createElement('p'); h.className = 'ask__rel'; h.textContent = S.related; m.appendChild(h);
+      var ul2 = doc.createElement('ul'); ul2.className = 'ask__src';
+      o.related.forEach(function (l) { var li = doc.createElement('li'); li.appendChild(link(l.t, l.u)); ul2.appendChild(li); });
+      m.appendChild(ul2);
+    }
+    if (o.more) {
+      var b = doc.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = S.more;
+      b.addEventListener('click', function () { b.remove(); showMore(); });
+      m.appendChild(b);
     }
     log.appendChild(m); log.scrollTop = log.scrollHeight;
     return m;
   }
-  function track(name, params) { if (window.amTrack) window.amTrack(name, params); }
+
+  function passageReply(hit, hasMore, related) {
+    msg('bot', S.lead.replace('{t}', hit.t) + '\n' + hit.x, { links: [{ t: S.read, u: hit.u }], more: hasMore, related: related });
+  }
+  function showMore() {
+    var next = queue.shift();
+    if (!next) { msg('bot', S.nomore); return; }
+    passageReply(next, queue.length > 0);
+  }
 
   function answer(q) {
-    if (busy) return;
-    busy = true; msg('user', q);
-    var wait = msg('bot', S.thinking || '…'); wait.classList.add('is-wait');
-    track('ask_question', { length: q.length, mode: endpoint ? 'ai' : 'search' });
+    msg('user', q);
+    track('ask_question', { length: q.length });
     load().then(function () {
-      var hits = retrieve(q, endpoint ? 6 : 3);
-      if (!endpoint) return { text: hits.length ? S.found : S.none, sources: hits };
-      return fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ q: q, lang: lang, history: history.slice(-6), passages: hits.map(function (h) { return { t: h.t, u: h.u, x: h.x }; }) }) })
-        .then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
-        .then(function (j) { return { text: j.answer || S.none, sources: hits.slice(0, 3).map(function (h) { return { t: h.t, u: h.u }; }) }; })
-        .catch(function () { return { text: S.error + ' ' + (hits.length ? S.found : S.none), sources: hits.slice(0, 3) }; });
-    }).then(function (r) {
-      wait.remove(); msg('bot', r.text, r.sources);
-      history.push({ r: 'user', t: q }, { r: 'assistant', t: r.text });
-      if (!r.sources.length) track('ask_no_answer', {});
-    }).then(function () { busy = false; });
+      var n = normalise(q).trim();
+      if (RX.more.test(n)) return showMore();
+      if (RX.greet.test(n) && n.split(/\s+/).length < 4) return msg('bot', S.greet);
+      if (RX.thanks.test(n) && n.split(/\s+/).length < 5) return msg('bot', S.thanks);
+      if (RX.who.test(n)) return msg('bot', S.who, { links: [{ t: S.read, u: S.links.about }] });
+      if (RX.contact.test(n)) return msg('bot', S.contact, { links: [{ t: S.contactLabel, u: S.links.contact }] });
+      if (RX.services.test(n)) return msg('bot', S.services, { links: [{ t: S.read, u: S.links.services }] });
+      var hits = retrieve(q, 6);
+      if (!hits.length) {
+        track('ask_no_answer', { length: q.length });
+        return msg('bot', S.none, { links: S.areas_list });
+      }
+      queue = hits.slice(1);
+      passageReply(hits[0], queue.length > 0, hits.slice(1, 4).map(function (h) { return { t: h.t, u: h.u }; }));
+    });
   }
 
   function open(q) {
