@@ -46,7 +46,6 @@ export function createTemplates(ctx) {
   <button type="button" class="circle circle--sm search__clear" hidden aria-label="${esc(T(lang, 'search.clear'))}">${icon('i-close')}</button>
   <kbd class="search__kbd" aria-hidden="true">/</kbd>
   <ul id="r-${id}" class="search__results" role="listbox" hidden data-none="${esc(T(lang, 'search.none'))}"></ul>
-${askPanel(lang)}
 </div>`;
   }
   function askPanel(lang) {
@@ -55,7 +54,7 @@ ${askPanel(lang)}
     i.areas_list = Object.values(content.wikis).map((w) => ({ t: L(w.title, lang), u: u(lang, w.base) }));
     const sg = [1, 2, 3].map((n) => `<li><button type="button" class="chip">${esc(T(lang, 'ask.suggest.' + n))}</button></li>`).join('');
     return `<section class="ask" role="dialog" aria-label="${esc(T(lang, 'ask.title'))}" data-ask data-index="${u(lang, '/ask-index.json')}" data-i="${esc(JSON.stringify(i))}" hidden>
-<div class="ask__head">${mascotIcon('head', 'ask__face')}<span class="ask__title">${esc(T(lang, 'ask.title'))}</span><button type="button" class="circle circle--sm ask__close" aria-label="${esc(T(lang, 'ask.close'))}">${icon('i-close')}</button></div>
+<div class="ask__head">${mascotIcon('head', 'ask__face')}<span class="ask__title">${esc(T(lang, 'ask.title'))}</span><button type="button" class="circle circle--sm ask__min" aria-expanded="true" aria-label="${esc(T(lang, 'ask.minimize'))}" title="${esc(T(lang, 'ask.minimize'))}">${icon('i-chevron')}</button><button type="button" class="circle circle--sm ask__close" aria-label="${esc(T(lang, 'ask.close'))}">${icon('i-close')}</button></div>
 <div class="ask__log" role="log" aria-live="polite"></div>
 <ul class="ask__suggest">${sg}</ul>
 <form class="ask__form"><input type="text" maxlength="400" autocomplete="off" enterkeyhint="send" placeholder="${esc(T(lang, 'ask.placeholder'))}" aria-label="${esc(T(lang, 'ask.placeholder'))}"><button type="submit" class="circle ask__send" aria-label="${esc(T(lang, 'ask.send'))}">${icon('i-arrow', 'flip')}</button></form>
@@ -139,6 +138,7 @@ ${item('chat', 'widget.message', 'chat', ' target="_blank" rel="noopener norefer
 ${c.calendly ? item('call', 'widget.call', 'call', ' target="_blank" rel="noopener noreferrer"') : ''}
 ${item('mail', 'widget.email', 'mail')}
 </ul>
+${askPanel(lang)}
 </div>`;
   }
 
