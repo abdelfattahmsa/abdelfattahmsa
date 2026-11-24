@@ -65,6 +65,7 @@ UI language for the website, which the brand should also use: **circular frames 
 | `am-icon-maskable.svg` | Android **maskable** icon: full-bleed yellow, face inside the 80% safe zone (192/512 PNG) |
 | `png/favicon.ico` | 16 and 32 hand-hinted, 48 vector (served at `/favicon.ico`) |
 | `png/am-og-1200x630.png` | Open Graph image: side lockup on yellow |
+| `mascot/contact/` | **Contact icons** in the mascot's style (thick black outline, white sticker edge, yellow accent): message, call, email, dark and light versions. Used by the sticky mascot on the website |
 | `poses/` | **Twelve poses** on one shared canvas, face only: *reactions* (calm, happy, wink, surprised, angry), *style* (sunglasses) and *work* (builder with hard hat, idea lightbulb, search magnifier, coding headphones, sketching pencil, launch rocket). SVG + 1024 px PNG each, `poses.html` contact sheet, `poses.json` names and uses. **Brand library only, not used on the website** |
 
 **Print and downloads**

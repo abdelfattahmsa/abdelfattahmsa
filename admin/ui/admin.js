@@ -80,14 +80,20 @@
     $('#edit-title').textContent = isNew ? 'New ' + coll().label : slug;
     $('#save-status').textContent = '';
     $('#btn-delete').hidden = isNew;
-    if (isNew) { state.values[main] = defaults(); renderForm(); renderTabs(); return; }
+    if (isNew) { state.values[main] = defaults(); loadNodes().then(function () { renderForm(); renderTabs(); }); return; }
     var langs = schema.langs.map(function (l) { return l.code; });
+    var nodesReady = loadNodes();
     Promise.all(langs.map(function (l) { return api('GET', '/api/item?c=' + encodeURIComponent(state.c) + '&slug=' + encodeURIComponent(slug) + '&lang=' + l).catch(function () { return null; }); }))
+      .then(function (res) { return nodesReady.then(function () { return res; }); })
       .then(function (res) {
         res.forEach(function (r, i) { if (r) { state.langs.push(langs[i]); state.values[langs[i]] = r.data; state.bodies[langs[i]] = r.body; } });
         if (!state.langs.length) throw new Error('Item not found');
         renderForm(); renderTabs();
       }).catch(function (e) { toast(e.message, 'error'); showList(state.c); });
+  }
+  // the nodes a page can be bonded to (needed before the form is drawn)
+  function loadNodes() {
+    return api('GET', '/api/nodes').then(function (r) { state.nodes = r.nodes; state.topics = r.topics; }).catch(function () { state.nodes = []; state.topics = []; });
   }
   function defaults() {
     var d = {};
@@ -128,13 +134,66 @@
     else if (f.type === 'number') input = el('input', { id: id, type: 'number', 'data-f': f.name });
     else if (f.type === 'tags') input = el('input', { id: id, type: 'text', 'data-f': f.name, placeholder: 'comma, separated' });
     else if (f.type === 'links') input = el('textarea', { id: id, rows: '3', 'data-f': f.name, placeholder: 'IEEE Xplore | https://…' });
+    else if (f.type === 'nodes') return nodesField(f, val, hint);
     else if (f.type === 'file') return fileField(f, val, hint);
     else input = el('input', { id: id, type: 'text', 'data-f': f.name });
     if (f.type === 'tags') input.value = Array.isArray(val) ? val.join(', ') : (val || '');
     else if (f.type === 'links') input.value = (val || []).map(function (l) { return l.label + ' | ' + l.url; }).join('\n');
     else input.value = val == null ? '' : val;
     if (f.type === 'text' || f.type === 'textarea') input.dir = langDir(lang);
-    return el('div', { class: 'f' }, [el('label', { for: id, text: f.name + (f.required ? ' *' : '') }), input, hint]);
+    var extra = f.type === 'tags' && f.suggest === 'topics' ? topicPicker(input) : null;
+    return el('div', { class: 'f' }, [el('label', { for: id, text: f.name + (f.required ? ' *' : '') }), input, extra, hint]);
+  }
+  // existing topics, one click to add
+  function topicPicker(input) {
+    if (!state.topics || !state.topics.length) return null;
+    var row = el('div', { class: 'chips chips--pick', 'aria-label': 'Existing topics' });
+    state.topics.forEach(function (t) {
+      var b = el('button', { type: 'button', class: 'chip', text: '+ ' + t });
+      b.addEventListener('click', function () {
+        var cur = input.value.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+        if (cur.indexOf(t) === -1) cur.push(t);
+        input.value = cur.join(', ');
+      });
+      row.appendChild(b);
+    });
+    return row;
+  }
+  // the connections picker: chips + a search box over every node (area, topic, page)
+  function nodesField(f, val, hint) {
+    var id = 'f-' + f.name, list = Array.isArray(val) ? val.slice() : [];
+    var nodes = state.nodes || [];
+    var byId = {};
+    nodes.forEach(function (n) { byId[n.id] = n; });
+    var wrap = el('div', { class: 'chips', 'data-f': f.name });
+    wrap.__list = list;
+    var dl = el('datalist', { id: id + '-dl' });
+    nodes.forEach(function (n) {
+      if (state.c && n.id === state.c.replace('wiki-', '') + '/' + state.slug) return; // not itself
+      dl.appendChild(el('option', { value: n.label + '  [' + n.type + ' · ' + n.id + ']' }));
+    });
+    var input = el('input', { id: id, type: 'text', list: id + '-dl', placeholder: 'Search a page, topic or area…' });
+    function draw() {
+      wrap.textContent = '';
+      list.forEach(function (ref, i) {
+        var n = byId[ref];
+        var x = el('button', { type: 'button', class: 'chip chip--on', title: ref, text: (n ? n.label + ' · ' + n.type : ref) + '  ×' });
+        x.addEventListener('click', function () { list.splice(i, 1); draw(); });
+        wrap.appendChild(x);
+      });
+      if (!list.length) wrap.appendChild(el('span', { class: 'muted', text: 'No manual bonds yet.' }));
+    }
+    function add(text) {
+      var m = text.match(/\[[^\]]*· ([^\]]+)\]\s*$/);
+      var ref = m ? m[1].trim() : text.trim();
+      if (!ref) return;
+      if (list.indexOf(ref) === -1) list.push(ref);
+      input.value = ''; draw();
+    }
+    input.addEventListener('change', function () { add(input.value); });
+    input.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); add(input.value); } });
+    draw();
+    return el('div', { class: 'f' }, [el('label', { for: id, text: f.name }), wrap, input, dl, hint]);
   }
   function fileField(f, val, hint) {
     var cur = el('code', { text: val || 'No file uploaded', 'data-f': f.name, 'data-v': val || '' });
@@ -172,6 +231,7 @@
     }
     coll().fields.forEach(function (f) {
       if (lang !== schema.defaultLang && f.shared) return;
+      if (f.hideOnIndex && state.slug && state.slug === coll().indexSlug) return;
       form.appendChild(field(f, v[f.name], lang));
     });
     var body = el('textarea', { id: 'f-body', class: 'md', 'data-body': '1' });
@@ -189,7 +249,8 @@
     document.querySelectorAll('#form [data-f]').forEach(function (n) {
       var k = n.dataset.f, f = coll().fields.filter(function (x) { return x.name === k; })[0];
       if (!f) return;
-      if (f.type === 'bool') out[k] = n.checked;
+      if (f.type === 'nodes') out[k] = (n.__list || []).slice();
+      else if (f.type === 'bool') out[k] = n.checked;
       else if (f.type === 'file') out[k] = n.dataset.v || '';
       else if (f.type === 'tags') out[k] = n.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
       else if (f.type === 'links') out[k] = n.value.split('\n').map(function (line) { var p = line.split('|'); return { label: (p[0] || '').trim(), url: (p.slice(1).join('|') || '').trim() }; }).filter(function (l) { return l.label && l.url; });

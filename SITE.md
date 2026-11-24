@@ -40,6 +40,21 @@ The About-page timeline is the *Career timeline* collection: one entry per job, 
 
 Free downloads: choose a category and type, upload the file (or paste an external link), tick/untick *draft*. Draft items are hidden on the live site and visible under `npm run dev`. To add a category or type, edit `resourceCategories` / `resourceTypes` in `site.json`.
 
+## The knowledge map (Knowledge Hub)
+
+The hub and every wiki home page show the wikis as a 3D network, with a switch for **Map** (the default), **Grid** and **List**. The choice is remembered in the browser. Only the three wikis are in the map.
+
+- **Nodes.** A knowledge area is a big node (one per wiki, and each area is a cluster). A topic is a medium node. A page is a small node.
+- **Bonds.** Nothing connects automatically except through topics. A page bonds to each topic written in its `tags`, a topic bonds to its area, and a page with no topics bonds to its area. Everything else is a bond you choose by hand with the `connections` field. There is no matching on page text.
+- **One map for both languages.** A page is one node whose label switches with the language. A topic written in English and in Arabic is one node when the two languages list their tags **in the same order**. A topic can also be a page of its own (`node: tag`), and then any language's title, its slug or its `aliases` match it.
+- **Admin.** In a wiki page: `node` picks Page or Topic, `tags` lists topics (existing ones are one click away), `aliases` gives a topic other names, and `connections` is a search box that adds bonds to any area, topic or page. A bond works from either end.
+- **Built for thousands.** The build lays the map out in 3D (`build/lib/graph.mjs`), so the browser only draws it (`src/assets/js/map.js`, plain WebGL, no library). The layout is kept in `src/data/graph-layout.json`: pages that are already in it keep their place and new ones settle next to what they bond to, so the map grows instead of reshuffling. Commit that file with your content (the admin's Publish does). Tested at 6,000 pages: the first layout takes seconds, later builds well under a second.
+- **List and Grid** show 30 pages per area and a "Show more" button that reads the rest from the same graph file.
+
+## Contact mascot
+
+A small sticky mascot sits on the left of every page. Clicking it opens message (WhatsApp), call (Calendly) and email, drawn in the mascot's style (`brand/mascot-icons.mjs`, files in `brand/mascot/contact/`). The links are put together in the browser from one encoded value, like the contact form's inbox. Set the number, inbox and the Calendly link in `src/data/site.json` under `contact` (`whatsapp`, `inbox`, `calendly`). While `calendly` is empty the call button is not shown.
+
 ## Deploying
 
 Pushing to `main` runs `.github/workflows/static.yml`: install, build, check, then publish **only `dist/`** to GitHub Pages. Pull requests run the build and checks without deploying.

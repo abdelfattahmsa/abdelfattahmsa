@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { loadAll } from './lib/content.mjs';
+import { buildGraph } from './lib/graph.mjs';
 import { buildSprite, logoCss } from './lib/icons.mjs';
 import { createTemplates } from './lib/templates.mjs';
 import { LANGS, u } from './lib/i18n.mjs';
@@ -47,6 +48,13 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   };
   const content = loadAll(site, { drafts });
 
+  // the knowledge map: one graph for both languages; positions are kept in src/data/graph-layout.json
+  // so the map grows instead of reshuffling (commit that file with your content)
+  const layoutFile = path.join(dataDir, 'graph-layout.json');
+  const graph = buildGraph({ site, content, prevLayout: fs.existsSync(layoutFile) ? readJSON(layoutFile) : {} });
+  const layoutText = '{\n' + Object.entries(graph.layout).map(([k, v]) => ` ${JSON.stringify(k)}:${JSON.stringify(v)}`).join(',\n') + '\n}\n';
+  if (!drafts && (!fs.existsSync(layoutFile) || fs.readFileSync(layoutFile, 'utf8') !== layoutText)) fs.writeFileSync(layoutFile, layoutText);
+
   for (const dir of ['fonts', 'img', 'icons']) copyDir(path.join(src, 'assets', dir), path.join(dist, 'assets', dir));
   // browsers ask for /favicon.ico by default
   fs.copyFileSync(path.join(src, 'assets/icons/favicon.ico'), path.join(dist, 'favicon.ico'));
@@ -61,6 +69,13 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   const js = fs.readFileSync(path.join(src, 'assets/js/main.js'), 'utf8').replace(NORMALISE_MARKER, clientNormalise());
   const jsName = `main.${hash(js)}.js`;
   writeFile(path.join(dist, 'assets', jsName), js);
+
+  const graphText = JSON.stringify(graph.json);
+  const graphName = `graph.${hash(graphText)}.json`;
+  writeFile(path.join(dist, 'assets', graphName), graphText);
+  const mapJs = fs.readFileSync(path.join(src, 'assets/js/map.js'), 'utf8');
+  const mapName = `map.${hash(mapJs)}.js`;
+  writeFile(path.join(dist, 'assets', mapName), mapJs);
 
   const sprite = buildSprite({ socials: site.socials, brand });
   const spriteName = `icons.${hash(sprite)}.svg`;
@@ -106,6 +121,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
     site,
     i18n,
     content,
+    graph,
     kyberia: brand.kyberia,
     cv,
     csp,
@@ -113,6 +129,8 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
     assets: {
       css: `/assets/${cssName}`,
       js: `/assets/${jsName}`,
+      mapJs: `/assets/${mapName}`,
+      graph: `/assets/${graphName}`,
       sprite: `/assets/${spriteName}`,
       og: '/assets/img/og.png',
       faviconSvg: ICONS.svg,
@@ -142,7 +160,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   writeFile(path.join(dist, '.nojekyll'), '');
   if (fs.existsSync(path.join(root, 'CNAME'))) fs.copyFileSync(path.join(root, 'CNAME'), path.join(dist, 'CNAME'));
 
-  console.log(`built ${urls.length} pages (${drafts ? 'with' : 'without'} drafts) in ${Date.now() - t0}ms`);
+  console.log(`built ${urls.length} pages (${drafts ? 'with' : 'without'} drafts) in ${Date.now() - t0}ms · map: ${graph.stats.nodes} nodes, ${graph.stats.bonds} bonds`);
   return { dist, pageCount: urls.length };
 }
 

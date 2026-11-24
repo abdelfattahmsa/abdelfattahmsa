@@ -9,6 +9,7 @@ import sharp from 'sharp';
 import { art, maskable, INK, PAPER, YELLOW } from './mascot-art.mjs';
 import { png as pixelPng, HEAD16, HEAD32 } from './mascot-pixel.mjs';
 import { POSES, VB as POSE_VB, poseInner, poseInnerLight } from './poses.mjs';
+import { ICONS } from './mascot-icons.mjs';
 import { lockupSide, lockupUnder, lockupLettering, LOGOS } from './lockup.mjs';
 import { NAME, outDir, root, siteIcons, svgDoc, toPng, writeData, TRANSPARENT } from './lib.mjs';
 
@@ -116,5 +117,14 @@ for (const n of SITE_POSES) {
   sitePoses[`pose-${n}`] = { vb: POSE_VB, inner: poseInner(p) };
   sitePoses[`pose-${n}Light`] = { vb: POSE_VB, inner: poseInnerLight(p) };
 }
-writeData('mascot.json', { head: art.head, headLight: art.headLight, ...sitePoses });
+// the contact icons (sticky widget on the site) and their SVG files in the brand library
+const iconsDir = outDir('mascot/contact');
+const siteIcons2 = {};
+for (const [id, a] of Object.entries(ICONS)) {
+  write(iconsDir, `am-contact-${id}.svg`, svgDoc({ vb: a.vb, inner: a.inner }, `${NAME}: ${id}`));
+  write(iconsDir, `am-contact-${id}-light.svg`, svgDoc({ vb: a.vb, inner: a.innerLight }, `${NAME}: ${id}`));
+  siteIcons2[`mk-${id}`] = { vb: a.vb, inner: a.inner };
+  siteIcons2[`mk-${id}Light`] = { vb: a.vb, inner: a.innerLight };
+}
+writeData('mascot.json', { head: art.head, headLight: art.headLight, ...sitePoses, ...siteIcons2 });
 console.log('mascot and logo set built:', Object.keys(FACES).length, 'mascot files,', Object.keys(LOGO_FILES).length, 'logos');

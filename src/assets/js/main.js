@@ -327,4 +327,28 @@
       }
     });
   })();
+  /* ------------------------------------------------------------ sticky mascot: message, call, email */
+  (function () {
+    var w = $('[data-contact-widget]');
+    if (!w) return;
+    var d = {};
+    try { d = JSON.parse(atob(w.dataset.c)); } catch (e) { return; }
+    var fab = $('.contact__fab', w), menu = $('.contact__menu', w);
+    $$('[data-contact-kind]', w).forEach(function (a) {
+      var k = a.dataset.contactKind;
+      if (k === 'chat' && d.w) a.href = 'https://wa.me/' + d.w;
+      else if (k === 'call' && d.c) a.href = d.c;
+      else if (k === 'mail' && d.m) a.href = 'mailto:' + d.m;
+      else a.closest('li').hidden = true;
+    });
+    function set(open) {
+      menu.hidden = !open;
+      w.classList.toggle('is-open', open);
+      fab.setAttribute('aria-expanded', String(open));
+    }
+    fab.addEventListener('click', function () { set(menu.hidden); });
+    doc.addEventListener('click', function (e) { if (!menu.hidden && !w.contains(e.target)) set(false); });
+    doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); fab.focus(); } });
+  })();
+
 })();
