@@ -190,6 +190,7 @@
       if (e.key === 'ArrowDown') { e.preventDefault(); if (opts.length) setActive((active + 1) % opts.length); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); if (opts.length) setActive((active - 1 + opts.length) % opts.length); }
       else if (e.key === 'Enter') {
+        if (box.hasAttribute('data-ask-home') && active < 0 && input.value.trim()) { e.preventDefault(); window.dispatchEvent(new CustomEvent('ask-am', { detail: { q: input.value } })); input.value = ''; clear.hidden = true; hide(); return; }
         var target = opts[active] || opts[0];
         if (target) { e.preventDefault(); location.href = $('a', target).href; }
       } else if (e.key === 'Escape') {
@@ -211,9 +212,7 @@
       var hero = searchBoxes.filter(function (b) { return !b.overlay; })[0];
       if (!hero) return;
       var input = $('input', hero.box);
-      input.value = chip.dataset.suggest;
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.focus();
+      window.dispatchEvent(new CustomEvent('ask-am', { detail: { q: chip.dataset.suggest } }));
     });
   });
   var overlay = $('[data-search-overlay]');
@@ -336,6 +335,7 @@
     var fab = $('.contact__fab', w), menu = $('.contact__menu', w);
     $$('[data-contact-kind]', w).forEach(function (a) {
       var k = a.dataset.contactKind;
+      if (k === 'ask') { a.addEventListener('click', function () { set(false); window.dispatchEvent(new CustomEvent('ask-am', { detail: {} })); }); return; }
       if (k === 'chat' && d.w) a.href = 'https://wa.me/' + d.w;
       else if (k === 'call' && d.c) a.href = d.c;
       else if (k === 'mail' && d.m) a.href = 'mailto:' + d.m;

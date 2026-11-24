@@ -38,15 +38,27 @@ export function createTemplates(ctx) {
       .join('')}</ul>`;
   }
 
-  function searchBox(lang, id) {
-    return `<div class="search" data-search>
-  <label class="visually-hidden" for="q-${id}">${esc(T(lang, 'search.label'))}</label>
+  function searchBox(lang, id, ask = false) {
+    return `<div class="search" data-search${ask ? ' data-ask-home' : ''}>
+  <label class="visually-hidden" for="q-${id}">${esc(T(lang, ask ? 'home.ask.label' : 'search.label'))}</label>
   <span class="search__icon">${icon('i-search')}</span>
-  <input id="q-${id}" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(T(lang, 'search.placeholder'))}" role="combobox" aria-expanded="false" aria-controls="r-${id}" aria-autocomplete="list">
+  <input id="q-${id}" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="${esc(T(lang, ask ? 'home.ask.placeholder' : 'search.placeholder'))}" role="combobox" aria-expanded="false" aria-controls="r-${id}" aria-autocomplete="list">
   <button type="button" class="circle circle--sm search__clear" hidden aria-label="${esc(T(lang, 'search.clear'))}">${icon('i-close')}</button>
   <kbd class="search__kbd" aria-hidden="true">/</kbd>
   <ul id="r-${id}" class="search__results" role="listbox" hidden data-none="${esc(T(lang, 'search.none'))}"></ul>
+${askPanel(lang)}
 </div>`;
+  }
+  function askPanel(lang) {
+    const i = Object.fromEntries(['hello', 'found', 'none', 'error', 'thinking'].map((k) => [k, T(lang, 'ask.' + k)]));
+    const sg = [1, 2, 3].map((n) => `<li><button type="button" class="chip">${esc(T(lang, 'ask.suggest.' + n))}</button></li>`).join('');
+    return `<section class="ask" role="dialog" aria-label="${esc(T(lang, 'ask.title'))}" data-ask data-index="${u(lang, '/ask-index.json')}" data-endpoint="${esc(site.assistant?.endpoint || '')}" data-i="${esc(JSON.stringify(i))}" hidden>
+<div class="ask__head">${mascotIcon('head', 'ask__face')}<span class="ask__title">${esc(T(lang, 'ask.title'))}</span><button type="button" class="circle circle--sm ask__close" aria-label="${esc(T(lang, 'ask.close'))}">${icon('i-close')}</button></div>
+<div class="ask__log" role="log" aria-live="polite"></div>
+<ul class="ask__suggest">${sg}</ul>
+<form class="ask__form"><input type="text" maxlength="400" autocomplete="off" enterkeyhint="send" placeholder="${esc(T(lang, 'ask.placeholder'))}" aria-label="${esc(T(lang, 'ask.placeholder'))}"><button type="submit" class="circle ask__send" aria-label="${esc(T(lang, 'ask.send'))}">${icon('i-arrow', 'flip')}</button></form>
+<p class="ask__note">${esc(T(lang, 'ask.note'))}</p>
+</section>`;
   }
 
   function drawer(lang, here) {
@@ -120,6 +132,7 @@ export function createTemplates(ctx) {
     return `<div class="contact" data-contact-widget data-c="${payload}">
 <button type="button" class="contact__fab" aria-expanded="false" aria-controls="contact-menu" aria-label="${esc(T(lang, 'widget.open'))}" title="${esc(T(lang, 'widget.open'))}">${mascotIcon('head', 'contact__face')}</button>
 <ul class="contact__menu" id="contact-menu" aria-label="${esc(T(lang, 'widget.label'))}" hidden>
+<li><button type="button" class="contact__item" data-contact-kind="ask" data-tip="${esc(T(lang, 'widget.ask'))}" aria-label="${esc(T(lang, 'widget.ask'))}">${mascotIcon('mk-ask', 'contact__icon')}</button></li>
 ${item('chat', 'widget.message', 'chat', ' target="_blank" rel="noopener noreferrer"')}
 ${c.calendly ? item('call', 'widget.call', 'call', ' target="_blank" rel="noopener noreferrer"') : ''}
 ${item('mail', 'widget.email', 'mail')}
@@ -173,6 +186,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="stylesheet" href="${assets.css}">
 <script>${ctx.themeInit}</script>
 <script src="${assets.js}" defer></script>
+<script src="${assets.askJs}" defer></script>
 ${mapPage ? `<script src="${assets.mapJs}" defer></script>` : ''}
 ${jsonld ? `<script type="application/ld+json">${jsonld}</script>` : ''}
 </head>
@@ -352,12 +366,13 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
   <section class="home__hero" aria-labelledby="home-name">
     ${mascotIcon('pose-' + POSE_FOR.home, 'home__mascot')}
     <a class="status" href="${u(lang, '/services/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
+    <p class="home__hello">${esc(T(lang, 'home.hello'))}</p>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
     <p class="home__suffix" dir="ltr">${esc(L(site.suffix, lang))}</p>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
     <p class="home__intro">${esc(L(site.intro, lang))}</p>
     ${socials(lang, 'socials--home')}
-    ${searchBox(lang, 'h')}
+    ${searchBox(lang, 'h', true)}
     <ul class="suggest" aria-label="${esc(T(lang, 'home.try'))}">${chips}</ul>
   </section>
   ${footer(lang)}

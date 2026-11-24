@@ -11,7 +11,7 @@ import { buildSprite, logoCss } from './lib/icons.mjs';
 import { buildOnlineAdmin } from './lib/admin-online.mjs';
 import { createTemplates } from './lib/templates.mjs';
 import { LANGS, u } from './lib/i18n.mjs';
-import { searchIndex, clientNormalise, NORMALISE_MARKER } from './lib/search.mjs';
+import { searchIndex, askIndex, clientNormalise, NORMALISE_MARKER } from './lib/search.mjs';
 import { root, src, dataDir, srcFileFor } from './lib/paths.mjs';
 import { ensureDir, writeFile, copyDir, readJSON, esc } from './lib/util.mjs';
 
@@ -77,6 +77,9 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
   const graphName = `graph.${hash(graphText)}.json`;
   writeFile(path.join(dist, 'assets', graphName), graphText);
   const mapJs = fs.readFileSync(path.join(src, 'assets/js/map.js'), 'utf8');
+  const askJs = fs.readFileSync(path.join(src, 'assets/js/ask.js'), 'utf8').replace(NORMALISE_MARKER, clientNormalise());
+  const askName = `ask.${hash(askJs)}.js`;
+  writeFile(path.join(dist, 'assets', askName), askJs);
   const mapName = `map.${hash(mapJs)}.js`;
   writeFile(path.join(dist, 'assets', mapName), mapJs);
 
@@ -108,13 +111,14 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
 
   const themeInit = fs.readFileSync(path.join(src, 'assets/js/theme-init.js'), 'utf8').trim();
   const formOrigin = site.contact.formEndpoint ? ' ' + new URL(site.contact.formEndpoint).origin : '';
+  const askOrigin = site.assistant?.endpoint ? ' ' + new URL(site.assistant.endpoint).origin : '';
   const csp = [
     "default-src 'none'",
     `script-src 'self' 'sha256-${crypto.createHash('sha256').update(themeInit).digest('base64')}'`,
     "style-src 'self'",
     "img-src 'self' data:",
     "font-src 'self'",
-    `connect-src 'self'${formOrigin}`,
+    `connect-src 'self'${formOrigin}${askOrigin}`,
     "manifest-src 'self'",
     `form-action 'self'${formOrigin}`,
     "base-uri 'self'",
@@ -134,6 +138,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
       css: `/assets/${cssName}`,
       js: `/assets/${jsName}`,
       mapJs: `/assets/${mapName}`,
+      askJs: `/assets/${askName}`,
       graph: `/assets/${graphName}`,
       sprite: `/assets/${spriteName}`,
       og: '/assets/img/og.png',
@@ -153,6 +158,7 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
         urls.push(u(lang, page.path));
       }
     }
+    writeFile(path.join(dist, u(lang, '/ask-index.json')), JSON.stringify(askIndex({ lang, site, content, services, L })));
     writeFile(path.join(dist, u(lang, '/search-index.json')), JSON.stringify(searchIndex({ lang, site, content, services, T, L })));
   }
   // GitHub Pages serves /404.html for every missing URL
