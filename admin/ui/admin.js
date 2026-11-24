@@ -1,7 +1,8 @@
-/* Local content admin. Talks only to the admin server on this machine. */
+/* Content admin UI. Locally it talks to the admin server on this machine; online (/admin/) backend-github.js provides window.AdminAPI. */
 (function () {
   'use strict';
-  var TOKEN = document.querySelector('meta[name="admin-token"]').content;
+  var tokenMeta = document.querySelector('meta[name="admin-token"]');
+  var TOKEN = tokenMeta ? tokenMeta.content : '';
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var el = function (tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -16,6 +17,7 @@
   };
 
   function api(method, url, body, raw) {
+    if (window.AdminAPI) return window.AdminAPI(method, url, body, raw); // online admin: GitHub backend
     var opts = { method: method, headers: { 'X-Admin-Token': TOKEN } };
     if (body !== undefined) { opts.body = raw ? body : JSON.stringify(body); if (!raw) opts.headers['Content-Type'] = 'application/json'; }
     return fetch(url, opts).then(function (r) {

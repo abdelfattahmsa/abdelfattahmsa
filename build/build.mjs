@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { loadAll } from './lib/content.mjs';
 import { buildGraph } from './lib/graph.mjs';
 import { buildSprite, logoCss } from './lib/icons.mjs';
+import { buildOnlineAdmin } from './lib/admin-online.mjs';
 import { createTemplates } from './lib/templates.mjs';
 import { LANGS, u } from './lib/i18n.mjs';
 import { searchIndex, clientNormalise, NORMALISE_MARKER } from './lib/search.mjs';
@@ -159,7 +160,8 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
 
   const sm = urls.map((p) => `<url><loc>${esc(site.url + p)}</loc></url>`).join('\n');
   writeFile(path.join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sm}\n</urlset>\n`);
-  writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n`);
+  writeFile(path.join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: ${site.url}/sitemap.xml\n`);
+  buildOnlineAdmin({ root, dist, site });
   writeFile(path.join(dist, '.nojekyll'), '');
   if (fs.existsSync(path.join(root, 'CNAME'))) fs.copyFileSync(path.join(root, 'CNAME'), path.join(dist, 'CNAME'));
 

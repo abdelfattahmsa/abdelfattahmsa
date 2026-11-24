@@ -12,8 +12,9 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import matter from 'gray-matter';
+import { resolveSchema } from './schema.mjs';
 import { renderMarkdown } from '../build/lib/markdown.mjs';
-import { collections, INDEX_SLUG, isDraft, dateOf, isoDate } from '../build/lib/content.mjs';
+import { INDEX_SLUG, isDraft, dateOf, isoDate } from '../build/lib/content.mjs';
 import { LANGS, DEFAULT_LANG, langInfo, contentFile, parseContentFile } from '../build/lib/i18n.mjs';
 import { root, contentDir, dataDir, downloadsDir, DOWNLOADS_URL } from '../build/lib/paths.mjs';
 import { slugify, contentType, readJSON } from '../build/lib/util.mjs';
@@ -22,30 +23,13 @@ const PORT = Number(process.env.ADMIN_PORT) || 4173;
 const HOST = '127.0.0.1';
 const TOKEN = crypto.randomBytes(24).toString('hex');
 const site = readJSON(path.join(dataDir, 'site.json'));
-const COLLECTIONS = collections(site);
 const UI = path.join(root, 'admin/ui');
 
 const SLUG = /^[a-z0-9_][a-z0-9_-]{0,80}$/;
 const MAX_UPLOAD = 60 * 1024 * 1024;
 const ALLOWED_EXT = new Set(['pdf', 'zip', 'xlsx', 'xlsm', 'xls', 'csv', 'docx', 'dotx', 'doc', 'pptx', 'potx', 'md', 'txt', 'json', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'ics', 'otf', 'ttf', 'woff2']);
 
-// admin/schema.json, with "wiki-*" expanded to one collection per wiki and select options resolved
-const schema = (() => {
-  const raw = readJSON(path.join(root, 'admin/schema.json'));
-  const out = {};
-  for (const [id, c] of Object.entries(raw.collections)) {
-    const entries = id === 'wiki-*' ? site.wikis.map((w) => [`wiki-${w.id}`, { ...c, label: w.title[DEFAULT_LANG] }]) : [[id, c]];
-    for (const [cid, def] of entries) {
-      const fields = (typeof def.fields === 'string' ? raw.fieldSets[def.fields] : def.fields).map((f) => {
-        if (f.source) return { ...f, options: site[f.source].map((x) => ({ value: x.id, label: x.label[DEFAULT_LANG] })) };
-        if (f.options) return { ...f, options: f.options.map((v) => (typeof v === 'string' ? { value: v, label: v } : v)) };
-        return f;
-      });
-      out[cid] = { label: def.label, fields, indexSlug: COLLECTIONS[cid].index ? INDEX_SLUG : null };
-    }
-  }
-  return out;
-})();
+const { schema, COLLECTIONS } = resolveSchema(site);
 
 function httpError(status, message) {
   return Object.assign(new Error(message), { status });

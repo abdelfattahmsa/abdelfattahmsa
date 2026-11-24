@@ -12,7 +12,7 @@
 |---|---|
 | Name | **Abdelfattah Mohammed Sameer Aboulfoutoh**. Short forms: *Abdelfattah*, *AM*, *Abdelfattah M.* |
 | Based in | Cairo, Egypt |
-| Positioning | **Engineer. System Builder. Product Architect.** |
+| Positioning | **Engineer, Entrepreneur, Creative** (MSc.) |
 | One-liner | *Bridging physical infrastructure with digital solutions: designing structured, scalable systems for life, work, and technology.* |
 | Domains | Engineering & construction management (project controls) · software & product development · data analysis & systems architecture |
 | Role of the brand | The *signal* for a group of ventures: it builds the trust and audience that discovers Kyberia Tech and Peridot Holding. It is a personal brand, **not** a company brand. |
