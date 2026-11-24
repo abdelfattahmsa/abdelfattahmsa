@@ -8,6 +8,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { art, maskable, INK, PAPER, YELLOW } from './mascot-art.mjs';
 import { png as pixelPng, HEAD16, HEAD32 } from './mascot-pixel.mjs';
+import { POSES, VB as POSE_VB, poseInner, poseInnerLight } from './poses.mjs';
 import { lockupSide, lockupUnder, lockupLettering, LOGOS } from './lockup.mjs';
 import { NAME, outDir, root, siteIcons, svgDoc, toPng, writeData, TRANSPARENT } from './lib.mjs';
 
@@ -106,5 +107,14 @@ for (const [a, b] of [['am-icon-16.png', 'favicon-16.png'], ['am-icon-32.png', '
   fs.copyFileSync(path.join(mascotPng, a), path.join(siteIcons, b));
 }
 fs.copyFileSync(path.join(mascotPng, 'am-og-1200x630.png'), path.join(root, 'src/assets/img/og.png'));
-writeData('mascot.json', { head: art.head, headLight: art.headLight });
+// the poses the website shows (each page part has its own reaction: build/lib/templates.mjs, POSE_FOR)
+const SITE_POSES = ['happy', 'calm', 'search', 'idea', 'sketching', 'sunglasses', 'coding', 'launch', 'wink', 'surprised'];
+const sitePoses = {};
+for (const n of SITE_POSES) {
+  const p = POSES.find((x) => x.name === n);
+  if (!p) throw new Error(`build-mascot.mjs: no pose "${n}"`);
+  sitePoses[`pose-${n}`] = { vb: POSE_VB, inner: poseInner(p) };
+  sitePoses[`pose-${n}Light`] = { vb: POSE_VB, inner: poseInnerLight(p) };
+}
+writeData('mascot.json', { head: art.head, headLight: art.headLight, ...sitePoses });
 console.log('mascot and logo set built:', Object.keys(FACES).length, 'mascot files,', Object.keys(LOGO_FILES).length, 'logos');

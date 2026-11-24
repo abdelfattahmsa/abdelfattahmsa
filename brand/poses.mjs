@@ -1,6 +1,6 @@
 // The mascot's poses: the approved face with other eyes and brows, sunglasses, or a prop on or beside the head.
-// Written out by build-poses.mjs and drawn on the download covers by build-covers.mjs. Brand library only (not on the website).
-import { face, edge, INK, PAPER, YELLOW, BOX } from './mascot-art.mjs';
+// Written out by build-poses.mjs and drawn on the download covers by build-covers.mjs. Ten of them are on the website: build/lib/templates.mjs (POSE_FOR) says which part of the site uses which.
+import { face, edge, edgeLight, INK, PAPER, YELLOW, BOX } from './mascot-art.mjs';
 
 // one canvas for every pose (room above and to the right for props), so poses swap without the head moving
 export const VB = '176 190 520 722';
@@ -64,5 +64,6 @@ export const POSES = [
 export function poseInner(p) {
   return edge() + (p.under || '') + face(p.face) + (p.over || '');
 }
+export const poseInnerLight = (p) => edgeLight() + (p.under || '') + face(p.face) + (p.over || '');
 export const poseSvg = (p) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB}" role="img" aria-label="Abdelfattah mascot: ${p.title}"><title>Abdelfattah mascot: ${p.title}</title>${poseInner(p)}</svg>\n`;
