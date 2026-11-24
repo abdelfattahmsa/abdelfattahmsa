@@ -13,10 +13,10 @@ const k = (d, extra = '') => `<path d="${d}" fill-rule="evenodd" fill="${INK}"${
 
 // ---- proportions measured on the reference (head 425 wide, 495 tall; eyes at 65% of the height; ears 27% of the width tall)
 const FACE = 'M286 540H572V742C572 812 500 862 427 862C354 862 286 812 286 742Z';
-// beard: a thick band (the reference's jaw rim, made fuller) from the sideburns round the chin; the area inside, including the
+// beard: its sideburns start inside the hair and run flush with the hair's edge, so hair and beard read as one mass; a thick band (the reference's jaw rim, made fuller) from the sideburns round the chin; the area inside, including the
 // mouth and chin, stays clean skin
-const BEARD = 'M277 650V780C300 850 360 888 427 888C494 888 554 850 577 780V650H553C553 765 508 852 427 852C346 852 301 765 301 650Z';
-const EARS_WHITE = '<ellipse cx="254" cy="730" rx="27" ry="50" fill="#fff"/><ellipse cx="600" cy="730" rx="27" ry="50" fill="#fff"/>';
+const BEARD = 'M254 640C254 680 266 706 277 730V780C300 850 360 888 427 888C494 888 554 850 577 780V730C588 706 602 680 602 640H564V690C564 780 510 852 427 852C344 852 294 780 294 690V640Z';
+const EARS_WHITE = '<ellipse cx="256" cy="732" rx="29" ry="53" fill="#fff"/><ellipse cx="598" cy="732" rx="29" ry="53" fill="#fff"/>';
 
 const hi = (cx, cy) => `<path d="M${cx - 12} ${cy - 18}L${cx + 6} ${cy - 8}L${cx - 10} ${cy + 4}Z" fill="${PAPER}"/>`;
 export const eyes = {
