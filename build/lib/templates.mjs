@@ -15,7 +15,7 @@ export function createTemplates(ctx) {
     `<svg class="icon ${cls}" aria-hidden="true" focusable="false"><use href="${assets.sprite}#${id}"/></svg>`;
   // the mascot has a light-background variant (thin grey edge); CSS shows the one that fits the theme
   // each part of the site has its own reaction of the mascot (poses are drawn in brand/poses.mjs)
-  const POSE_FOR = { home: 'happy', about: 'calm', hub: 'search', research: 'sketching', journey: 'sunglasses', resources: 'idea', guides: 'coding', downloads: 'launch', contact: 'wink', notFound: 'surprised' };
+  const POSE_FOR = { home: 'happy', about: 'calm', hub: 'search', research: 'sketching', journey: 'sunglasses', resources: 'idea', guides: 'coding', downloads: 'launch', contact: 'wink', services: 'builder', notFound: 'surprised' };
   const mascotIcon = (id, cls = '') => `${icon('mascot-' + id, cls + ' for-dark')}${icon('mascot-' + id + 'Light', cls + ' for-light')}`;
 
   const fmtDate = (d, lang) =>
@@ -350,7 +350,7 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
     const html = `<main id="main" class="home">
   <section class="home__hero" aria-labelledby="home-name">
     ${mascotIcon('pose-' + POSE_FOR.home, 'home__mascot')}
-    <a class="status" href="${u(lang, '/contact/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
+    <a class="status" href="${u(lang, '/services/')}"><span class="status__dot" aria-hidden="true"></span>${esc(T(lang, 'status.open'))}</a>
     <h1 id="home-name" class="home__name">${esc(L(site.name, lang))}</h1>
     <p class="home__tagline">${esc(L(site.tagline, lang))}</p>
     <p class="home__intro">${esc(L(site.intro, lang))}</p>
@@ -397,6 +397,25 @@ ${icon('i-arrow', 'card__go flip')}</a>`;
 ${cred ? `<section id="credentials"><div class="prose prose--page">${proseHtml(cred)}</div></section>` : ''}
 ${socials(lang, 'socials--page')}`;
     return [{ path: '/about/', html: layout({ lang, path: '/about/', title: v.data.title, description: v.data.summary, main: main(lang, inner, 'page--narrow') }) }];
+  };
+
+  // ---- services: what I offer, how to engage, pricing agreed on contact
+  pages.services = (lang) => {
+    const S = ctx.services[lang] || ctx.services.en;
+    const cards = S.services
+      .map(
+        (x) => `<li class="svc"><span class="svc__n">${esc(x.n)}</span><h3>${esc(x.title)}</h3><p class="svc__for">${esc(x.for)}</p><ul class="checks">${x.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul></li>`
+      )
+      .join('');
+    const inner = `${pageHead(lang, S.title, S.lead, poseIcon('services'))}
+<div class="prose prose--page"><p>${esc(S.about)}</p></div>
+<section aria-labelledby="sv-h"><h2 id="sv-h" class="eyebrow">${esc(S.servicesTitle)}</h2><ul class="svc-grid">${cards}</ul></section>
+<section aria-labelledby="why-h"><h2 id="why-h" class="eyebrow">${esc(S.whyTitle)}</h2><ul class="checks checks--wide">${S.why.map((w) => `<li>${esc(w)}</li>`).join('')}</ul></section>
+<section aria-labelledby="eng-h"><h2 id="eng-h" class="eyebrow">${esc(S.engageTitle)}</h2>
+<ul class="tags tags--big">${S.types.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+<ul class="checks checks--wide">${S.terms.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></section>
+<section class="svc-cta" aria-labelledby="pr-h"><h2 id="pr-h" class="eyebrow">${esc(S.pricingTitle)}</h2><p>${esc(S.pricing)}</p><p class="svc-cta__row"><a class="btn btn--primary" href="${u(lang, '/contact/')}">${esc(S.button)}${icon('i-arrow', 'flip')}</a></p></section>`;
+    return [{ path: '/services/', html: layout({ lang, path: '/services/', title: S.title, description: S.lead, main: main(lang, inner, 'page--services') }) }];
   };
 
   pages.hub = (lang) => {

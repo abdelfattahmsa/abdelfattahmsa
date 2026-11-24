@@ -1,0 +1,176 @@
+{
+ "en": {
+  "title": "Services",
+  "lead": "Project controls, advisory, business intelligence and digital solutions for construction and engineering clients.",
+  "about": "I'm Abdelfattah Aboulfoutoh, a Project Controls Engineer with 3+ years on large construction programmes (EGP 12B+ combined), an MSc in Project Management, and IEEE-published research in AI for construction. I work with clients who need someone who understands the engineering reality, the commercial context and the numbers, not just the Gantt chart.",
+  "servicesTitle": "What I offer",
+  "services": [
+   {
+    "n": "01",
+    "title": "Project Controls Consulting",
+    "for": "For construction clients, contractors and PMCs who need controls expertise without a full-time hire.",
+    "items": [
+     "Baseline schedule development, validation and control (Primavera P6)",
+     "Cost baseline establishment, control accounts and EVM reporting (SPI, CPI, EAC, ETC)",
+     "FIDIC contract review, time and cost claim preparation and evaluation",
+     "Progress reporting: daily, weekly, monthly dashboards",
+     "Primavera Unifier setup and workflow configuration"
+    ]
+   },
+   {
+    "n": "02",
+    "title": "Business Intelligence & Dashboard Development",
+    "for": "For organisations that have data but can't act on it: turning raw project or business data into executive-ready dashboards.",
+    "items": [
+     "Power BI dashboard design and development (executive and operational levels)",
+     "Excel Power Query data modelling and automation",
+     "SQL database querying and report automation",
+     "KPI framework design tailored to your project or organisation"
+    ]
+   },
+   {
+    "n": "03",
+    "title": "Programme & Project Advisory",
+    "for": "Strategic input on delivery methodology, contract strategy and project setup, particularly for early-stage projects.",
+    "items": [
+     "Project execution plan (PEP) development",
+     "Risk register development and Monte Carlo scenario planning",
+     "Stakeholder reporting framework design",
+     "PMC setup and controls process design for new projects"
+    ]
+   },
+   {
+    "n": "04",
+    "title": "Financial Analysis & Business Advisory",
+    "for": "For engineering firms, PMCs and project owners who need cost analysis, cash flow planning or commercial advisory alongside technical delivery.",
+    "items": [
+     "Cash flow, commitment and expenditure analysis; project investment analysis",
+     "Business case and feasibility study support",
+     "PMO setup, governance design and reporting frameworks",
+     "Business development strategy and proposal writing for engineering firms"
+    ]
+   },
+   {
+    "n": "05",
+    "title": "Digital & Web Solutions",
+    "for": "Custom digital products, websites and platforms for businesses and construction organisations.",
+    "items": [
+     "Corporate website development (WordPress, custom code, LMS platforms)",
+     "Construction-specific digital tools and calculators",
+     "Business automation and workflow systems"
+    ]
+   }
+  ],
+  "whyTitle": "Why work with me",
+  "why": [
+   "Current, hands-on experience across Owner-side and PMC programmes, from a c. EGP 9B resort to EGP 1.5B+ and EGP 2.2B logistics projects: real project insight, not textbook theory.",
+   "MSc Project Management plus IEEE-published research: I understand both practice and the direction the industry is heading.",
+   "Day-to-day work in baseline validation, EVM, cash flow, invoice review and claims evaluation as a Projects Control Engineer.",
+   "Bilingual delivery (English / Arabic): fluent across international client and local contractor environments.",
+   "Tool depth: Primavera P6, Oracle Unifier, Power BI, Excel Power Query, SQL and Python."
+  ],
+  "engageTitle": "How to engage",
+  "types": [
+   "Retainer (monthly)",
+   "Project-based (fixed scope)",
+   "Hourly advisory"
+  ],
+  "terms": [
+   "Project minimum: 2 weeks",
+   "Retainer minimum: 1 month",
+   "Remote or on-site: available for both",
+   "Based in Cairo, Egypt, available for travel across MENA"
+  ],
+  "pricingTitle": "Pricing",
+  "pricing": "Pricing is agreed when we talk and depends on the scope of the work. Tell me about your project and I will reply with a proposal.",
+  "cta": "Let's talk about your project",
+  "button": "Get in touch"
+ },
+ "ar": {
+  "title": "الخدمات",
+  "lead": "ضبط المشاريع والاستشارات وذكاء الأعمال والحلول الرقمية لعملاء قطاعي الإنشاءات والهندسة.",
+  "about": "أنا عبدالفتاح أبو الفتوح، مهندس ضبط مشاريع بخبرة تزيد على 3 سنوات في برامج إنشائية كبرى (أكثر من 12 مليار جنيه مجتمعة)، وحاصل على ماجستير في إدارة المشاريع، ولي بحث منشور في IEEE عن الذكاء الاصطناعي في الإنشاءات. أعمل مع عملاء يحتاجون إلى من يفهم الواقع الهندسي والسياق التجاري والأرقام، لا مجرد مخطط جانت.",
+  "servicesTitle": "ما أقدمه",
+  "services": [
+   {
+    "n": "01",
+    "title": "استشارات ضبط المشاريع",
+    "for": "لعملاء الإنشاءات والمقاولين وشركات إدارة المشاريع (PMC) الذين يحتاجون خبرة ضبط المشاريع دون توظيف بدوام كامل.",
+    "items": [
+     "إعداد الجدول الزمني المرجعي ومراجعته ومتابعته (Primavera P6)",
+     "إعداد خط التكلفة المرجعي وحسابات التحكم وتقارير القيمة المكتسبة (SPI وCPI وEAC وETC)",
+     "مراجعة عقود FIDIC وإعداد وتقييم مطالبات الوقت والتكلفة",
+     "تقارير التقدم: لوحات متابعة يومية وأسبوعية وشهرية",
+     "إعداد Primavera Unifier وتهيئة مسارات العمل"
+    ]
+   },
+   {
+    "n": "02",
+    "title": "ذكاء الأعمال وتطوير لوحات المتابعة",
+    "for": "للمؤسسات التي لديها بيانات لكنها لا تستطيع الاستفادة منها: نحوّل بيانات المشاريع أو الأعمال الخام إلى لوحات جاهزة للإدارة التنفيذية.",
+    "items": [
+     "تصميم وتطوير لوحات Power BI (للإدارة العليا وللمستوى التشغيلي)",
+     "نمذجة البيانات وأتمتتها باستخدام Excel Power Query",
+     "الاستعلام عن قواعد بيانات SQL وأتمتة التقارير",
+     "تصميم إطار مؤشرات الأداء المناسب لمشروعك أو مؤسستك"
+    ]
+   },
+   {
+    "n": "03",
+    "title": "استشارات البرامج والمشاريع",
+    "for": "مشورة استراتيجية في منهجية التنفيذ واستراتيجية التعاقد وتأسيس المشروع، خاصة للمشاريع في مراحلها الأولى.",
+    "items": [
+     "إعداد خطة تنفيذ المشروع (PEP)",
+     "إعداد سجل المخاطر وتخطيط سيناريوهات مونت كارلو",
+     "تصميم إطار تقارير أصحاب المصلحة",
+     "تأسيس فريق إدارة المشاريع (PMC) وتصميم عمليات الضبط للمشاريع الجديدة"
+    ]
+   },
+   {
+    "n": "04",
+    "title": "التحليل المالي واستشارات الأعمال",
+    "for": "لشركات الهندسة وشركات إدارة المشاريع وملّاك المشاريع الذين يحتاجون تحليل تكلفة أو تخطيط تدفقات نقدية أو استشارات تجارية إلى جانب التنفيذ الفني.",
+    "items": [
+     "تحليل التدفقات النقدية والالتزامات والمصروفات، وتحليل الجدوى الاستثمارية للمشاريع",
+     "دعم دراسات الجدوى وإعداد نماذج الأعمال",
+     "تأسيس مكتب إدارة المشاريع (PMO) وتصميم الحوكمة وأطر التقارير",
+     "استراتيجية تطوير الأعمال وكتابة العروض لشركات الهندسة"
+    ]
+   },
+   {
+    "n": "05",
+    "title": "الحلول الرقمية وتطوير المواقع",
+    "for": "منتجات ومواقع ومنصات رقمية مخصصة للشركات ومؤسسات الإنشاءات.",
+    "items": [
+     "تطوير مواقع الشركات (WordPress والبرمجة المخصصة ومنصات التعلم LMS)",
+     "أدوات وحاسبات رقمية متخصصة في الإنشاءات",
+     "أتمتة الأعمال وأنظمة سير العمل"
+    ]
+   }
+  ],
+  "whyTitle": "لماذا تعمل معي",
+  "why": [
+   "خبرة عملية حديثة في مشاريع جهة المالك وشركات إدارة المشاريع، من منتجع بنحو 9 مليارات جنيه إلى مشاريع لوجستية بقيمة 1.5 مليار و2.2 مليار جنيه: رؤية حقيقية للمشاريع وليست نظرية.",
+   "ماجستير في إدارة المشاريع وبحث منشور في IEEE: أفهم الممارسة العملية واتجاه الصناعة معًا.",
+   "عمل يومي في التحقق من الخطوط المرجعية وتحليل القيمة المكتسبة والتدفقات النقدية ومراجعة المستخلصات وتقييم المطالبات بصفتي مهندس ضبط مشاريع.",
+   "تنفيذ بلغتين (العربية والإنجليزية): أتعامل بطلاقة مع العملاء الدوليين والمقاولين المحليين.",
+   "عمق في الأدوات: Primavera P6 وOracle Unifier وPower BI وExcel Power Query وSQL وPython."
+  ],
+  "engageTitle": "طرق التعاون",
+  "types": [
+   "اشتراك شهري",
+   "مشروع بنطاق عمل محدد",
+   "استشارة بالساعة"
+  ],
+  "terms": [
+   "الحد الأدنى للمشروع: أسبوعان",
+   "الحد الأدنى للاشتراك الشهري: شهر واحد",
+   "عن بُعد أو في الموقع: متاح الاثنان",
+   "مقيم في القاهرة، ومتاح للسفر في أنحاء الشرق الأوسط وشمال أفريقيا"
+  ],
+  "pricingTitle": "الأسعار",
+  "pricing": "يُتفق على السعر عند التواصل ويعتمد على نطاق العمل. أخبرني عن مشروعك وسأرد عليك بعرض مناسب.",
+  "cta": "لنتحدث عن مشروعك",
+  "button": "تواصل معي"
+ }
+}
