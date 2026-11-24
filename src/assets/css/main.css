@@ -118,7 +118,7 @@ h3{font-size:1.2rem}
 .burger__close,.burger[aria-expanded="true"] .burger__open{display:none}
 .burger[aria-expanded="true"] .burger__close{display:block}
 .tools-wide{display:contents}
-@media (max-width:1200px){
+@media (max-width:1280px){
   .topbar{grid-template-columns:1fr auto 1fr}
   .topbar__start{display:contents}
   #hub-toggle{grid-column:1;justify-self:start}
