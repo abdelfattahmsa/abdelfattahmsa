@@ -140,8 +140,35 @@ ${item('mail', 'widget.email', 'mail')}
 </div>`;
   }
 
-  function footer(lang) {
+  function consentBanner(lang) {
+    if (!assets.ga) return '';
+    return `<div class="consent" data-consent role="dialog" aria-label="${esc(T(lang, 'consent.label'))}" hidden>
+<p>${esc(T(lang, 'consent.text'))} <a href="${u(lang, '/privacy/')}">${esc(T(lang, 'footer.privacy'))}</a></p>
+<div class="consent__btns"><button type="button" class="btn" data-consent-decline>${esc(T(lang, 'consent.decline'))}</button><button type="button" class="btn btn--primary" data-consent-accept>${esc(T(lang, 'consent.accept'))}</button></div>
+</div>`;
+  }
+
+  const hasText = (slug) => !!content.pages[slug];
+  function subscribeForm(lang) {
+    if (!site.contact.formEndpoint) return '';
+    return `<form class="subscribe" data-subscribe method="post" action="${esc(site.contact.formEndpoint)}" data-endpoint="${esc(site.contact.formEndpoint)}" data-ok="${esc(T(lang, 'subscribe.thanks'))}" data-err="${esc(T(lang, 'subscribe.error'))}">
+<label for="sub-email">${esc(T(lang, 'subscribe.label'))}</label>
+<div class="subscribe__row"><input id="sub-email" name="email" type="email" required autocomplete="email" dir="ltr" placeholder="${esc(T(lang, 'subscribe.email'))}"><input type="hidden" name="_subject" value="Newsletter signup"><input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true"><button class="btn btn--primary" type="submit">${esc(T(lang, 'subscribe.button'))}</button></div>
+<p class="subscribe__msg" role="status"></p>
+</form>`;
+  }
+  function footer(lang, sub = false) {
+    const links = [
+      hasText('now') && ['/now/', 'footer.now'],
+      hasText('uses') && ['/uses/', 'footer.uses'],
+      content.work.length && ['/work/', 'footer.work'],
+      hasText('privacy') && ['/privacy/', 'footer.privacy'],
+    ].filter(Boolean).map(([h, k]) => `<a href="${u(lang, h)}">${esc(T(lang, k))}</a>`);
+    links.push(`<a href="${u(lang, '/feed.xml')}">${esc(T(lang, 'footer.rss'))}</a>`);
+    if (assets.ga) links.push(`<a href="#" data-consent-open>${esc(T(lang, 'consent.settings'))}</a>`);
     return `<footer class="footer">
+  ${sub ? subscribeForm(lang) : ''}
+  <nav class="footer__links" aria-label="Footer">${links.join('')}</nav>
   <p>&copy; <span data-year>${new Date().getFullYear()}</span> ${esc(L(site.short, lang))} · ${esc(T(lang, 'footer.rights'))}</p>
 </footer>`;
   }
@@ -169,6 +196,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="alternate" hreflang="${lang}" href="${abs(lang, here)}">
 <link rel="alternate" hreflang="${other}" href="${abs(other, here)}">
 <link rel="alternate" hreflang="x-default" href="${abs(DEFAULT_LANG, here)}">
+<link rel="alternate" type="application/rss+xml" title="${esc(L(site.short, lang))}" href="${u(lang, '/feed.xml')}">
 <meta property="og:site_name" content="${esc(L(site.short, lang))}">
 <meta property="og:type" content="${ogType}">
 <meta property="og:title" content="${esc(fullTitle)}">
@@ -187,16 +215,18 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <script>${ctx.themeInit}</script>
 <script src="${assets.js}" defer></script>
 <script src="${assets.askJs}" defer></script>
+${assets.analyticsJs ? `<script src="${assets.analyticsJs}" defer></script>` : ''}
 ${mapPage ? `<script src="${assets.mapJs}" defer></script>` : ''}
 ${jsonld ? `<script type="application/ld+json">${jsonld}</script>` : ''}
 </head>
-<body class="${bodyClass}" data-lang="${lang}" data-search-index="${u(lang, '/search-index.json')}" data-i18n-search-hint="${esc(T(lang, 'search.hint'))}">
+<body class="${bodyClass}" data-lang="${lang}"${assets.ga ? ` data-ga="${esc(assets.ga)}"` : ''} data-search-index="${u(lang, '/search-index.json')}" data-i18n-search-hint="${esc(T(lang, 'search.hint'))}">
 <a class="skip" href="#main">${esc(T(lang, 'skip'))}</a>
 ${header(lang, here, isHome, switchPath)}
 ${drawer(lang, here)}
 ${overlay}
 ${main}
 ${contactWidget(lang)}
+${consentBanner(lang)}
 <button type="button" class="totop" data-totop hidden aria-label="${esc(T(lang, 'totop'))}" title="${esc(T(lang, 'totop'))}">${icon('i-up')}</button>
 </body>
 </html>`;
@@ -208,7 +238,7 @@ ${contactWidget(lang)}
 
   const poseIcon = (part) => mascotIcon('pose-' + POSE_FOR[part], 'pagehead__mascot');
 
-  const main = (lang, inner, cls = '') => `<main id="main" class="page ${cls}"><div class="container">${inner}</div>${footer(lang)}</main>`;
+  const main = (lang, inner, cls = '') => `<main id="main" class="page ${cls}"><div class="container">${inner}</div>${footer(lang, true)}</main>`;
 
   const tagList = (tags = []) =>
     tags.length ? `<ul class="tags">${tags.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : '';
@@ -309,7 +339,8 @@ ${prev || next ? `<nav class="prevnext" aria-label="${esc(backLabel)}">${pn(prev
 </article>
 ${toc}
 </div>`;
-    return layout({ lang, path: entry.url, title: d.title, description: d.summary, ogType: 'article', main: main(lang, inner, 'page--article') });
+    const ld = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: d.title, description: d.summary || undefined, datePublished: entry.date ? isoDate(entry.date) : undefined, inLanguage: lang, author: { '@type': 'Person', name: site.name.en, url: site.url }, mainEntityOfPage: abs(lang, entry.url) });
+    return layout({ lang, path: entry.url, title: d.title, description: d.summary, ogType: 'article', main: main(lang, inner, 'page--article'), jsonld: ld });
   }
 
   // One article page per item. Lists in reading order ("position") link forwards;
@@ -431,9 +462,22 @@ ${socials(lang, 'socials--page')}`;
 <section aria-labelledby="eng-h"><h2 id="eng-h" class="eyebrow">${esc(S.engageTitle)}</h2>
 <ul class="tags tags--big">${S.types.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
 <ul class="checks checks--wide">${S.terms.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></section>
+${content.work.length ? `<section aria-labelledby="wk-h"><h2 id="wk-h" class="eyebrow">${esc(T(lang, 'services.work'))}</h2>${rowList(lang, content.work.slice(0, 4))}<p><a class="textlink" href="${u(lang, '/work/')}">${esc(T(lang, 'work'))}${icon('i-arrow', 'flip')}</a></p></section>` : ''}
+${content.testimonials.length ? `<section aria-labelledby="ts-h"><h2 id="ts-h" class="eyebrow">${esc(T(lang, 'services.testimonials'))}</h2><ul class="quotes">${content.testimonials.map((q) => { const v = pick(q, lang); return `<li><blockquote><div class="prose">${v.html}</div><footer><strong>${esc(v.data.title)}</strong>${v.data.role ? ` · ${esc(v.data.role)}` : ''}</footer></blockquote></li>`; }).join('')}</ul></section>` : ''}
 <section class="svc-cta" aria-labelledby="pr-h"><h2 id="pr-h" class="eyebrow">${esc(S.pricingTitle)}</h2><p>${esc(S.pricing)}</p><p class="svc-cta__row"><a class="btn btn--primary" href="${u(lang, '/contact/')}">${esc(S.button)}${icon('i-arrow', 'flip')}</a></p></section>`;
     return [{ path: '/services/', html: layout({ lang, path: '/services/', title: S.title, description: S.lead, main: main(lang, inner, 'page--services') }) }];
   };
+
+  // ---- work: case studies (only when there are some)
+  pages.work = (lang) => (content.work.length ? datedSection(lang, { base: C.work.base, key: 'work', list: content.work, parent: { label: L(site.short, lang), href: '/' }, pose: 'services' }) : []);
+
+  // ---- plain text pages from the Pages collection: privacy, now, uses
+  pages.text = (lang) =>
+    ['privacy', 'now', 'uses'].filter(hasText).map((slug) => {
+      const v = pick(content.pages[slug], lang);
+      const inner = `${pageHead(lang, v.data.title, v.data.summary, poseIcon('about'))}<div class="prose prose--page">${proseHtml(v)}</div>`;
+      return { path: `/${slug}/`, html: layout({ lang, path: `/${slug}/`, title: v.data.title, description: v.data.summary, main: main(lang, inner, 'page--narrow') }) };
+    });
 
   pages.hub = (lang) => {
     const hub = { label: T(lang, 'hub.title'), href: '/hub/' };

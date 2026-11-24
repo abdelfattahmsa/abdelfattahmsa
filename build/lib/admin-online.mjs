@@ -7,6 +7,7 @@ import { resolveSchema } from '../../admin/schema.mjs';
 import { LANGS, DEFAULT_LANG, langInfo } from './i18n.mjs';
 import { DOWNLOADS_URL } from './paths.mjs';
 import { writeFile } from './util.mjs';
+import { SETTINGS } from '../../admin/settings.mjs';
 
 const ALLOWED_EXT = ['pdf', 'zip', 'xlsx', 'xlsm', 'xls', 'csv', 'docx', 'dotx', 'doc', 'pptx', 'potx', 'md', 'txt', 'json', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'ics'];
 const REPO = 'abdelfattahmsa/abdelfattahmsa';
@@ -19,7 +20,7 @@ export function buildOnlineAdmin({ root, dist, site }) {
   const collections = Object.fromEntries(Object.entries(schema).map(([id, c]) => [id, { ...c, dir: COLLECTIONS[id].dir, dateField: COLLECTIONS[id].dateField || 'date' }]));
   const langs = LANGS.map((code) => ({ code, label: new Intl.DisplayNames([code], { type: 'language' }).of(code), dir: langInfo(code).dir }));
   const indexSlug = Object.values(schema).find((c) => c.indexSlug)?.indexSlug || null;
-  writeFile(path.join(out, 'config.json'), JSON.stringify({ repo: REPO, branch: 'main', langs, defaultLang: DEFAULT_LANG, downloadsUrl: DOWNLOADS_URL, allowedExt: ALLOWED_EXT, indexSlug, collections }));
+  writeFile(path.join(out, 'config.json'), JSON.stringify({ repo: REPO, branch: 'main', langs, defaultLang: DEFAULT_LANG, downloadsUrl: DOWNLOADS_URL, allowedExt: ALLOWED_EXT, indexSlug, collections, settings: SETTINGS.map((s) => ({ ...s, check: s.check.source })) }));
 
   for (const f of ['admin.js', 'admin.css', 'backend-github.js']) fs.copyFileSync(path.join(ui, f), path.join(out, f));
   fs.copyFileSync(path.join(root, 'node_modules/js-yaml/dist/js-yaml.min.js'), path.join(out, 'js-yaml.min.js'));

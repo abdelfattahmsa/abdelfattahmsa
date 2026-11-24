@@ -50,6 +50,7 @@ export function searchIndex({ lang, site, content, services, T, L }) {
   addAll('research', content.research);
   addAll('journey', content.journey);
   addAll('guide', content.guides);
+  addAll('work', content.work);
   addAll('download', content.downloads);
   add('page', '/about/', pick(content.pages.about, lang));
   const sv = services && (services[lang] || services.en);
@@ -61,7 +62,7 @@ export function searchIndex({ lang, site, content, services, T, L }) {
     add('page', '/about/#timeline', { ...v, data: { ...v.data, title: `${v.data.title}, ${v.data.org}` } }, []);
   }
 
-  const types = ['wiki', 'research', 'journey', 'guide', 'download', 'page'];
+  const types = ['wiki', 'research', 'journey', 'guide', 'work', 'download', 'page'];
   return { l: Object.fromEntries(types.map((k) => [k, T(lang, 'type.' + k)])), i: items };
 }
 
@@ -92,6 +93,7 @@ export function askIndex({ lang, site, content, services, L }) {
   addAll('research', content.research);
   addAll('journey', content.journey);
   addAll('guide', content.guides);
+  addAll('work', content.work);
   addAll('download', content.downloads);
   for (const [slug, e] of Object.entries(content.pages)) { const v = pick(e, lang); add('page', slug === 'about' ? '/about/' : `/${slug}/`, v.data.title || slug, v.text); }
   const sv = services && (services[lang] || services.en);

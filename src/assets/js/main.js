@@ -314,7 +314,7 @@
       if (d.endpoint) {
         btn.disabled = true; say(d.msgSending, '');
         fetch(d.endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
-          .then(function (r) { if (!r.ok) throw new Error('bad status'); say(d.msgSent, 'ok'); form.reset(); })
+          .then(function (r) { if (!r.ok) throw new Error('bad status'); say(d.msgSent, 'ok'); form.reset(); if (window.amTrack) window.amTrack('generate_lead', { method: 'form' }); })
           .catch(function () { say(d.msgError, 'error'); })
           .then(function () { btn.disabled = false; });
       } else {
@@ -326,6 +326,19 @@
       }
     });
   })();
+  /* ------------------------------------------------------------ newsletter sign-up (same form service as the contact form) */
+  $$('[data-subscribe]').forEach(function (f) {
+    var msg = $('.subscribe__msg', f);
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = new FormData(f);
+      if (data.get('_gotcha')) { msg.textContent = f.dataset.ok; return; }
+      fetch(f.dataset.endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error('bad'); msg.textContent = f.dataset.ok; f.reset(); if (window.amTrack) window.amTrack('newsletter_signup', {}); })
+        .catch(function () { msg.textContent = f.dataset.err; });
+    });
+  });
+
   /* ------------------------------------------------------------ sticky mascot: message, call, email */
   (function () {
     var w = $('[data-contact-widget]');

@@ -26,6 +26,8 @@ export function collections(site) {
     journey: { dir: 'journey', base: '/hub/journey/' },
     research: { dir: 'research', base: '/hub/research/' },
     career: { dir: 'career', dateField: 'start' },
+    work: { dir: 'work', base: '/work/' },
+    testimonials: { dir: 'testimonials' },
     ...Object.fromEntries(wikis),
     pages: { dir: 'pages' },
   };
@@ -116,6 +118,8 @@ export function loadAll(site, { drafts = false } = {}) {
     research: load('research'),
     journey: load('journey'),
     guides: load('guides'),
+    work: load('work'),
+    testimonials: load('testimonials'),
     downloads,
     career: load('career'),
     pages: Object.fromEntries(load('pages').map((p) => [p.slug, p])),

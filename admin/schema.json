@@ -162,6 +162,73 @@
         }
       ]
     },
+    "work": {
+      "label": "Case studies (work)",
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "summary",
+          "type": "textarea",
+          "hint": "One or two sentences shown in the list."
+        },
+        {
+          "name": "client",
+          "type": "text",
+          "shared": true
+        },
+        {
+          "name": "year",
+          "type": "text",
+          "shared": true
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "shared": true,
+          "default": "today"
+        },
+        {
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "name": "draft",
+          "type": "bool",
+          "shared": true
+        }
+      ]
+    },
+    "testimonials": {
+      "label": "Testimonials",
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true,
+          "hint": "The person's name."
+        },
+        {
+          "name": "role",
+          "type": "text",
+          "hint": "Role and company, e.g. Project Director, Acme."
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "shared": true,
+          "default": "today"
+        },
+        {
+          "name": "draft",
+          "type": "bool",
+          "shared": true
+        }
+      ]
+    },
     "career": {
       "label": "Career timeline (About)",
       "fields": [

@@ -63,7 +63,7 @@
       if (v !== 'map' && mapEl && mapEl.__kmap) mapEl.__kmap.stop();
     }
     buttons.forEach(function (b, i) {
-      b.addEventListener('click', function () { store.set('kview', b.dataset.viewBtn); show(b.dataset.viewBtn); });
+      b.addEventListener('click', function () { store.set('kview', b.dataset.viewBtn); if (window.amTrack) window.amTrack('map_view_change', { view: b.dataset.viewBtn }); show(b.dataset.viewBtn); });
       b.addEventListener('keydown', function (ev) {
         var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
         if (!d) return;
@@ -481,6 +481,7 @@
     if (id < 0) { this.panel.hidden = true; return; }
     if (fly) this.flyTo({ tx: this.g.x[id], ty: this.g.y[id], tz: this.g.z[id], dist: Math.min(this.cam.dist, Math.max(120, this.extent * 0.35)) });
     this.renderPanel(id);
+    if (window.amTrack) window.amTrack('map_node_open', { node_type: ['area', 'tag', 'post'][this.g.type[id]] || 'node' });
   };
 
   KMap.prototype.renderPanel = function (id) {

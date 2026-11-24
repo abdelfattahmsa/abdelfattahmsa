@@ -296,5 +296,8 @@
   ],
   "assistant": {
     "endpoint": ""
+  },
+  "analytics": {
+    "ga4": ""
   }
 }
