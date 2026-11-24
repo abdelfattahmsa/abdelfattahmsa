@@ -1,6 +1,6 @@
 // Mascot v3 concept: face only, drawn in the exact style and proportions of the reference mascot (orange background).
 // The hair, ears, brows, eyes, nose and glasses frame are traced from the reference (ref-traced.json, reference pixel coordinates);
-// the beard, face base, expressions and sunglasses lenses are drawn here to the same proportions. No mustache, no mouth.
+// the beard, face base, expressions and sunglasses lenses are drawn here to the same proportions. 
 // Concept only: not used by the site or the brand library until approved.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -43,7 +43,7 @@ export function head({ eye = 'calm', brow = 'calm', sun = false, bg = null } = {
     EARS_WHITE + k(T.earL) + k(T.earR) + k(T.earInL) + k(T.earInR) +
     `<path d="${FACE}" fill="${PAPER}"/>` +
     `<path d="${BEARD}" fill="${INK}"/>` +
-    brows[brow]() + (sun ? '' : eyes[eye]()) + k(T.nose) + (sun ? sunglasses() : '') +
+    brows[brow]() + (sun ? '' : eyes[eye]()) + k(T.nose) + k(T.mustache) + k(T.lip) + (sun ? sunglasses() : '') +
     k(T.hair)
   );
 }
