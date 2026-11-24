@@ -392,11 +392,10 @@ html:not(.js) .suggest{display:none}
 [data-theme="light"] .venture:hover .venture__text,[data-theme="light"] .venture:focus-visible .venture__text{color:var(--brand-text)}
 
 /* ---------- mascot ---------- */
-.home__mascot{display:none;inline-size:auto;block-size:clamp(120px,17vh,170px);aspect-ratio:520/722}
-@media (min-height:860px){.home__mascot{display:block}}
+.home__mascot{inline-size:auto;block-size:clamp(84px,14vh,170px);aspect-ratio:520/722}
 .pagehead{position:relative}
 .pagehead__mascot{position:absolute;inset-inline-end:0;inset-block-start:-8px;inline-size:auto;block-size:176px;aspect-ratio:520/722}
-@media (max-width:720px){.pagehead__mascot{display:none}}
+@media (max-width:720px){.pagehead__mascot{position:static;order:-1;justify-self:start;block-size:112px}}
 .notfound__mascot{inline-size:auto;block-size:230px;aspect-ratio:520/722}
 [data-theme="light"] .for-dark,[data-theme="dark"] .for-light{display:none}
 
