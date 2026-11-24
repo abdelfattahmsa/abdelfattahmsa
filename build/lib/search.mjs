@@ -78,6 +78,7 @@ const passages = (text, max = 12, size = 520) => {
   }
   return out.slice(0, max);
 };
+// Chat-style search over the wikis (and the about, services and career pages). No AI service: replies are composed from these passages.
 export function askIndex({ lang, site, content, services, L }) {
   const items = [];
   const add = (k, url, title, text) => {

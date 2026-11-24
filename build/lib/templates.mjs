@@ -50,9 +50,11 @@ ${askPanel(lang)}
 </div>`;
   }
   function askPanel(lang) {
-    const i = Object.fromEntries(['hello', 'found', 'none', 'error', 'thinking'].map((k) => [k, T(lang, 'ask.' + k)]));
+    const i = Object.fromEntries(['hello', 'greet', 'thanks', 'who', 'contact', 'services', 'more', 'nomore', 'lead', 'related', 'read', 'none', 'areas'].map((k) => [k, T(lang, 'ask.' + k)]));
+    i.links = { contact: u(lang, '/contact/'), services: u(lang, '/services/'), about: u(lang, '/about/'), hub: u(lang, '/hub/') };
+    i.areas_list = Object.values(content.wikis).map((w) => ({ t: L(w.title, lang), u: u(lang, w.base) }));
     const sg = [1, 2, 3].map((n) => `<li><button type="button" class="chip">${esc(T(lang, 'ask.suggest.' + n))}</button></li>`).join('');
-    return `<section class="ask" role="dialog" aria-label="${esc(T(lang, 'ask.title'))}" data-ask data-index="${u(lang, '/ask-index.json')}" data-endpoint="${esc(site.assistant?.endpoint || '')}" data-i="${esc(JSON.stringify(i))}" hidden>
+    return `<section class="ask" role="dialog" aria-label="${esc(T(lang, 'ask.title'))}" data-ask data-index="${u(lang, '/ask-index.json')}" data-i="${esc(JSON.stringify(i))}" hidden>
 <div class="ask__head">${mascotIcon('head', 'ask__face')}<span class="ask__title">${esc(T(lang, 'ask.title'))}</span><button type="button" class="circle circle--sm ask__close" aria-label="${esc(T(lang, 'ask.close'))}">${icon('i-close')}</button></div>
 <div class="ask__log" role="log" aria-live="polite"></div>
 <ul class="ask__suggest">${sg}</ul>

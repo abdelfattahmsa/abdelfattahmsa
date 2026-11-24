@@ -17,7 +17,7 @@ When you send the contact form or subscribe, your name, email and message are se
 
 ## Ask AM!
 
-The assistant answers from the pages of this site. If the AI mode is switched on, your question and a few short passages of the site's text are sent to the assistant's server (Cloudflare and Anthropic) to write the answer. Do not type personal or confidential details into it.
+The assistant is a search that answers in chat form. It runs entirely in your browser over the pages of this site: your questions are not sent to any server and no AI service is involved.
 
 ## Your choices
 

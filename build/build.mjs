@@ -116,14 +116,13 @@ export function build({ outDir = 'dist', drafts = false } = {}) {
 
   const themeInit = fs.readFileSync(path.join(src, 'assets/js/theme-init.js'), 'utf8').trim();
   const formOrigin = site.contact.formEndpoint ? ' ' + new URL(site.contact.formEndpoint).origin : '';
-  const askOrigin = site.assistant?.endpoint ? ' ' + new URL(site.assistant.endpoint).origin : '';
   const csp = [
     "default-src 'none'",
     `script-src 'self' 'sha256-${crypto.createHash('sha256').update(themeInit).digest('base64')}'${site.analytics?.ga4 ? ' https://www.googletagmanager.com' : ''}`,
     "style-src 'self'",
     `img-src 'self' data:${site.analytics?.ga4 ? ' https://*.google-analytics.com https://*.googletagmanager.com' : ''}`,
     "font-src 'self'",
-    `connect-src 'self'${formOrigin}${askOrigin}${site.analytics?.ga4 ? ' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com' : ''}`,
+    `connect-src 'self'${formOrigin}${site.analytics?.ga4 ? ' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com' : ''}`,
     "manifest-src 'self'",
     `form-action 'self'${formOrigin}`,
     "base-uri 'self'",
